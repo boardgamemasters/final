@@ -101,7 +101,7 @@ if rec_select == 'Similar Games':
     #     for i, x in enumerate(m_cols):
     #         st.header(sim_movies.iloc[i]['title'])
     #         st.image(sim_movies.iloc[i]['img'])
-    ncol = len(sim_movies)
+    ncol = 23#len(sim_movies)
     with st.container():
         st.header(f'Users that liked {sim_feature["name"]}, also liked these {sim_feature["amount"]} Games')
         for i in range(0, ncol, 3):
