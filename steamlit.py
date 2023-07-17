@@ -80,7 +80,7 @@ else:
 
     
 
-if rec_select == 'Similar Movies':
+if rec_select == 'Similar Games':
     def movie_like():
         title = st.sidebar.selectbox('Games like', ('Catan', 'Risk', 'Monopoly'))    # titles_df['title'], key = 'movie_like')
         amount = st.sidebar.slider('Number of Recommendations', min_value=1, max_value=20, value=5, step=1, key='mln', help='Here you can specify the number of recommended Games')
@@ -157,7 +157,7 @@ elif rec_select == 'Similar Taste':
     #                 st.image(user_movies.iloc[i+2]['img'])
     #                 st.text(user_movies.iloc[i+2]['title'])
 
-elif rec_select == 'Movies that are hot right now':
+elif rec_select == 'Games that are hot right now':
     st.sidebar.text('Coming Soon')
 #     st.write('Lets find some lit Movies.')
 
