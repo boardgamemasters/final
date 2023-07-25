@@ -29,8 +29,8 @@ def ScaleMeUpScotty(wf):
 
     return(wf)
 
-def weight_game(user, wd):
-    wd = wd.loc[wd['Username']==user]
+def weight_game(user_id, wd):
+    wd = wd.loc[wd['Username']==user_id]
     if (((wd['Rating'].max())-(wd['Rating'].min())) <=2):
         substractor = 5
     else:
@@ -171,7 +171,7 @@ def gib_spiele_digga(rat_df, game_frame, f_alt = 10000, s_alt = 10, user =' beas
                 )
                 , alt=f_alt
                 , bgg_ids_with_weights=weight_game(
-                    user
+                    user_id = user
                     , wd=rat_df
                 )
             )
