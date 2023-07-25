@@ -13,7 +13,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 #### Sub-Functions
 
-def ScaleMeUpScotty(wf = red_game):
+def ScaleMeUpScotty(wf):
     wf.set_index('bgg_id',inplace=True)
     scaler = MinMaxScaler()
 
@@ -29,7 +29,7 @@ def ScaleMeUpScotty(wf = red_game):
 
     return(wf)
 
-def weight_game(user='ecoboardgeek123', wd=rating_df):
+def weight_game(user, wd):
     wd = wd.loc[wd['Username']==user]
     if (((wd['Rating'].max())-(wd['Rating'].min())) <=2):
         substractor = 5
@@ -40,14 +40,14 @@ def weight_game(user='ecoboardgeek123', wd=rating_df):
     # print(f"Spannweite = {wd['Rating'].max()-wd['Rating'].min()} , Substractor = {substractor}")
     return(result_dict)
 
-def col_dropper(wd=red_game, bgg_id_list=list(test_user.keys())):
+def col_dropper(wd, bgg_id_list=[]):
     wd_red = wd.loc[wd['bgg_id'].isin(bgg_id_list)]
     wd_red = wd_red.sum()
     wd_red = list(wd_red.loc[wd_red==0].reset_index()['index'])
     answer = wd.drop(columns=(wd_red))
     return(answer)
 
-def similar_games(games_df=red_game, alt=10, bgg_ids_with_weights={}):
+def similar_games(games_df, alt=10, bgg_ids_with_weights={}):
     # Get the attributes of the specified games in the input list
     games_df = col_dropper(wd=games_df, bgg_id_list=list(bgg_ids_with_weights.keys()))
     selected_games_attributes = games_df[games_df['bgg_id'].isin(bgg_ids_with_weights.keys())].iloc[:, 2:]
@@ -97,7 +97,7 @@ def minbo_reduction(wf, user):
             wf = wt
     return(wf)
 
-def similar_taste(wf = rating_df, include_games = simila, alt = 10, u_id= 'kainolagoni'):
+def similar_taste(wf, include_games, alt = 10, u_id):
     
     filtered_df = wf[wf['Username'] == u_id]
     games = filtered_df['bgg_id'].unique()
@@ -159,7 +159,7 @@ def similar_taste(wf = rating_df, include_games = simila, alt = 10, u_id= 'kaino
     return(result)
 
 ### MAIN FUNCTION (combination of the previous functions)
-def gib_spiele_digga(f_alt = 10000, s_alt = 10, user = 'kainolagoni', rat_df = rating_df, game_frame=games_df):
+def gib_spiele_digga(f_alt = 10000, s_alt = 10, user = 'kainolagoni', rat_df, game_frame):
     answer = (
         similar_taste(
             wf = rat_df
