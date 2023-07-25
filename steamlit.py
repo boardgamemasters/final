@@ -20,7 +20,7 @@ users_url =  'https://drive.google.com/file/d/159oociMXgvsSOlRltLhUQ1TgY1wA-RGK/
 
 path = 'https://drive.google.com/uc?export=download&id='
 
-@st.cache
+@st.cache_data
 def data_load():
     rating_df = pd.read_csv(path+rating_url.split('/')[-2])
     games_df = pd.read_csv(path+games_url.split('/')[-2])
