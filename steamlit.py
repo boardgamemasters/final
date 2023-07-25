@@ -8,19 +8,20 @@ from PIL import Image
 import requests
 from urllib.request import urlopen
 from io import BytesIO
+import User_Ursula as ursula
 
 # import predictors as pred
 
 # logo_url = 'https://img.freepik.com/premium-vector/cute-couple-panda-watching-movie-eating-popcorn-cartoon-vector-icon-illustration-animal-food_138676-6443.jpg'
 
-# rating_url = 'https://drive.google.com/file/d/1JBolFNkww-nRO_PTAHeXGE3KSVY4_7dl/view?usp=sharing'
-# titles_url = 'https://drive.google.com/file/d/1Z3vHbjAeTAmFp-NeM-j4zYJjLz-fpqfn/view?usp=sharing'
-# users_url = 'https://drive.google.com/file/d/1WTZcDfGsHU2ed9kTsdVIaeFcJ2M2Fxfe/view?usp=sharing'
+rating_url = 'https://drive.google.com/file/d/1fiU-bQOIyyjoRRB8uSJ7_oodFRo5wr30/view?usp=sharing'
+games_url =  'https://drive.google.com/file/d/1aOw0TeVXaToN1t0CE-vN3tXQEZXPpTzq/view?usp=sharingg'
+users_url =  'https://drive.google.com/file/d/159oociMXgvsSOlRltLhUQ1TgY1wA-RGK/view?usp=sharing'
 
-# path = 'https://drive.google.com/uc?export=download&id='
-# rating_df = pd.read_csv(path+rating_url.split('/')[-2])
-# titles_df = pd.read_csv(path+titles_url.split('/')[-2])
-# users_df = pd.read_csv(path+users_url.split('/')[-2])
+path = 'https://drive.google.com/uc?export=download&id='
+rating_df = pd.read_csv(path+rating_url.split('/')[-2])
+games_df = pd.read_csv(path+games_url.split('/')[-2])
+users_df = pd.read_csv(path+users_url.split('/')[-2])
 
 # rating_df    =    pd.read_csv('data/reduced_movies.csv')
 # titles_df    =    pd.read_csv('data/movie_names.csv')
@@ -119,43 +120,49 @@ if rec_select == 'Similar Games':
                     st.text(f'Spiel {i+2}')    # (pop_movies.iloc[i+2]['title'])
 
 elif rec_select == 'Similar Taste':
-    # def user_like():
-    #     user = st.sidebar.selectbox('Who are you', users_df['name'], key = 'user_like')
-    #     amount = st.sidebar.slider('Number of Recommendations', min_value=1, max_value=20, value=5, step=1, key='uln', help='Here you can specify the number of recommended Movies')
+    def user_like():
+        user = st.sidebar.selectbox('Who are you', users_df['Username'], key = 'user_like')
+        amount = st.sidebar.slider('Number of Recommendations', min_value=3, max_value=15, value=9, step=3, key='uln', help='Here you can specify the number of recommended Boardgames')
 
-    #     user_id = users_df.loc[users_df['name']== user,'userId'].values[0]
+        data = {'user_id': user,
+                'amount': amount,
+                'name' : user}
+        return(data)
+    user_feature =  user_like()
+    # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
+    user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = user_feature['amount'], user = user_feature['user_id'],game_frame=games_df)
 
-    #     data = {'user_id': user_id,
-    #             'amount': amount,
-    #             'name' : user}
-    #     return(data)
-    # user_feature =  user_like()
-    st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
-    # user_movies = pred.similar_taste(wf = rating_df, alt = user_feature['amount'], u_id = user_feature['user_id'])
-
-    # user_col = len(user_movies)
+    # user_col = len(user_games)
     # u_cols = st.columns(user_col)
     # with st.container():
     #     st.header(f'Special Treats for you {user_feature["name"]}')
     #     for i, x in enumerate(u_cols):
-    #         st.header(user_movies.iloc[i]['title'])
-    #         st.image(user_movies.iloc[i]['img'])
-    # ncol = len(user_movies)
-    # with st.container():
-    #     st.header(f'Special Treats for you {user_feature["name"]}')
-    #     for i in range(0, ncol, 3):
-    #         col1, col2, col3 = st.columns(3)
-    #         with col1:
-    #             st.image(user_movies.iloc[i]['img'])
-    #             st.text(user_movies.iloc[i]['title'])
-    #         with col2:
-    #             if i + 1 < ncol:
-    #                 st.image(user_movies.iloc[i+1]['img'])
-    #                 st.text(user_movies.iloc[i+1]['title'])                    
-    #         with col3:                 
-    #             if i + 2 < ncol:
-    #                 st.image(user_movies.iloc[i+2]['img'])
-    #                 st.text(user_movies.iloc[i+2]['title'])
+    # #         st.header(user_games.iloc[i]['title'])
+    #         # st.image(user_games.iloc[i]['img'])
+    #         st.header(user_games.iloc[i]['bgg_id'])
+    #         st.text(user_games.iloc[i]['predicted_rating'])
+    ncol = len(user_games)
+    with st.container():
+        st.header(f'Special Treats for you {user_feature["name"]}')
+        for i in range(0, ncol, 3):
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.header(user_games.iloc[i]['title'])
+                st.text(user_games.iloc[i]['predicted_rating'])
+                # st.image(user_games.iloc[i]['img'])
+                # st.text(user_games.iloc[i]['title'])
+            with col2:
+                if i + 1 < ncol:
+                    st.header(user_games.iloc[i+1]['title'])
+                    st.text(user_games.iloc[i+1]['predicted_rating'])
+                    # st.image(user_games.iloc[i+1]['img'])
+                    # st.text(user_games.iloc[i+1]['title'])                    
+            with col3:                 
+                if i + 2 < ncol:
+                    st.header(user_games.iloc[i+2]['title'])
+                    st.text(user_games.iloc[i+2]['predicted_rating'])
+                    # st.image(user_games.iloc[i+2]['img'])
+                    # st.text(user_games.iloc[i+2]['title'])
 
 elif rec_select == 'Games that are hot right now':
     st.sidebar.text('Coming Soon')
