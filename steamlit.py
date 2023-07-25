@@ -13,6 +13,7 @@ import User_Ursula as ursula
 # import predictors as pred
 
 # logo_url = 'https://img.freepik.com/premium-vector/cute-couple-panda-watching-movie-eating-popcorn-cartoon-vector-icon-illustration-animal-food_138676-6443.jpg'
+st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
 
 rating_url = 'https://drive.google.com/file/d/1fiU-bQOIyyjoRRB8uSJ7_oodFRo5wr30/view?usp=sharing'
 games_url =  'https://drive.google.com/file/d/1aOw0TeVXaToN1t0CE-vN3tXQEZXPpTzq/view?usp=sharingg'
@@ -41,7 +42,6 @@ rating_df, games_df, users_df = data_load()
 # # Open the image using PIL
 # logo = Image.open(BytesIO(image_bytes))
 
-st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
 
 st.header("Find awesome Games")
 
