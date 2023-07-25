@@ -40,7 +40,7 @@ st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
 st.header("Find awesome Games")
 
 st.sidebar.header('What do you wanna do?')
-
+st.write(rating_df)
 
 custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
 
