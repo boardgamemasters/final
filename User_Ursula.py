@@ -97,7 +97,7 @@ def minbo_reduction(wf, user):
             wf = wt
     return(wf)
 
-def similar_taste(wf, include_games, alt = 10, u_id):
+def similar_taste(wf, include_games, u_id, alt = 10):
     
     filtered_df = wf[wf['Username'] == u_id]
     games = filtered_df['bgg_id'].unique()
