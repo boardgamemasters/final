@@ -1,8 +1,5 @@
 pandas
 scikit-learn
 numpy
-matplotlib
-altair
-Pillow
-requests
-streamlit
+warnings
+scipy
