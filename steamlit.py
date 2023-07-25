@@ -19,13 +19,13 @@ games_url =  'https://drive.google.com/file/d/1aOw0TeVXaToN1t0CE-vN3tXQEZXPpTzq/
 users_url =  'https://drive.google.com/file/d/159oociMXgvsSOlRltLhUQ1TgY1wA-RGK/view?usp=sharing'
 
 path = 'https://drive.google.com/uc?export=download&id='
-rating_df = pd.read_csv(path+rating_url.split('/')[-2])
-games_df = pd.read_csv(path+games_url.split('/')[-2])
-users_df = pd.read_csv(path+users_url.split('/')[-2])
+# rating_df = pd.read_csv(path+rating_url.split('/')[-2])
+# games_df = pd.read_csv(path+games_url.split('/')[-2])
+# users_df = pd.read_csv(path+users_url.split('/')[-2])
 
-# rating_df    =    pd.read_csv('data/reduced_movies.csv')
-# titles_df    =    pd.read_csv('data/movie_names.csv')
-# users_df     =    pd.read_csv('data/user_df.csv')
+rating_df    =    pd.read_csv('data/final_ratings_v2.csv')
+games_df    =    pd.read_csv('data/game_learn_df_v2.csv')
+users_df     =    pd.read_csv('data/usernames.csv')
 
 
 # # Download the image using requests
