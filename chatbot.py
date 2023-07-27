@@ -1,21 +1,30 @@
 import streamlit as st
 import pandas as pd
-import User_Ursula as ursula
+import hashlib
+from datetime import datetime
+import copy
 
-# Load the data
-@st.cache
+# Load the data using st.cache_data decorator
+@st.cache_data(allow_output_mutation=True)
 def data_load():
     rating_df = pd.read_csv('data/final_ratings_v3.csv')
     games_df = pd.read_csv('data/game_learn_df_v3.csv')
     users_df = pd.read_csv('data/usernames_v2.csv')
     games_info = pd.read_csv('data/bgref.csv')
     cosine_df = pd.read_csv('data/bg_cosines_final.csv')
-    return rating_df, games_df, users_df, games_info, cosine_df
 
-rating_df, games_df, users_df, games_info, cosine_df = data_load()
+    # Clone the dataframes to avoid mutations
+    rating_df = copy.deepcopy(rating_df)
+    games_df = copy.deepcopy(games_df)
+    users_df = copy.deepcopy(users_df)
+    games_info = copy.deepcopy(games_info)
+    cosine_df = copy.deepcopy(cosine_df)
+
+    return rating_df, games_df, users_df, games_info, cosine_df
 
 # Function to check if user exists
 def get_user_ids(user_name):
+    rating_df, _, _, _, _ = data_load()
     user_ids = rating_df.loc[rating_df['Username'] == user_name, 'user_name'].values
     return user_ids
 
@@ -43,7 +52,7 @@ def chatbot():
             elif len(user_ids) == 1:
                 # Only one user ID found
                 user_id = user_ids[0]
-                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations ?"
+                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
             else:
                 # Multiple user IDs found
                 user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=key_b)
