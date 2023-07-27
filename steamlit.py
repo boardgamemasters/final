@@ -43,7 +43,6 @@ rating_df, games_df, users_df, games_info = data_load()
 st.header("Find awesome Games")
 
 st.sidebar.header('What do you wanna do?')
-st.dataframe(rating_df)
 
 custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
 
