@@ -1,31 +1,25 @@
 import streamlit as st
 import pandas as pd
 import User_Ursula as ursula
-import hashlib
-from datetime import datetime
+
 
 # Load the data
 @st.cache_data
 def data_load():
-    rating_df = pd.read_csv('data/final_ratings_v3.csv')
-    games_df = pd.read_csv('data/game_learn_df_v3.csv')
-    users_df = pd.read_csv('data/usernames_v2.csv')
-    games_info = pd.read_csv('data/bgref.csv')
-    cosine_df = pd.read_csv('data/bg_cosines_final.csv')
+    rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
+    games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
+    users_df    =    pd.read_csv('data/usernames_v2.csv')
+    games_info  =    pd.read_csv('data/bgref.csv')
+    cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
     return rating_df, games_df, users_df, games_info, cosine_df
+
 
 rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
 # Function to check if user exists
 def get_user_ids(user_name):
-    user_ids = rating_df.loc[rating_df['Username'] == user_name, 'user_name'].values
+    user_ids = extra_rating.loc[extra_rating['Username'] == user_name, 'user_name'].values
     return user_ids
-
-# Generate a unique key for each widget
-def get_unique_key(name):
-    timestamp = int(datetime.timestamp(datetime.now()) * 1e6)  # Use current timestamp (microseconds) as part of the key
-    unique_key = hashlib.sha1(f"{name}-{timestamp}".encode()).hexdigest()
-    return unique_key
 
 # Chatbot function
 def chatbot():
@@ -37,10 +31,10 @@ def chatbot():
     # Chat loop
     loopy = 0
     while True:
-        loopy += 1
-        key_a = get_unique_key(f'blabla-{loopy}')
-        key_b = get_unique_key(f'boob-{loopy}')
-        user_name = st.text_input("Please enter your name:", key=key_a)
+        loopy =+1
+        key_a = f'blabla{loopy}'
+        key_b = f'boob{loopy}'
+        user_name = st.text_input("Please enter your name:", key = key_a)
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
             user_ids = get_user_ids(user_name)
@@ -51,7 +45,7 @@ def chatbot():
             elif len(user_ids) == 1:
                 # Only one user ID found
                 user_id = user_ids[0]
-                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
+                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations ?"
             else:
                 # Multiple user IDs found
                 user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=key_b)
