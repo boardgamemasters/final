@@ -20,11 +20,9 @@ def run_query(query):
     rows = [dict(row) for row in rows_raw]
     return rows
 
-<<<<<<< HEAD
+
 ratings_df = run_query("SELECT * FROM `vocal-circuit-394008.boardgamedata.ratings_df` LIMIT 1000")
-=======
-ratings_df = run_query("SELECT * FROM `vocal-circuit-394008.bgg_ratings.ratings_df`")
->>>>>>> b28d0fdae37d6c2290d85d2f3b1c29608595fa6a
+
 
 # Print results.
 st.write(ratings_df)
