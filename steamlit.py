@@ -28,7 +28,7 @@ def data_load():
     users_df    =    pd.read_csv('data/usernames_v2.csv')
     games_info  =    pd.read_csv('data/bgref.csv')
 
-rating_df, games_df, users_df = data_load()
+rating_df, games_df, users_df, games_info = data_load()
 
 # # Download the image using requests
 # response = requests.get(logo_url)
