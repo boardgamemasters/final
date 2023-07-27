@@ -32,7 +32,7 @@ def chatbot():
     loopy = 0
     while True:
         loopy =+1
-        user_name = st.text_input("Please enter your name:", key = f'key{loopy}')
+        user_name = st.text_input("Please enter your name:", key = 'key')
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
             user_ids = get_user_ids(user_name)
@@ -46,7 +46,7 @@ def chatbot():
                 robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations ?"
             else:
                 # Multiple user IDs found
-                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:")
+                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key='not today')
 
                 if user_id_input:
                     try:
