@@ -44,7 +44,7 @@ def similar_description_games(bg_input, bg_cosines_df, bgref_df):
         reclist = result['rec_1'].sample(n=5, replace=False).tolist()
         
     elif inth == 1:
-        for i in range(1, 7):
+        for i in range(1, 10):
             result.append(cos.loc[cos.bgg_id.isin(bg_input)].values[0][i])
         
         # Sample 5 unique recommendations
