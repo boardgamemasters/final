@@ -16,9 +16,9 @@ def data_load():
 
 rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
-# Function to get user IDs from user name
+# Function to check if user exists
 def get_user_ids(user_name):
-    user_ids = extra_rating.loc[extra_rating['Username'] == user_name, 'user_Id'].values
+    user_ids = extra_rating.loc[extra_rating['Username'] == user_name, 'user_name'].values
     return user_ids
 
 # Chatbot function
@@ -29,8 +29,10 @@ def chatbot():
     chat_history = []
 
     # Chat loop
+    loopy = 0
     while True:
-        user_name = st.text_input("Please enter your name:")
+        loopy =+1
+        user_name = st.text_input("Please enter your name:", key = f'key{loopy}')
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
             user_ids = get_user_ids(user_name)
