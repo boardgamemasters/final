@@ -20,7 +20,7 @@ def get_user_ids(user_name):
     user_ids = extra_rating.loc[extra_rating['Username'] == user_name, 'user_name'].values
     return user_ids
 
-## Generate a unique key for each widget
+# Generate a unique key for each widget
 def get_unique_key(name):
     timestamp = int(datetime.timestamp(datetime.now()) * 1e6)  # Use current timestamp (microseconds) as part of the key
     unique_key = hashlib.sha1(f"{name}-{timestamp}".encode()).hexdigest()
