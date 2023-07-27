@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import User_Ursula as ursula
+import hashlib
 from time import time
 
 
@@ -38,10 +39,10 @@ def chatbot():
     # Chat loop
     loopy = 0
     while True:
-        loopy =+1
-        key_a = f'blabla{loopy}'
-        key_b = f'boob{loopy}'
-        user_name = st.text_input("Please enter your name:", key = get_unique_key('nope'))#key_a)
+        loopy += 1
+        key_a = get_unique_key()
+        key_b = get_unique_key()
+        user_name = st.text_input("Please enter your name:", key=key_a)
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
             user_ids = get_user_ids(user_name)
@@ -55,7 +56,7 @@ def chatbot():
                 robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations ?"
             else:
                 # Multiple user IDs found
-                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=get_unique_key('noe key for u'))#key_b)
+                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=key_b)
 
                 if user_id_input:
                     try:
