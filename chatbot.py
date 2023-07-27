@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import User_Ursula as ursula
-import time
+from time import time
 
 
 # Load the data
