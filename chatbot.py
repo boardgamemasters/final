@@ -4,12 +4,17 @@ import User_Ursula as ursula
 
 
 # Load the data
-rating_url = "https://drive.google.com/file/d/1fiU-bQOIyyjoRRB8uSJ7_oodFRo5wr30/view?usp=drive_link"
-rating_path = 'https://drive.google.com/uc?export=download&id=' + rating_url.split('/')[-2]
-rating_df = pd.read_csv(rating_path)
-games_url = "https://drive.google.com/file/d/1aOw0TeVXaToN1t0CE-vN3tXQEZXPpTzq/view?usp=drive_link"
-games_path = 'https://drive.google.com/uc?export=download&id=' + games_url.split('/')[-2]
-games_df = pd.read_csv(games_path)
+@st.cache_data
+def data_load():
+    rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
+    games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
+    users_df    =    pd.read_csv('data/usernames_v2.csv')
+    games_info  =    pd.read_csv('data/bgref.csv')
+    cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
+    return rating_df, games_df, users_df, games_info, cosine_df
+
+
+rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
 # Function to get user IDs from user name
 def get_user_ids(user_name):
