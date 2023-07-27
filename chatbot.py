@@ -5,7 +5,7 @@ import User_Ursula as ursula
 
 # Load the data
 rating_url = "https://drive.google.com/file/d/1fiU-bQOIyyjoRRB8uSJ7_oodFRo5wr30/view?usp=drive_link"
-rating_path = https://drive.google.com/uc?export=download&id=' + games_url.split('/')[-2]
+rating_path = https://drive.google.com/uc?export=download&id=' + rating_url.split('/')[-2]
 rating_df = pd.read_csv(rating_path)
 games_url = "https://drive.google.com/file/d/1aOw0TeVXaToN1t0CE-vN3tXQEZXPpTzq/view?usp=drive_link"
 games_path = 'https://drive.google.com/uc?export=download&id=' + games_url.split('/')[-2]
