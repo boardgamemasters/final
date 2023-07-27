@@ -38,8 +38,10 @@ def chatbot():
 
     # Chat loop
     exit_keyword = "quit"
+    loopy = 0
     while True:
-        user_name = st.text_input("Please enter your name:")
+        loopy += 1
+        user_name = st.text_input("Please enter your name:", key=f"user_name_{loopy}")
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
             if user_name.lower() == exit_keyword:
@@ -56,7 +58,7 @@ def chatbot():
                 robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
             else:
                 # Multiple user IDs found
-                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:")
+                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=f"user_id_input_{loopy}")
 
                 if user_id_input:
                     try:
@@ -79,8 +81,7 @@ def chatbot():
             if chat_history:
                 last_sender, last_message = chat_history[-1]
                 if last_sender == "Robot":
-                    st.text_area("Robot:", value=last_message, key="robot-response", disabled=True)
+                    st.text_area("Robot:", value=last_message, key=f"robot-response_{loopy}", disabled=True)
 
 if __name__ == "__main__":
     chatbot()
-
