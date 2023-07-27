@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
-import User_Ursula as ursula
 import hashlib
 from datetime import datetime
 
-# Load the data
-@st.cache_data()
+# Load the data using the st.cache decorator
+@st.cache(allow_output_mutation=True)
 def data_load():
     rating_df = pd.read_csv('data/final_ratings_v3.csv')
     games_df = pd.read_csv('data/game_learn_df_v3.csv')
@@ -34,7 +33,7 @@ def chatbot():
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
-    # Load data using st.cache_data decorator
+    # Load data using the st.cache decorator
     rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
     while True:
