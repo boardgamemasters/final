@@ -33,9 +33,9 @@ def chatbot():
     st.write("Welcome! Let's start chatting.")
 
     chat_history = []
-    loopy = 0
 
     # Chat loop
+    loopy = 0
     while True:
         loopy += 1
         key_a = get_unique_key(f'blabla-{loopy}')
