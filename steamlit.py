@@ -80,7 +80,7 @@ else:
 
 if rec_select == 'Similar Games':
     def game_like():
-        title = st.sidebar.multiselect('Games like', games_info['name'].sort_values('name'))    # titles_df['title'], key = 'movie_like')
+        title = st.sidebar.multiselect('Games like', games_info.sort_values('name')['name'])    # titles_df['title'], key = 'movie_like')
         #amount = st.sidebar.slider('Number of Recommendations', min_value=1, max_value=5, value=3, step=1, key='mln', help='Here you can specify the number of recommended Games')
 
         game_id = games_info.loc[games_info['name'].isin(title),'bgg_id']#.values[0]
