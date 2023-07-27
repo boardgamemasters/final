@@ -94,6 +94,7 @@ if rec_select == 'Similar Games':
     ## similar_description_games(bg_input, bg_cosines_df, bgref_df)
     if (len(sim_feature)>0):
         sim_games = pred.similar_description_games(bg_input = sim_feature, bg_cosines_df = cosine_df, bgref_df = games_info)
+        ncol = len(sim_games)
         with st.container():
             st.header(f'Here are 5 Games, that are similar to the {len(sim_feature)} games you selected')
             for i in range(0, ncol, 3):
