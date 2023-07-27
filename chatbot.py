@@ -5,7 +5,7 @@ import hashlib
 from datetime import datetime
 
 # Load the data
-@st.cache_data
+@st.cache_data(allow_output_mutation=True)
 def data_load():
     rating_df = pd.read_csv('data/final_ratings_v3.csv')
     games_df = pd.read_csv('data/game_learn_df_v3.csv')
@@ -52,7 +52,7 @@ def chatbot():
             elif len(user_ids) == 1:
                 # Only one user ID found
                 user_id = user_ids[0]
-                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
+                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations ?"
             else:
                 # Multiple user IDs found
                 user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=key_b)
