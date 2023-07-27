@@ -22,7 +22,7 @@ def similar_description_games(bg_input, bg_cosines_df, bgref_df):
     result = [] # Creates empty list for recommended games
     inth = len(bg_input) # Variable that storages the amount of games the user has introduced as liking
     
-    if inth > 2:
+    if inth >= 2:
         for b in bg_input:
             frames = [cos.loc[cos.bgg_id==b, ['rec_1']], 
                       cos.loc[cos.bgg_id==b, ['rec_2']].rename(columns={'rec_2': 'rec_1'}),
