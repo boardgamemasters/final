@@ -90,6 +90,7 @@ if rec_select == 'Similar Games':
                 }
         return(data)
     sim_feature =  game_like()
+    st.write(len(sim_feature))
     ## similar_description_games(bg_input, bg_cosines_df, bgref_df)
     sim_games = pred.similar_description_games(bg_input = list(sim_feature['bgg_id']), bg_cosines_df = cosine_df, bgref_df = games_info)
 
