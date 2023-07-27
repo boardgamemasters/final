@@ -89,10 +89,10 @@ if rec_select == 'Similar Games':
                 #'amount': amount
                 }
         return(data)
-    sim_feature =  list(game_like())
+    sim_feature =  list(game_like()['bgg_id'])
     st.write(len(sim_feature))
     ## similar_description_games(bg_input, bg_cosines_df, bgref_df)
-    sim_games = pred.similar_description_games(bg_input = sim_feature['bgg_id'], bg_cosines_df = cosine_df, bgref_df = games_info)
+    sim_games = pred.similar_description_games(bg_input = sim_feature, bg_cosines_df = cosine_df, bgref_df = games_info)
 
     # mov_col = len(sim_movies)
     # m_cols = st.columns(mov_col)
