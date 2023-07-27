@@ -40,19 +40,20 @@ def chatbot():
             else:
                 # Multiple user IDs found
                 user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 9, user = user_name, game_frame=games_df)
-                #user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:")
+                #user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:")  
 
                 #if user_id_input:
-                 #    try:
-                  #       user_id_input = int(user_id_input)
-                 #        if user_id_input in user_ids:
-                  #           robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
-                  #       else:
-                    #         robot_response = f"Sorry, {user_name}! The provided user ID does not match any of the user IDs associated with your name. Please enter your user ID again."
-                   #  except ValueError:
-                   #      robot_response = "Please enter a valid numeric user ID."
-                # else:
-                 #    continue
+                 
+                #    try:
+                #        user_id_input = int(user_id_input)
+                #        if user_id_input in user_ids:
+                #            robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
+                #        else:
+                #             robot_response = f"Sorry, {user_name}! The provided user ID does not match any of the user IDs associated with your name. Please enter your user ID again."
+                #    except ValueError:
+                #         robot_response = "Please enter a valid numeric user ID."
+                #else:
+                #    continue
 
             # Add user input to chat history
             chat_history.append(("User", user_name))
