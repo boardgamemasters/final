@@ -100,9 +100,9 @@ if rec_select == 'Similar Games':
     #     for i, x in enumerate(m_cols):
     #         st.header(sim_movies.iloc[i]['title'])
     #         st.image(sim_movies.iloc[i]['img'])
-    ncol = sim_feature['amount']#len(sim_movies)
+    ncol = 5#sim_feature['amount']#len(sim_movies)
     with st.container():
-        st.header(f'Users that liked {sim_feature["name"]}, also liked these {sim_feature["amount"]} Games')
+        st.header(f'Here are 5 Games, that are similar to the games you selected')
         for i in range(0, ncol, 3):
             col1, col2, col3 = st.columns(3)
             with col1:
