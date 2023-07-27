@@ -3,18 +3,15 @@ import pandas as pd
 import hashlib
 from datetime import datetime
 
-# Load the data using the st.cache decorator
-@st.cache(allow_output_mutation=True)
-def data_load():
-    rating_df = pd.read_csv('data/final_ratings_v3.csv')
-    games_df = pd.read_csv('data/game_learn_df_v3.csv')
-    users_df = pd.read_csv('data/usernames_v2.csv')
-    games_info = pd.read_csv('data/bgref.csv')
-    cosine_df = pd.read_csv('data/bg_cosines_final.csv')
-    return rating_df, games_df, users_df, games_info, cosine_df
+# Load the data
+rating_df = pd.read_csv('data/final_ratings_v3.csv')
+games_df = pd.read_csv('data/game_learn_df_v3.csv')
+users_df = pd.read_csv('data/usernames_v2.csv')
+games_info = pd.read_csv('data/bgref.csv')
+cosine_df = pd.read_csv('data/bg_cosines_final.csv')
 
 # Function to check if user exists
-def get_user_ids(user_name, rating_df):
+def get_user_ids(user_name):
     user_ids = rating_df.loc[rating_df['Username'] == user_name, 'user_name'].values
     return user_ids
 
@@ -29,9 +26,6 @@ def chatbot():
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
-    # Load data using the st.cache decorator
-    rating_df, games_df, users_df, games_info, cosine_df = data_load()
-
     # Initialize chat history
     chat_history = []
 
@@ -42,7 +36,7 @@ def chatbot():
         user_name = st.text_input("Please enter your name:", key=key_a)
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
-            user_ids = get_user_ids(user_name, rating_df)
+            user_ids = get_user_ids(user_name)
 
             if len(user_ids) == 0:
                 # User name not found in the data
