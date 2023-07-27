@@ -27,6 +27,8 @@ def data_load():
     games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
     users_df    =    pd.read_csv('data/usernames_v2.csv')
     games_info  =    pd.read_csv('data/bgref.csv')
+    return rating_df, games_df, users_df, games_info
+
 
 rating_df, games_df, users_df, games_info = data_load()
 
