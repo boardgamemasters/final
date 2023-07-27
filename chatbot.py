@@ -1,10 +1,12 @@
 import streamlit as st
 import pandas as pd
+import User_Ursula as ursula
 import hashlib
 from datetime import datetime
 
+
 # Load the data
-@st.cache_data(allow_output_mutation=True)
+@st.cache
 def data_load():
     rating_df = pd.read_csv('data/final_ratings_v3.csv')
     games_df = pd.read_csv('data/game_learn_df_v3.csv')
@@ -31,11 +33,12 @@ def chatbot():
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
-    # Initialize chat history
     chat_history = []
 
+    # Chat loop
+    loopy = 0
     while True:
-        loopy = len(chat_history) // 2 + 1
+        loopy += 1
         key_a = get_unique_key(f'blabla-{loopy}')
         key_b = get_unique_key(f'boob-{loopy}')
         user_name = st.text_input("Please enter your name:", key=key_a)
@@ -49,7 +52,7 @@ def chatbot():
             elif len(user_ids) == 1:
                 # Only one user ID found
                 user_id = user_ids[0]
-                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations ?"
+                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
             else:
                 # Multiple user IDs found
                 user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=key_b)
@@ -83,4 +86,3 @@ def chatbot():
 
 if __name__ == "__main__":
     chatbot()
-
