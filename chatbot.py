@@ -4,8 +4,8 @@ import hashlib
 from datetime import datetime
 import copy
 
-# Load the data using st.cache_data decorator
-@st.cache_data(allow_output_mutation=True)
+# Load the data using st.cache decorator
+@st.cache(allow_output_mutation=True)
 def data_load():
     rating_df = pd.read_csv('data/final_ratings_v3.csv')
     games_df = pd.read_csv('data/game_learn_df_v3.csv')
