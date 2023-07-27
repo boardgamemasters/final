@@ -23,14 +23,6 @@ def get_user_ids(user_name):
 
 # Chatbot function
 def chatbot():
-    loopy = 0
-    while True:
-        loopy += 1
-        key_a = f'blabla{loopy}'
-        key_b = f'boob{loopy}'
-        
-        user_name = st.text_input("Please enter your name:", key=key_a)
-        
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
