@@ -10,16 +10,10 @@ from urllib.request import urlopen
 from io import BytesIO
 import User_Ursula as ursula
 
-# import predictors as pred
+import funcrsys as pred
 
-# logo_url = 'https://img.freepik.com/premium-vector/cute-couple-panda-watching-movie-eating-popcorn-cartoon-vector-icon-illustration-animal-food_138676-6443.jpg'
 st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
 
-# rating_url = 'https://drive.google.com/file/d/1fiU-bQOIyyjoRRB8uSJ7_oodFRo5wr30/view?usp=sharing'
-# games_url =  'https://drive.google.com/file/d/1aOw0TeVXaToN1t0CE-vN3tXQEZXPpTzq/view?usp=sharingg'
-# users_url =  'https://drive.google.com/file/d/159oociMXgvsSOlRltLhUQ1TgY1wA-RGK/view?usp=sharing'
-
-# path = 'https://drive.google.com/uc?export=download&id='
 
 @st.cache_data
 def data_load():
@@ -27,10 +21,11 @@ def data_load():
     games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
     users_df    =    pd.read_csv('data/usernames_v2.csv')
     games_info  =    pd.read_csv('data/bgref.csv')
-    return rating_df, games_df, users_df, games_info
+    cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
+    return rating_df, games_df, users_df, games_info, cosine_df
 
 
-rating_df, games_df, users_df, games_info = data_load()
+rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
 # # Download the image using requests
 # response = requests.get(logo_url)
@@ -84,18 +79,19 @@ else:
     
 
 if rec_select == 'Similar Games':
-    def movie_like():
-        title = st.sidebar.selectbox('Games like', ('Catan', 'Risk', 'Monopoly'))    # titles_df['title'], key = 'movie_like')
-        amount = st.sidebar.slider('Number of Recommendations', min_value=1, max_value=20, value=5, step=1, key='mln', help='Here you can specify the number of recommended Games')
+    def game_like():
+        title = st.sidebar.multiselect('Games like', games_info['name'])    # titles_df['title'], key = 'movie_like')
+        #amount = st.sidebar.slider('Number of Recommendations', min_value=1, max_value=5, value=3, step=1, key='mln', help='Here you can specify the number of recommended Games')
 
-        # mov_id = titles_df.loc[titles_df['title']== title,'movieId'].values[0]
+        game_id = games_info.loc[games_info['name'].isin(title),'movieId'].values[0]
 
-        data = {'title': 1,    #    mov_id,
-                'amount': amount,
-                'name':title}
+        data = {'bgg_id': game_id#,    #    mov_id,
+                #'amount': amount
+                }
         return(data)
-    sim_feature =  movie_like()
-    # sim_movies = pred.similar_movies(wf = rating_df, alt = sim_feature['amount'], movie_id = sim_feature['title'])
+    sim_feature =  game_like()
+    ## similar_description_games(bg_input, bg_cosines_df, bgref_df)
+    sim_games = pred.similar_description_games(bg_input = list(sim_feature['bgg_id']), bg_cosines_df = cosine_df, bgref_df = games_info)
 
     # mov_col = len(sim_movies)
     # m_cols = st.columns(mov_col)
@@ -110,16 +106,16 @@ if rec_select == 'Similar Games':
         for i in range(0, ncol, 3):
             col1, col2, col3 = st.columns(3)
             with col1:
-                # st.image(pop_movies.iloc[i]['img'])
-                st.text(f'Spiel {i}')    # (pop_movies.iloc[i]['title'])
+                st.image(sim_games.iloc[i]['image'])
+                st.text(sim_games.iloc[i]['name'])
             with col2:
                 if i + 1 < ncol:
-                    # st.image(sim_movies.iloc[i+1]['img'])
-                    st.text(f'Spiel {i+1}')    # (pop_movies.iloc[i]['title'])
+                    st.image(sim_games.iloc[i+1]['image'])
+                    st.text(sim_games.iloc[i+1]['name'])    
             with col3:                 
                 if i + 2 < ncol:
-                    # st.image(sim_movies.iloc[i+2]['img'])
-                    st.text(f'Spiel {i+2}')    # (pop_movies.iloc[i+2]['title'])
+                    st.image(sim_games.iloc[i+2]['image'])
+                    st.text(sim_games.iloc[i+2]['name'])  
 
 elif rec_select == 'Similar Taste':
     def user_like():
