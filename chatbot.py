@@ -18,7 +18,7 @@ rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
 # Function to get user IDs from user name
 def get_user_ids(user_name):
-    user_ids = rating_df.loc[rating_df['Username'] == user_name, 'user_Id'].values
+    user_ids = extra_rating.loc[extra_rating['Username'] == user_name, 'user_Id'].values
     return user_ids
 
 # Chatbot function
@@ -30,7 +30,7 @@ def chatbot():
 
     # Chat loop
     while True:
-        user_name = st.text_input("Please enter your name:",key='blabla')
+        user_name = st.text_input("Please enter your name:")
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
             user_ids = get_user_ids(user_name)
@@ -44,21 +44,19 @@ def chatbot():
                 robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations ?"
             else:
                 # Multiple user IDs found
-                user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 9, user = user_name, game_frame=games_df)
-                #user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:")  
+                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:")
 
-                #if user_id_input:
-                 
-                #    try:
-                #        user_id_input = int(user_id_input)
-                #        if user_id_input in user_ids:
-                #            robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
-                #        else:
-                #             robot_response = f"Sorry, {user_name}! The provided user ID does not match any of the user IDs associated with your name. Please enter your user ID again."
-                #    except ValueError:
-                #         robot_response = "Please enter a valid numeric user ID."
-                #else:
-                #    continue
+                if user_id_input:
+                    try:
+                        user_id_input = int(user_id_input)
+                        if user_id_input in user_ids:
+                            robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
+                        else:
+                            robot_response = f"Sorry, {user_name}! The provided user ID does not match any of the user IDs associated with your name. Please enter your user ID again."
+                    except ValueError:
+                        robot_response = "Please enter a valid numeric user ID."
+                else:
+                    continue
 
             # Add user input to chat history
             chat_history.append(("User", user_name))
@@ -77,4 +75,3 @@ def chatbot():
 
 if __name__ == "__main__":
     chatbot()
-
