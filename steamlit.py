@@ -153,19 +153,19 @@ elif rec_select == 'Similar Taste':
         for i in range(0, ncol, 3):
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.header(user_games.iloc[i]['title'])
+                st.header(user_games.iloc[i]['bgg_id'])
                 st.text(user_games.iloc[i]['predicted_rating'])
                 # st.image(user_games.iloc[i]['img'])
                 # st.text(user_games.iloc[i]['title'])
             with col2:
                 if i + 1 < ncol:
-                    st.header(user_games.iloc[i+1]['title'])
+                    st.header(user_games.iloc[i+1]['bgg_id'])
                     st.text(user_games.iloc[i+1]['predicted_rating'])
                     # st.image(user_games.iloc[i+1]['img'])
                     # st.text(user_games.iloc[i+1]['title'])                    
             with col3:                 
                 if i + 2 < ncol:
-                    st.header(user_games.iloc[i+2]['title'])
+                    st.header(user_games.iloc[i+2]['bgg_id'])
                     st.text(user_games.iloc[i+2]['predicted_rating'])
                     # st.image(user_games.iloc[i+2]['img'])
                     # st.text(user_games.iloc[i+2]['title'])
