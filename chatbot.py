@@ -5,7 +5,6 @@ import hashlib
 from datetime import datetime
 
 # Load the data
-@st.experimental_singleton
 @st.cache(allow_output_mutation=True)
 def data_load():
     rating_df = pd.read_csv('data/final_ratings_v3.csv')
@@ -26,20 +25,20 @@ def get_unique_key(name):
     unique_key = hashlib.sha1(f"{name}-{timestamp}".encode()).hexdigest()
     return unique_key
 
+# Global variable to store chat history
+chat_history = []
+
 # Chatbot function
 def chatbot():
+    global chat_history
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
-    # Initialize chat history if not already done
-    if 'chat_history' not in st.session_state:
-        st.session_state.chat_history = []
-
-    # Load data using singleton pattern
+    # Load data
     rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
     while True:
-        loopy = len(st.session_state.chat_history) // 2 + 1
+        loopy = len(chat_history) // 2 + 1
         key_a = get_unique_key(f'blabla-{loopy}')
         key_b = get_unique_key(f'boob-{loopy}')
         user_name = st.text_input("Please enter your name:", key=key_a)
@@ -71,13 +70,13 @@ def chatbot():
                     continue
 
             # Add user input to chat history
-            st.session_state.chat_history.append(("User", user_name))
+            chat_history.append(("User", user_name))
             # Add robot response to chat history
-            st.session_state.chat_history.append(("Robot", robot_response))
+            chat_history.append(("Robot", robot_response))
 
             # Display the last robot response
-            if st.session_state.chat_history:
-                last_sender, last_message = st.session_state.chat_history[-1]
+            if chat_history:
+                last_sender, last_message = chat_history[-1]
                 if last_sender == "Robot":
                     st.text_area("Robot:", value=last_message, key="robot-response", disabled=True)
 
