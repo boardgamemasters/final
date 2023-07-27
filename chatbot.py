@@ -4,11 +4,16 @@ import hashlib
 from datetime import datetime
 
 # Load the data
-rating_df = pd.read_csv('data/final_ratings_v3.csv')
-games_df = pd.read_csv('data/game_learn_df_v3.csv')
-users_df = pd.read_csv('data/usernames_v2.csv')
-games_info = pd.read_csv('data/bgref.csv')
-cosine_df = pd.read_csv('data/bg_cosines_final.csv')
+@st.cache_data(allow_output_mutation=True)
+def data_load():
+    rating_df = pd.read_csv('data/final_ratings_v3.csv')
+    games_df = pd.read_csv('data/game_learn_df_v3.csv')
+    users_df = pd.read_csv('data/usernames_v2.csv')
+    games_info = pd.read_csv('data/bgref.csv')
+    cosine_df = pd.read_csv('data/bg_cosines_final.csv')
+    return rating_df, games_df, users_df, games_info, cosine_df
+
+rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
 # Function to check if user exists
 def get_user_ids(user_name):
@@ -78,3 +83,4 @@ def chatbot():
 
 if __name__ == "__main__":
     chatbot()
+
