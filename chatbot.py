@@ -4,8 +4,7 @@ import hashlib
 from datetime import datetime
 import copy
 
-# Load the data using st.cache decorator
-@st.cache(allow_output_mutation=True)
+# Load the data
 def data_load():
     rating_df = pd.read_csv('data/final_ratings_v3.csv')
     games_df = pd.read_csv('data/game_learn_df_v3.csv')
@@ -23,8 +22,7 @@ def data_load():
     return rating_df, games_df, users_df, games_info, cosine_df
 
 # Function to check if user exists
-def get_user_ids(user_name):
-    rating_df, _, _, _, _ = data_load()
+def get_user_ids(user_name, rating_df):
     user_ids = rating_df.loc[rating_df['Username'] == user_name, 'user_name'].values
     return user_ids
 
@@ -32,6 +30,9 @@ def get_user_ids(user_name):
 def chatbot():
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
+
+    # Load data
+    rating_df, _, _, _, _ = data_load()
 
     chat_history = []
 
@@ -44,7 +45,7 @@ def chatbot():
             if user_name.lower() == exit_keyword:
                 break
 
-            user_ids = get_user_ids(user_name)
+            user_ids = get_user_ids(user_name, rating_df)
 
             if len(user_ids) == 0:
                 # User name not found in the data
@@ -82,3 +83,4 @@ def chatbot():
 
 if __name__ == "__main__":
     chatbot()
+
