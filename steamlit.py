@@ -101,21 +101,22 @@ if rec_select == 'Similar Games':
     #         st.header(sim_movies.iloc[i]['title'])
     #         st.image(sim_movies.iloc[i]['img'])
     ncol = 5#sim_feature['amount']#len(sim_movies)
-    with st.container():
-        st.header(f'Here are 5 Games, that are similar to the games you selected')
-        for i in range(0, ncol, 3):
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.image(sim_games.iloc[i]['image'])
-                st.text(sim_games.iloc[i]['name'])
-            with col2:
-                if i + 1 < ncol:
-                    st.image(sim_games.iloc[i+1]['image'])
-                    st.text(sim_games.iloc[i+1]['name'])    
-            with col3:                 
-                if i + 2 < ncol:
-                    st.image(sim_games.iloc[i+2]['image'])
-                    st.text(sim_games.iloc[i+2]['name'])  
+    st.dataframe(sim_games)
+    # with st.container():
+    #     st.header(f'Here are 5 Games, that are similar to the games you selected')
+    #     for i in range(0, ncol, 3):
+    #         col1, col2, col3 = st.columns(3)
+    #         with col1:
+    #             st.image(sim_games.iloc[i]['image'])
+    #             st.text(sim_games.iloc[i]['name'])
+    #         with col2:
+    #             if i + 1 < ncol:
+    #                 st.image(sim_games.iloc[i+1]['image'])
+    #                 st.text(sim_games.iloc[i+1]['name'])    
+    #         with col3:                 
+    #             if i + 2 < ncol:
+    #                 st.image(sim_games.iloc[i+2]['image'])
+    #                 st.text(sim_games.iloc[i+2]['name'])  
 
 elif rec_select == 'Similar Taste':
     def user_like():
