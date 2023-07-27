@@ -31,15 +31,15 @@ def chatbot():
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
-    chat_history = []
+    # Initialize chat history if not already done
+    if 'chat_history' not in st.session_state:
+        st.session_state.chat_history = []
 
     # Load data using singleton pattern
     rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
-    # Chat loop
-    loopy = 0
     while True:
-        loopy += 1
+        loopy = len(st.session_state.chat_history) // 2 + 1
         key_a = get_unique_key(f'blabla-{loopy}')
         key_b = get_unique_key(f'boob-{loopy}')
         user_name = st.text_input("Please enter your name:", key=key_a)
@@ -71,13 +71,13 @@ def chatbot():
                     continue
 
             # Add user input to chat history
-            chat_history.append(("User", user_name))
+            st.session_state.chat_history.append(("User", user_name))
             # Add robot response to chat history
-            chat_history.append(("Robot", robot_response))
+            st.session_state.chat_history.append(("Robot", robot_response))
 
             # Display the last robot response
-            if chat_history:
-                last_sender, last_message = chat_history[-1]
+            if st.session_state.chat_history:
+                last_sender, last_message = st.session_state.chat_history[-1]
                 if last_sender == "Robot":
                     st.text_area("Robot:", value=last_message, key="robot-response", disabled=True)
 
