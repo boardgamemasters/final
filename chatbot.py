@@ -14,20 +14,17 @@ def data_load():
     games_info  =    pd.read_csv('data/bgref.csv')
     cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
     return rating_df, games_df, users_df, games_info, cosine_df
-    
-## Generate a unique key for each widget
-def get_unique_key(name):
-    timestamp = int(datetime.timestamp(datetime.now()) * 1e6)  # Use current timestamp (microseconds) as part of the key
-    unique_key = hashlib.sha1(f"{name}-{timestamp}".encode()).hexdigest()
-    return unique_key
-
-
-rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
 # Function to check if user exists
 def get_user_ids(user_name):
     user_ids = extra_rating.loc[extra_rating['Username'] == user_name, 'user_name'].values
     return user_ids
+
+## Generate a unique key for each widget
+def get_unique_key(name):
+    timestamp = int(datetime.timestamp(datetime.now()) * 1e6)  # Use current timestamp (microseconds) as part of the key
+    unique_key = hashlib.sha1(f"{name}-{timestamp}".encode()).hexdigest()
+    return unique_key
 
 # Chatbot function
 def chatbot():
