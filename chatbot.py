@@ -18,7 +18,7 @@ rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
 # Function to check if user exists
 def get_user_ids(user_name):
-    user_ids = extra_rating.loc[extra_rating['Username'] == user_name, 'user_name'].values
+    user_ids = rating_df.loc[rating_df['Username'] == user_name, 'user_name'].values
     return user_ids
 
 # Chatbot function
