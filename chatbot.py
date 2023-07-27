@@ -30,7 +30,7 @@ def chatbot():
 
     # Chat loop
     while True:
-        user_name = st.text_input("Please enter your name:")
+        user_name = st.text_input("Please enter your name:",key='blabla')
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
             user_ids = get_user_ids(user_name)
