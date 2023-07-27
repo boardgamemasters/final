@@ -182,4 +182,4 @@ def gib_spiele_digga(rat_df, game_frame, f_alt = 10000, s_alt = 10, user =' beas
     return(answer)
 
 def get_feature(result_file, feature_file):
-    return(Y.loc[feature_file['bgg_id'].isin(result_file['bgg_id'])])
+    return(feature_file.loc[feature_file['bgg_id'].isin(result_file['bgg_id'])])

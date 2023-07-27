@@ -21,20 +21,14 @@ st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
 
 # path = 'https://drive.google.com/uc?export=download&id='
 
-# @st.cache_data
-# def data_load():
-#     rating_df = pd.read_csv(path+rating_url.split('/')[-2])
-#     games_df = pd.read_csv(path+games_url.split('/')[-2])
-#     users_df = pd.read_csv(path+users_url.split('/')[-2])
-#     return(rating_df, games_df, users_df)
+@st.cache_data
+def data_load():
+    rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
+    games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
+    users_df    =    pd.read_csv('data/usernames_v2.csv')
+    games_info  =    pd.read_csv('data/bgref.csv')
 
-# rating_df, games_df, users_df = data_load()
-
-rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
-games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
-users_df    =    pd.read_csv('data/usernames_v2.csv')
-games_info  =    pd.read_csv('data/bgref.csv')
-
+rating_df, games_df, users_df = data_load()
 
 # # Download the image using requests
 # response = requests.get(logo_url)
