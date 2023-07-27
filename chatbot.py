@@ -15,9 +15,9 @@ def data_load():
     cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
     return rating_df, games_df, users_df, games_info, cosine_df
     
-# Generate a unique key for each widget
+## Generate a unique key for each widget
 def get_unique_key(name):
-    timestamp = int(time.time() * 1e6)  # Use current timestamp (microseconds) as part of the key
+    timestamp = int(datetime.timestamp(datetime.now()) * 1e6)  # Use current timestamp (microseconds) as part of the key
     unique_key = hashlib.sha1(f"{name}-{timestamp}".encode()).hexdigest()
     return unique_key
 
