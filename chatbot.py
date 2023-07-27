@@ -6,11 +6,11 @@ import User_Ursula as ursula
 # Load the data
 @st.cache_data
 def data_load():
-    rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
-    games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
-    users_df    =    pd.read_csv('data/usernames_v2.csv')
-    games_info  =    pd.read_csv('data/bgref.csv')
-    cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
+    rating_df = pd.read_csv('data/final_ratings_v3.csv')
+    games_df = pd.read_csv('data/game_learn_df_v3.csv')
+    users_df = pd.read_csv('data/usernames_v2.csv')
+    games_info = pd.read_csv('data/bgref.csv')
+    cosine_df = pd.read_csv('data/bg_cosines_final.csv')
     return rating_df, games_df, users_df, games_info, cosine_df
 
 
@@ -31,10 +31,10 @@ def chatbot():
     # Chat loop
     loopy = 0
     while True:
-        loopy =+1
+        loopy += 1  # Corrected increment statement
         key_a = f'blabla{loopy}'
         key_b = f'boob{loopy}'
-        user_name = st.text_input("Please enter your name:", key = key_a)
+        user_name = st.text_input("Please enter your name:", key=key_a)
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
             user_ids = get_user_ids(user_name)
