@@ -159,7 +159,7 @@ def similar_taste(wf, include_games, u_id, alt = 10):
     return(result)
 
 ### MAIN FUNCTION (combination of the previous functions)
-def gib_spiele_digga(rat_df, game_frame, f_alt = 10000, s_alt = 10, user =' beastvol'):
+def gib_spiele_digga(rat_df, game_frame, f_alt = 1000, s_alt = 10, user =' beastvol'):
     # print(rat_df.columns)
     # print(f'Username: {user}')
     answer = (
