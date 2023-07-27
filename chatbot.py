@@ -24,17 +24,16 @@ def get_unique_key(name):
     unique_key = hashlib.sha1(f"{name}-{timestamp}".encode()).hexdigest()
     return unique_key
 
-# Global variable to store chat history
-chat_history = []
-
 # Chatbot function
 def chatbot():
-    global chat_history
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
     # Load data using the st.cache decorator
     rating_df, games_df, users_df, games_info, cosine_df = data_load()
+
+    # Initialize chat history
+    chat_history = []
 
     while True:
         loopy = len(chat_history) // 2 + 1
