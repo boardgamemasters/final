@@ -30,9 +30,10 @@ st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
 
 # rating_df, games_df, users_df = data_load()
 
-rating_df    =    pd.read_csv('data/final_ratings_v3.csv')
+rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
 games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
-users_df     =    pd.read_csv('data/usernames_v2.csv')
+users_df    =    pd.read_csv('data/usernames_v2.csv')
+games_info  =    pd.read_csv('data/bgref.csv')
 
 
 # # Download the image using requests
@@ -137,7 +138,7 @@ elif rec_select == 'Similar Taste':
     user_feature =  user_like()
     # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
     user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = user_feature['amount'], user = user_feature['user_id'],game_frame=games_df)
-
+    user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
     # user_col = len(user_games)
     # u_cols = st.columns(user_col)
     # with st.container():
@@ -153,22 +154,16 @@ elif rec_select == 'Similar Taste':
         for i in range(0, ncol, 3):
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.header(user_games.iloc[i]['bgg_id'])
-                st.text(user_games.iloc[i]['predicted_rating'])
-                # st.image(user_games.iloc[i]['img'])
-                # st.text(user_games.iloc[i]['title'])
+                st.image(user_games.iloc[i]['image'])
+                st.text(user_games.iloc[i]['name'])
             with col2:
                 if i + 1 < ncol:
-                    st.header(user_games.iloc[i+1]['bgg_id'])
-                    st.text(user_games.iloc[i+1]['predicted_rating'])
-                    # st.image(user_games.iloc[i+1]['img'])
-                    # st.text(user_games.iloc[i+1]['title'])                    
+                    st.image(user_games.iloc[i+1]['image'])
+                    st.text(user_games.iloc[i+1]['name'])                    
             with col3:                 
                 if i + 2 < ncol:
-                    st.header(user_games.iloc[i+2]['bgg_id'])
-                    st.text(user_games.iloc[i+2]['predicted_rating'])
-                    # st.image(user_games.iloc[i+2]['img'])
-                    # st.text(user_games.iloc[i+2]['title'])
+                    st.image(user_games.iloc[i+2]['image'])
+                    st.text(user_games.iloc[i+2]['name'])
 
 elif rec_select == 'Games that are hot right now':
     st.sidebar.text('Coming Soon')
