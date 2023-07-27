@@ -5,6 +5,7 @@ import hashlib
 from datetime import datetime
 
 # Load the data
+@st.cache_data
 def data_load():
     rating_df = pd.read_csv('data/final_ratings_v3.csv')
     games_df = pd.read_csv('data/game_learn_df_v3.csv')
@@ -33,8 +34,8 @@ def chatbot():
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
-    # Load data using st.cache_data
-    rating_df, games_df, users_df, games_info, cosine_df = st.cache_data(data_load)
+    # Load data using st.cache_data decorator
+    rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
     while True:
         loopy = len(chat_history) // 2 + 1
@@ -85,4 +86,3 @@ def chatbot():
 
 if __name__ == "__main__":
     chatbot()
-
