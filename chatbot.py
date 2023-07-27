@@ -28,7 +28,14 @@ def get_unique_key(name):
     unique_key = hashlib.sha1(f"{name}-{timestamp}".encode()).hexdigest()
     return unique_key
 
- # Chat loop
+# Chatbot function
+def chatbot():
+    st.title("Game Recommendation Chatbot")
+    st.write("Welcome! Let's start chatting.")
+
+    chat_history = []
+
+    # Chat loop
     loopy = 0
     while True:
         loopy += 1
