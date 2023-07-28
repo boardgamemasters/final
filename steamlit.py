@@ -170,7 +170,10 @@ elif rec_select == 'Amey likes you a lot':
     # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
     amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
     #st.write(amey_games)
+    st.write(f'before lookup: {len(amey_games)}')    
+   
     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
+    st.write(f'after lookup: {len(amey_games)}')    
     ncol = len(amey_games)
     with st.container():
         st.header(f'Games similar to  {amey_feature["name"]}')
