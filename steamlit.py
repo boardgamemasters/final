@@ -169,20 +169,11 @@ elif rec_select == 'Amey likes you a lot':
     amey_feature =  amey_like()
     # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
     amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
-    st.write(amey_games)
+    #st.write(amey_games)
     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
-    # user_col = len(user_games)
-    # u_cols = st.columns(user_col)
-    # with st.container():
-    #     st.header(f'Special Treats for you {user_feature["name"]}')
-    #     for i, x in enumerate(u_cols):
-    # #         st.header(user_games.iloc[i]['title'])
-    #         # st.image(user_games.iloc[i]['img'])
-    #         st.header(user_games.iloc[i]['bgg_id'])
-    #         st.text(user_games.iloc[i]['predicted_rating'])
     ncol = len(amey_games)
     with st.container():
-        st.header(f'Special Treats for you {amey_games["name"]}')
+        st.header(f'Games similar to  {amey_feature["name"]}')
         for i in range(0, ncol, 3):
             col1, col2, col3 = st.columns(3)
             with col1:
