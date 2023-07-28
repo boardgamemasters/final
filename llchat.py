@@ -10,7 +10,7 @@ def data_load():
     return final_df
 
 final_df = data_load()
-amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
+amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = final_df, z=amey_feature['amount'])})
     st.write(amey_games)#.sort_values['bgg_id'])
     st.write(f'before lookup: {len(amey_games)}')    
    
