@@ -9,6 +9,7 @@ import requests
 from urllib.request import urlopen
 from io import BytesIO
 import User_Ursula as ursula
+import ameyfun as af
 
 import funcrsys as pred
 
@@ -22,10 +23,11 @@ def data_load():
     users_df    =    pd.read_csv('data/usernames_v2.csv')
     games_info  =    pd.read_csv('data/bgref.csv')
     cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
-    return rating_df, games_df, users_df, games_info, cosine_df
+    amey_df     =    pd.read_csv('data/final_data.csv')
+    return rating_df, games_df, users_df, games_info, cosine_df, amey_df
 
 
-rating_df, games_df, users_df, games_info, cosine_df = data_load()
+rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
 
 # # Download the image using requests
 # response = requests.get(logo_url)
@@ -44,7 +46,11 @@ custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom
 if custom == True:
     rec_select = st.sidebar.radio(
         "What kind of recommendation do you like",
-        ('Similar Games', 'Similar Taste', 'Games that are hot right now', 'All at once'), key='rec_select')
+        ('Similar Games'
+         , 'Similar Taste'
+         , 'Amey likes you a lot'
+         , 'All at once'
+         ), key='rec_select')
 else:
     # st.write('Basic Bitch!')
     rec_select = ''
@@ -152,51 +158,45 @@ elif rec_select == 'Similar Taste':
                     st.image(user_games.iloc[i+2]['image'])
                     st.text(user_games.iloc[i+2]['name'])
 
-elif rec_select == 'Games that are hot right now':
-    st.sidebar.text('Coming Soon')
-#     st.write('Lets find some lit Movies.')
+elif rec_select == 'Amey likes you a lot':  
+    def amey_like():
+        gname = st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key = 'amey_like')
+        amount = st.sidebar.slider('Number of Recommendations', min_value=3, max_value=15, value=9, step=3, key='uln', help='Here you can specify the number of recommended Boardgames')
 
-#     def pop_mov():
-#         amount = st.sidebar.slider('Number of Recommendations', min_value=1, max_value=20, value=5, step=1, key='pln', help='Here you can specify the number of recommended Movies')
-#         period = st.sidebar.radio(
-#             "What Timespan do u want to include to calculate the right movies for you?",
-#             ('all', 'weeks', 'months', 'years', 'days'), key='period')
-#         if period != 'all':
-#             start_time = st.sidebar.slider(f'Last {period}', min_value=2, max_value=40, value=5, key='stime', help=f'Here you can define what time period in {period} will be used to make recommendations')
-#         else:
-#             start_time = '1'
+        data = {'amount': amount,
+                'name' : gname}
+        return(data)
+    amey_feature =  amey_like()
+    # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
+    amey_games = af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])
+    amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
+    # user_col = len(user_games)
+    # u_cols = st.columns(user_col)
+    # with st.container():
+    #     st.header(f'Special Treats for you {user_feature["name"]}')
+    #     for i, x in enumerate(u_cols):
+    # #         st.header(user_games.iloc[i]['title'])
+    #         # st.image(user_games.iloc[i]['img'])
+    #         st.header(user_games.iloc[i]['bgg_id'])
+    #         st.text(user_games.iloc[i]['predicted_rating'])
+    ncol = len(amey_games)
+    with st.container():
+        st.header(f'Special Treats for you {amey_games["name"]}')
+        for i in range(0, ncol, 3):
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.image(amey_games.iloc[i]['image'])
+                st.text(amey_games.iloc[i]['name'])
+            with col2:
+                if i + 1 < ncol:
+                    st.image(amey_games.iloc[i+1]['image'])
+                    st.text(amey_games.iloc[i+1]['name'])                    
+            with col3:                 
+                if i + 2 < ncol:
+                    st.image(amey_games.iloc[i+2]['image'])
+                    st.text(amey_games.iloc[i+2]['name'])
 
 
-#         data = {'period': period,
-#                 'time_mod':start_time,
-#                 'amount': amount}
-#         return(data)
-#     pop_feature =  pop_mov()
-#     pop_movies_custom = pred.pop_movies(wf = rating_df, alt = pop_feature['amount'], period = pop_feature['period'], time_mod = pop_feature['time_mod'])
-
-#     # pop_col = len(pop_movies_custom)
-#     # p_cols = st.columns(pop_col)
-#     # with st.container():
-#     #     st.header(f'These movies are Lit')
-#     #     for i, x in enumerate(p_cols):
-#     #         st.header(pop_movies_custom.iloc[i]['title'])
-#     #         st.image(pop_movies_custom.iloc[i]['img'])
-#     ncol = len(pop_movies_custom)
-#     with st.container():
-#         st.header(f'These movies are Lit')
-#         for i in range(0, ncol, 3):
-#             col1, col2, col3 = st.columns(3)
-#             with col1:
-#                 st.image(pop_movies_custom.iloc[i]['img'])
-#                 st.text(pop_movies_custom.iloc[i]['title'])
-#             with col2:
-#                 if i + 1 < ncol:
-#                     st.image(pop_movies_custom.iloc[i+1]['img'])
-#                     st.text(pop_movies_custom.iloc[i+1]['title'])                    
-#             with col3:                 
-#                 if i + 2 < ncol:
-#                     st.image(pop_movies_custom.iloc[i+2]['img'])
-#                     st.text(pop_movies_custom.iloc[i+2]['title'])
 
 elif rec_select == 'All at once':
     st.sidebar.text('Coming Soon')
