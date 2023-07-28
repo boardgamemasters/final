@@ -8,7 +8,7 @@ def data_load():
     final_df   =    pd.read_csv('data/final_data.csv')
     return final_df
 
-final_data = data_load()
+final_df = data_load()
 
 # Emoji characters for robot and user
 robot_emoji = "🤖"
