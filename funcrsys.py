@@ -7,12 +7,12 @@ import random
 ######################################  SIMILAR_DESCRIPTION_GAMES  #########################################
 ######################################                             #########################################
 ############################################################################################################
-   """ Function to recommend similar games based on a user's input of liking certain games and their descriptions
-Parameters: 
-      bg_input (list): A list of board game IDs that the user likes.
-      df_cosines_distances: DataFrame containing cosine distances for different board games.
-      df_reference: A DataFrame containing reference information about board games (bgg_id, name, and image).
-Returns: list: A list containing recommended board game IDs based on user's input."""
+#   """ Function to recommend similar games based on a user's input of liking certain games and their descriptions
+# Parameters: 
+#       bg_input (list): A list of board game IDs that the user likes.
+#       df_cosines_distances: DataFrame containing cosine distances for different board games.
+#       df_reference: A DataFrame containing reference information about board games (bgg_id, name, and image).
+# Returns: list: A list containing recommended board game IDs based on user's input."""
 
 ############################################################################################################
 
@@ -60,21 +60,21 @@ def similar_description_games(bg_input, bg_cosines_df, bgref_df):
 ######################################  BEST_GENERAL               #########################################
 ######################################                             #########################################
 ############################################################################################################
-    """
-    Get the best items from the provided pandas DataFrame based on various conditions.
+    # """
+    # Get the best items from the provided pandas DataFrame based on various conditions.
 
-    Parameters:
-        bg (pandas.DataFrame): The DataFrame containing the board game data.
-        max_gm (int): The maximum number of items to sample for each condition.
-        year (int, optional): The year to consider. Default is 2012.
-        price (int, optional): The maximum price (europrice) to consider. Default is 28.
-        minplay (int, optional): The minimum number of players to consider. Default is 2.
-        minage (int, optional): The minimum age to consider. Default is 10.
+    # Parameters:
+    #     bg (pandas.DataFrame): The DataFrame containing the board game data.
+    #     max_gm (int): The maximum number of items to sample for each condition.
+    #     year (int, optional): The year to consider. Default is 2012.
+    #     price (int, optional): The maximum price (europrice) to consider. Default is 28.
+    #     minplay (int, optional): The minimum number of players to consider. Default is 2.
+    #     minage (int, optional): The minimum age to consider. Default is 10.
 
-    Returns:
-        tuple: A tuple containing multiple DataFrames, each representing the best items
-               that satisfy specific conditions.
-    """
+    # Returns:
+    #     tuple: A tuple containing multiple DataFrames, each representing the best items
+    #            that satisfy specific conditions.
+    # """
 ############################################################################################################
 def best_general(bg, max_gm, year=2012, price=28, minplay=2, minage=10):
 
