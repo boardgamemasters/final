@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-from ameyfun import game_of_my_life, User_Ursula
+from ameyfun import game_of_my_life
+import User_Ursula as ursula
 
 # Load the data
 @st.cache
