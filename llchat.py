@@ -5,7 +5,7 @@ from ameyfun import game_of_my_life
 # Load the data
 @st.cache
 def data_load():
-    final_data = pd.read_csv('data/final_data.csv')
+    final_df   =    pd.read_csv('data/final_data.csv')
     return final_data
 
 final_data = data_load()
