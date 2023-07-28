@@ -168,7 +168,7 @@ elif rec_select == 'Amey likes you a lot':
         return(data)
     amey_feature =  amey_like()
     # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
-    amey_games = pd.DataFrame(af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount']))
+    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
     st.write(amey_games)
     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
     # user_col = len(user_games)
