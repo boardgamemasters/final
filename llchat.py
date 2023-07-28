@@ -34,8 +34,8 @@ def chatbot():
             robot_response = f"{robot_emoji} Sorry, I couldn't find any game recommendations for '{user_input}'. Please try again with a different game name."
         else:
             robot_response = f"{robot_emoji} Sure! Based on '{user_input}', I recommend the following games:\n"
-            for i, game in enumerate(game_recommendations, 1):
-                robot_response += f"{i}. {game}\n"
+            for i, game_name in enumerate(game_recommendations, 1):
+                robot_response += f"{i}. {game_name}\n"
 
         # Add user input to chat history
         chat_history.append(("User", user_input))
