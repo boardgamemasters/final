@@ -174,7 +174,7 @@ elif rec_select == 'Amey likes you a lot':
    
     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
     st.write(f'after lookup: {len(amey_games)}')
-    st.write(amey_games.sort_values['bgg_id'])
+    st.write(amey_games)
     ncol = len(amey_games)
     with st.container():
         st.header(f'Games similar to  {amey_feature["name"]}')
