@@ -3,9 +3,6 @@ import numpy as np
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Load the data
-data = pd.read_csv('final_data.csv')
-
 # Function to find the correct category of the favorite game
 def find_right_category(favorite_game, data):
     for i, row in data.iterrows():
