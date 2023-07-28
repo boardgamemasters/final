@@ -46,10 +46,11 @@ custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom
 if custom == True:
     rec_select = st.sidebar.radio(
         "What kind of recommendation do you like",
-        ('Similar Games based of Description'
-         , 'Similar Taste'
-         , 'Amey likes you a lot'
-         , 'All at once'
+        (
+            'Similar Games based of Description'
+            , 'Similar Taste'
+            , 'Amey likes you a lot'
+            , 'All at once'
          ), key='rec_select')
 else:
     # st.write('Basic Bitch!')
