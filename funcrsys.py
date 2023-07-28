@@ -7,12 +7,12 @@ import random
 ######################################  SIMILAR_DESCRIPTION_GAMES  #########################################
 ######################################                             #########################################
 ############################################################################################################
-# Function to recommend similar games based on a user's input of liking certain games and their descriptions
-# Parameters: 
-#      bg_input (list): A list of board game IDs that the user likes.
-#      df_cosines_distances: DataFrame containing cosine distances for different board games.
-#      df_reference: A DataFrame containing reference information about board games (bgg_id, name, and image).
-# Returns: list: A list containing recommended board game IDs based on user's input.
+   """ Function to recommend similar games based on a user's input of liking certain games and their descriptions
+Parameters: 
+      bg_input (list): A list of board game IDs that the user likes.
+      df_cosines_distances: DataFrame containing cosine distances for different board games.
+      df_reference: A DataFrame containing reference information about board games (bgg_id, name, and image).
+Returns: list: A list containing recommended board game IDs based on user's input."""
 
 ############################################################################################################
 
@@ -53,3 +53,64 @@ def similar_description_games(bg_input, bg_cosines_df, bgref_df):
     games = bgref_df.loc[bgref_df.bgg_id.isin(reclist), ['bgg_id', 'name', 'image']]
     
     return games
+
+
+############################################################################################################
+######################################                             #########################################
+######################################  BEST_GENERAL               #########################################
+######################################                             #########################################
+############################################################################################################
+    """
+    Get the best items from the provided pandas DataFrame based on various conditions.
+
+    Parameters:
+        bg (pandas.DataFrame): The DataFrame containing the board game data.
+        max_gm (int): The maximum number of items to sample for each condition.
+        year (int, optional): The year to consider. Default is 2012.
+        price (int, optional): The maximum price (europrice) to consider. Default is 28.
+        minplay (int, optional): The minimum number of players to consider. Default is 2.
+        minage (int, optional): The minimum age to consider. Default is 10.
+
+    Returns:
+        tuple: A tuple containing multiple DataFrames, each representing the best items
+               that satisfy specific conditions.
+    """
+############################################################################################################
+def best_general(bg, max_gm, year=2012, price=28, minplay=2, minage=10):
+
+    # Filter and sample the best items for a particular year
+    best_year = bg.loc[(bg.year == year) & 
+                       (bg.num_votes >= bg.num_votes.quantile(q=0.75)) & 
+                       (bg.avg_rating >= bg.avg_rating.quantile(q=0.85)), 
+                       ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+
+    # Filter and sample the best items based on price and other conditions
+    best_price = bg.loc[(bg.year == year) & 
+                        (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
+                        (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
+                        (bg.europrice <= price), 
+                        ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+    
+    # Filter and sample the best items based on minimum number of players and other conditions
+    best_min_players = bg.loc[(bg.year == year) & 
+                              (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
+                              (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
+                              (bg.min_players <= minplay), 
+                              ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+    
+    # Filter and sample the best items based on minimum age and other conditions
+    best_min_age = bg.loc[(bg.year == year) & 
+                          (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
+                          (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
+                          (bg.min_age <= minage), 
+                          ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+    
+    # Filter and sample the best items based on both minimum number of players and minimum age, along with other conditions
+    best_min_page = bg.loc[(bg.year == year) & 
+                           (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
+                           (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
+                           (bg.min_players <= minplay) & 
+                           (bg.min_age <= minage), 
+                           ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+    
+    return best_year, best_price, best_min_players, best_min_age, best_min_page
