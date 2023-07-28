@@ -4,16 +4,21 @@ import User_Ursula as ursula
 
 
 # Load the data
-rating_url = "https://drive.google.com/file/d/1fiU-bQOIyyjoRRB8uSJ7_oodFRo5wr30/view?usp=drive_link"
-rating_path = 'https://drive.google.com/uc?export=download&id=' + rating_url.split('/')[-2]
-rating_df = pd.read_csv(rating_path)
-games_url = "https://drive.google.com/file/d/1aOw0TeVXaToN1t0CE-vN3tXQEZXPpTzq/view?usp=drive_link"
-games_path = 'https://drive.google.com/uc?export=download&id=' + games_url.split('/')[-2]
-games_df = pd.read_csv(games_path)
+@st.cache_data
+def data_load():
+    rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
+    games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
+    users_df    =    pd.read_csv('data/usernames_v2.csv')
+    games_info  =    pd.read_csv('data/bgref.csv')
+    cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
+    return rating_df, games_df, users_df, games_info, cosine_df
 
-# Function to get user IDs from user name
+
+rating_df, games_df, users_df, games_info, cosine_df = data_load()
+
+# Function to check if user exists
 def get_user_ids(user_name):
-    user_ids = rating_df.loc[rating_df['Username'] == user_name, 'user_Id'].values
+    user_ids = extra_rating.loc[rating['Username'] == user_name, 'user_name'].values
     return user_ids
 
 # Chatbot function
@@ -24,8 +29,12 @@ def chatbot():
     chat_history = []
 
     # Chat loop
+    loopy = 0
     while True:
-        user_name = st.text_input("Please enter your name:")
+        loopy =+1
+        key_a = f'blabla{loopy}'
+        key_b = f'boob{loopy}'
+        user_name = st.text_input("Please enter your name:", key = key_a)
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
             user_ids = get_user_ids(user_name)
@@ -39,21 +48,19 @@ def chatbot():
                 robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations ?"
             else:
                 # Multiple user IDs found
-                user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 9, user = user_name, game_frame=games_df)
-                #user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:")  
+                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=key_b)
 
-                #if user_id_input:
-                 
-                #    try:
-                #        user_id_input = int(user_id_input)
-                #        if user_id_input in user_ids:
-                #            robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
-                #        else:
-                #             robot_response = f"Sorry, {user_name}! The provided user ID does not match any of the user IDs associated with your name. Please enter your user ID again."
-                #    except ValueError:
-                #         robot_response = "Please enter a valid numeric user ID."
-                #else:
-                #    continue
+                if user_id_input:
+                    try:
+                        user_id_input = int(user_id_input)
+                        if user_id_input in user_ids:
+                            robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
+                        else:
+                            robot_response = f"Sorry, {user_name}! The provided user ID does not match any of the user IDs associated with your name. Please enter your user ID again."
+                    except ValueError:
+                        robot_response = "Please enter a valid numeric user ID."
+                else:
+                    continue
 
             # Add user input to chat history
             chat_history.append(("User", user_name))
@@ -72,4 +79,3 @@ def chatbot():
 
 if __name__ == "__main__":
     chatbot()
-
