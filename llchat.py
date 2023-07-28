@@ -1,20 +1,15 @@
 import streamlit as st
 import pandas as pd
-from ameyfun import game_of_my_life
-import User_Ursula as ursula
+from ameyfun import game_of_my_life, User_Ursula
 
 # Load the data
-@st.cache_data
+@st.cache
 def data_load():
     final_df = pd.read_csv('data/final_data.csv')
     return final_df
 
 final_df = data_load()
-amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = final_df, z=amey_feature['amount'])})
-    st.write(amey_games)#.sort_values['bgg_id'])
-    st.write(f'before lookup: {len(amey_games)}')    
-   
-    amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
+
 # Emoji characters for robot and user
 robot_emoji = "🤖"
 user_emoji = "👤"
@@ -33,7 +28,7 @@ def chatbot():
     send_button = st.button("Send")
 
     if user_input.strip() and send_button:  # Check if user input is not empty or only whitespace and the button is clicked
-        game_recommendations = game_of_my_life(user_input, final_df)
+        game_recommendations = User_Ursula(user_input, final_df)
 
         if not game_recommendations:
             robot_response = f"{robot_emoji} Sorry, I couldn't find any game recommendations for '{user_input}'. Please try again with a different game name."
@@ -55,4 +50,3 @@ def chatbot():
 
 if __name__ == "__main__":
     chatbot()
-
