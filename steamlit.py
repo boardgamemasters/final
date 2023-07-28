@@ -161,7 +161,7 @@ elif rec_select == 'Similar Taste':
 elif rec_select == 'Amey likes you a lot':  
     def amey_like():
         gname = st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key = 'amey_like')
-        amount = st.sidebar.slider('Number of Recommendations', min_value=3, max_value=15, value=9, step=3, key='uln', help='Here you can specify the number of recommended Boardgames')
+        amount = st.sidebar.slider('Number of Recommendations', min_value=4, max_value=16, value=8, step=3, key='uln', help='Here you can specify the number of recommended Boardgames')
 
         data = {'amount': amount,
                 'name' : gname}
@@ -174,8 +174,8 @@ elif rec_select == 'Amey likes you a lot':
     ncol = len(amey_games)
     with st.container():
         st.header(f'Games similar to  {amey_feature["name"]}')
-        for i in range(0, ncol, 3):
-            col1, col2, col3 = st.columns(3)
+        for i in range(0, ncol, 4):
+            col1, col2, col3, col4 = st.columns(4)
             with col1:
                 st.image(amey_games.iloc[i]['image'])
                 st.text(amey_games.iloc[i]['name'])
@@ -187,6 +187,10 @@ elif rec_select == 'Amey likes you a lot':
                 if i + 2 < ncol:
                     st.image(amey_games.iloc[i+2]['image'])
                     st.text(amey_games.iloc[i+2]['name'])
+            with col4:                 
+                if i + 3 < ncol:
+                    st.image(amey_games.iloc[i+3]['image'])
+                    st.text(amey_games.iloc[i+3]['name'])
 
 
 
