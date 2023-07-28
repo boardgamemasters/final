@@ -21,38 +21,32 @@ def chatbot():
 
     chat_history = []
 
-    # Chat loop
-    loopy = 0
-    while True:
-        loopy += 1
-        key_a = f'blabla{loopy}'
-        key_b = f'boob{loopy}'
-        user_favorite_game = st.text_input(f"{user_emoji} Please enter the name of the game that you like:", key=key_a)
+    # User input
+    user_input = st.text_input(f"{user_emoji} Please enter the name of the game that you like:")
 
-        if user_favorite_game.strip():  # Check if user input is not empty or only whitespace
-            game_recommendations = game_of_my_life(user_favorite_game, final_df)
+    # Send button to handle user input
+    send_button = st.button("Send")
 
-            if not game_recommendations:
-                robot_response = f"{robot_emoji} Sorry, I couldn't find any game recommendations for '{user_favorite_game}'. Please try again with a different game name."
-            else:
-                robot_response = f"{robot_emoji} Sure! Based on '{user_favorite_game}', I recommend the following games:\n"
-                for i, game in enumerate(game_recommendations, 1):
-                    robot_response += f"{i}. {game}\n"
+    if user_input.strip() and send_button:  # Check if user input is not empty or only whitespace and the button is clicked
+        game_recommendations = game_of_my_life(user_input, final_df)
 
-            # Add user input to chat history
-            chat_history.append(("User", user_favorite_game))
-            # Add robot response to chat history
-            chat_history.append(("Robot", robot_response))
+        if not game_recommendations:
+            robot_response = f"{robot_emoji} Sorry, I couldn't find any game recommendations for '{user_input}'. Please try again with a different game name."
+        else:
+            robot_response = f"{robot_emoji} Sure! Based on '{user_input}', I recommend the following games:\n"
+            for i, game in enumerate(game_recommendations, 1):
+                robot_response += f"{i}. {game}\n"
 
-            # Display the last robot response
-            if chat_history:
-                last_sender, last_message = chat_history[-1]
-                if last_sender == "Robot":
-                    st.text_area(f"{robot_emoji} Robot:", value=last_message, key=key_b, disabled=True)
+        # Add user input to chat history
+        chat_history.append(("User", user_input))
+        # Add robot response to chat history
+        chat_history.append(("Robot", robot_response))
 
-        # Break the chat loop if user input is "quit"
-        if user_favorite_game.lower() == "quit":
-            break
+        # Display the last robot response
+        if chat_history:
+            last_sender, last_message = chat_history[-1]
+            if last_sender == "Robot":
+                st.text_area(f"{robot_emoji} Robot:", value=last_message, key="robot-response", disabled=True)
 
 if __name__ == "__main__":
     chatbot()
