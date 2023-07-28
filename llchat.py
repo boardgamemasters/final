@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Load the data
 @st.cache_data
@@ -15,11 +17,50 @@ rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
 # Function to check if user exists
 def get_user_ids(user_name):
-    user_ids = users_df.loc[users_df['Username'] == user_name, 'user_name'].values
+    user_ids = rating_df.loc[rating_df['Username'] == user_name, 'user_name'].values
     return user_ids
 
-# Game Recommendation Chatbot
-def game_recommendation_chatbot():
+# Function to find the correct category of the favorite game
+def find_right_category(favorite_game, data):
+    for i, row in data.iterrows():
+        if favorite_game.lower() in row['name_lower']:
+            return row['consolidated_category_name']
+
+def game_of_my_life(user_favorite_game, data, z=6):
+    # Find the right category of the favorite game
+    right_category_info = find_right_category(user_favorite_game, data)
+
+    # Extract the categories of the favorite game
+    favorite_game_categories = eval(right_category_info)  # Extract list in cell as unique values
+
+    # Find games with at least one shared category from the favorite game's categories
+    similar_games_with_shared_category = data[data['consolidated_category_name'].apply(lambda x: any(cat in x for cat in favorite_game_categories))]
+    similar_games_with_shared_category = similar_games_with_shared_category[similar_games_with_shared_category['name_x'] != user_favorite_game]
+
+    # Convert consolidated_category_name to list of strings
+    similar_games_with_shared_category['consolidated_category_name'] = similar_games_with_shared_category['consolidated_category_name'].apply(eval)
+
+    # Convert the categories of each game into binary vectors using MultiLabelBinarizer
+    mlb = MultiLabelBinarizer()
+    similar_games_category_vectors = mlb.fit_transform(similar_games_with_shared_category['consolidated_category_name'])
+    user_favorite_game_category_vector = mlb.transform([favorite_game_categories])
+
+    # Calculate cosine similarity between user favorite game and all other games
+    similarity_scores = cosine_similarity(user_favorite_game_category_vector, similar_games_category_vectors)
+
+    # Get the similarity scores for the user favorite game with all other games
+    user_similarity_scores = similarity_scores[0]
+
+    # Sort the indices based on similarity scores in descending order
+    sorted_indices = np.argsort(user_similarity_scores)[::-1]
+
+    # Get the bgg_id of the top z similar games
+    similar_game_bgg_ids = similar_games_with_shared_category.iloc[sorted_indices[:z]]['bgg_id'].tolist()
+
+    return similar_game_bgg_ids
+
+# Chatbot function
+def chatbot():
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
@@ -28,41 +69,22 @@ def game_recommendation_chatbot():
     # Chat loop
     loopy = 0
     while True:
-        loopy =+1
+        loopy += 1
         key_a = f'blabla{loopy}'
         key_b = f'boob{loopy}'
-        user_name = st.text_input("Please enter your name:", key = key_a)
 
-        if user_name.strip():  # Check if user_name is not empty or only whitespace
-            user_ids = get_user_ids(user_name)
+        # Ask for user's favorite game directly
+        user_favorite_game = st.text_input("Please enter your favorite game:", key=key_a)
 
-            if len(user_ids) == 0:
-                # User name not found in the data
-                robot_response = f"Hello, {user_name}! I couldn't find any user ID associated with your name. Please provide me with your user ID so I can assist you better."
-            elif len(user_ids) == 1:
-                # Only one user ID found
-                user_id = user_ids[0]
-                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
-            else:
-                # Multiple user IDs found
-                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=key_b)
-
-                if user_id_input:
-                    try:
-                        user_id_input = int(user_id_input)
-                        if user_id_input in user_ids:
-                            robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
-                        else:
-                            robot_response = f"Sorry, {user_name}! The provided user ID does not match any of the user IDs associated with your name. Please enter your user ID again."
-                    except ValueError:
-                        robot_response = "Please enter a valid numeric user ID."
-                else:
-                    continue
+        if user_favorite_game.strip():  # Check if the favorite game is not empty or only whitespace
+            # Recommend games based on the user's favorite game
+            recommended_game_ids = game_of_my_life(user_favorite_game, games_df)
+            recommended_games = games_df[games_df['bgg_id'].isin(recommended_game_ids)]['name_x'].tolist()
 
             # Add user input to chat history
-            chat_history.append(("User", user_name))
+            chat_history.append(("User", user_favorite_game))
             # Add robot response to chat history
-            chat_history.append(("Robot", robot_response))
+            chat_history.append(("Robot", f"Based on your favorite game '{user_favorite_game}', I recommend the following games: {', '.join(recommended_games)}. Enjoy gaming!"))
 
             # Display the last robot response
             if chat_history:
@@ -71,8 +93,9 @@ def game_recommendation_chatbot():
                     st.text_area("Robot:", value=last_message, key="robot-response", disabled=True)
 
         # Break the chat loop if user input is "quit"
-        if user_name.lower() == "quit":
+        if user_favorite_game.lower() == "quit":
             break
 
 if __name__ == "__main__":
-    game_recommendation_chatbot()
+    chatbot()
+  
