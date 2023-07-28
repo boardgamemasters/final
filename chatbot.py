@@ -1,29 +1,24 @@
 import streamlit as st
 import pandas as pd
-import hashlib
-from datetime import datetime
-import copy
+import User_Ursula as ursula
+
 
 # Load the data
+@st.cache_data
 def data_load():
-    rating_df = pd.read_csv('data/final_ratings_v3.csv')
-    games_df = pd.read_csv('data/game_learn_df_v3.csv')
-    users_df = pd.read_csv('data/usernames_v2.csv')
-    games_info = pd.read_csv('data/bgref.csv')
-    cosine_df = pd.read_csv('data/bg_cosines_final.csv')
-
-    # Clone the dataframes to avoid mutations
-    rating_df = copy.deepcopy(rating_df)
-    games_df = copy.deepcopy(games_df)
-    users_df = copy.deepcopy(users_df)
-    games_info = copy.deepcopy(games_info)
-    cosine_df = copy.deepcopy(cosine_df)
-
+    rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
+    games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
+    users_df    =    pd.read_csv('data/usernames_v2.csv')
+    games_info  =    pd.read_csv('data/bgref.csv')
+    cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
     return rating_df, games_df, users_df, games_info, cosine_df
 
+
+rating_df, games_df, users_df, games_info, cosine_df = data_load()
+
 # Function to check if user exists
-def get_user_ids(user_name, rating_df):
-    user_ids = rating_df.loc[rating_df['Username'] == user_name, 'user_name'].values
+def get_user_ids(user_name):
+    user_ids = extra_rating.loc[rating['Username'] == user_name, 'user_name'].values
     return user_ids
 
 # Chatbot function
@@ -31,23 +26,18 @@ def chatbot():
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
-    # Load data
-    rating_df, _, _, _, _ = data_load()
-
     chat_history = []
 
     # Chat loop
-    exit_keyword = "quit"
     loopy = 0
     while True:
-        loopy += 1
-        user_name = st.text_input("Please enter your name:", key=f'user_name-{loopy}')
+        loopy =+1
+        key_a = f'blabla{loopy}'
+        key_b = f'boob{loopy}'
+        user_name = st.text_input("Please enter your name:", key = key_a)
 
         if user_name.strip():  # Check if user_name is not empty or only whitespace
-            if user_name.lower() == exit_keyword:
-                break
-
-            user_ids = get_user_ids(user_name, rating_df)
+            user_ids = get_user_ids(user_name)
 
             if len(user_ids) == 0:
                 # User name not found in the data
@@ -55,10 +45,10 @@ def chatbot():
             elif len(user_ids) == 1:
                 # Only one user ID found
                 user_id = user_ids[0]
-                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations?"
+                robot_response = f"Hello, {user_name}! How can I assist you with Game recommendations ?"
             else:
                 # Multiple user IDs found
-                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=f'user_id_input-{loopy}')
+                user_id_input = st.text_input("Multiple user IDs found. Please enter your preferred user ID:", key=key_b)
 
                 if user_id_input:
                     try:
@@ -81,7 +71,11 @@ def chatbot():
             if chat_history:
                 last_sender, last_message = chat_history[-1]
                 if last_sender == "Robot":
-                    st.text_area("Robot:", value=last_message, disabled=True)
+                    st.text_area("Robot:", value=last_message, key="robot-response", disabled=True)
+
+        # Break the chat loop if user input is "quit"
+        if user_name.lower() == "quit":
+            break
 
 if __name__ == "__main__":
     chatbot()
