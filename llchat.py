@@ -1,21 +1,5 @@
 import streamlit as st
-import pandas as pd
-import ameyfun as amey
 
-# Load the data
-@st.cache_data
-def data_load():
-    final_df = pd.read_csv('data/final_data.csv')
-    return final_df
-
-final_df = data_load()
-
-# Function to check if game exists
-def get_game_ids(game_name):
-    game_ids = final_df.loc[final_df['Username'] == game_name, 'game_name'].values
-    return game_ids
-
-# Chatbot function
 def chatbot():
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
@@ -30,25 +14,25 @@ def chatbot():
 
             if len(game_ids) == 0:
                 # Game name not found in the data
-                robot_response = f"Hello, {user_favorite_game}! I couldn't find any game associated with the name. Please provide another game."
+                robot_response = f"🤖 Hello, {user_favorite_game}! I couldn't find any game associated with the name. Please provide another game."
             elif len(game_ids) == 1:
                 # Only one game found
                 game_id = game_ids[0]
-                robot_response = f"Hello, {user_favorite_game}! How can I assist you with game recommendations?"
+                robot_response = f"🤖 Hello, {user_favorite_game}! How can I assist you with game recommendations?"
             else:
                 # Multiple games found
-                robot_response = "Multiple games found. Please provide more specific details to narrow down the search."
+                robot_response = "🤖 Multiple games found. Please provide more specific details to narrow down the search."
 
             # Add user input to chat history
             chat_history.append(("User", user_favorite_game))
             # Add robot response to chat history
             chat_history.append(("Robot", robot_response))
 
-            # Display the last robot response
+            # Display the last robot response with icon
             if chat_history:
                 last_sender, last_message = chat_history[-1]
                 if last_sender == "Robot":
-                    st.text_area("Robot:", value=last_message, key="robot-response", disabled=True)
+                    st.markdown(f"🤖 {last_message}")
 
         # Break the chat loop if user input is "quit"
         if user_favorite_game.lower() == "quit":
