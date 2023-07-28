@@ -7,7 +7,7 @@ import ameyfun as amey
 def data_load():
     # Your data loading code here
     # For example:
-    rating_df = pd.read_csv('data/rating_data.csv')
+    rating_df = pd.read_csv('data/final_rating.csv')
     games_df = pd.read_csv('data/games_data.csv')
     users_df = pd.read_csv('data/users_data.csv')
     games_info = pd.read_csv('data/games_info.csv')
