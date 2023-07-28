@@ -16,7 +16,7 @@ def game_of_my_life(user_favorite_game, data, z=6):
     right_category_info = find_right_category(user_favorite_game, data)
 
     # Extract the categories of the favorite game
-    favorite_game_categories = eval(right_category_info)
+    favorite_game_categories = eval(right_category_info)        #Extract list in cell as unique values
 
     # Find games with at least one shared category from the favorite game's categories
     similar_games_with_shared_category = data[data['consolidated_category_name'].apply(lambda x: any(cat in x for cat in favorite_game_categories))]
