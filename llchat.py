@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import ameyfun as amey
-from streamlit_chat import message
 
 # Load the data
 @st.cache_data
@@ -61,33 +60,20 @@ def chatbot():
     st.title("Game Recommendation Chatbot")
     st.write("Welcome! Let's start chatting.")
 
-    chat_history = []
-
     # Chat loop
-    loopy = 0
     while True:
-        loopy += 1
-        key_a = f'blabla{loopy}'
-        key_b = f'boob{loopy}'
-
         # Ask for user's favorite game directly
-        user_favorite_game = st.text_input("Please enter the name of the game that you like:", key=key_a)
+        user_favorite_game = st.text_input("Please enter the name of the game that you like:")
 
         if user_favorite_game.strip():  # Check if the favorite game is not empty or only whitespace
             # Recommend games based on the user's favorite game
             recommended_game_ids = game_recommendation(user_favorite_game, final_df)
             recommended_games = final_df[final_df['bgg_id'].isin(recommended_game_ids)]['game_name'].tolist()
 
-            # Add user input to chat history
-            chat_history.append(("User", user_favorite_game))
-            # Add robot response to chat history
-            chat_history.append(("Robot", f"Based on your favorite game '{user_favorite_game}', I recommend the following games: {', '.join(recommended_games)}. Enjoy gaming!"))
-
-            # Display the last robot response
-            if chat_history:
-                last_sender, last_message = chat_history[-1]
-                if last_sender == "Robot":
-                    st.text_area("Robot:", value=last_message, key="robot-response", disabled=True)
+            # Display recommended games
+            st.write(f"Based on your favorite game '{user_favorite_game}', I recommend the following games:")
+            for game in recommended_games:
+                st.write(f"- {game}")
 
         # Break the chat loop if user input is "quit"
         if user_favorite_game.lower() == "quit":
@@ -95,5 +81,3 @@ def chatbot():
 
 if __name__ == "__main__":
     chatbot()
-
-  
