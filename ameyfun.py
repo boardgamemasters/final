@@ -2,15 +2,13 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.model_selection import train_test_split
 
 # Function to find the correct category of the favorite game
 def find_right_category(favorite_game, data):
     for i, row in data.iterrows():
         if favorite_game.lower() in row['name_lower']:
-            return row['consolidated_category_name'] 
-        
+            return row['consolidated_category_name']
+
 def game_of_my_life(user_favorite_game, data, z=6):
     # Find the right category of the favorite game
     right_category_info = find_right_category(user_favorite_game, data)
@@ -39,4 +37,8 @@ def game_of_my_life(user_favorite_game, data, z=6):
     # Sort the indices based on similarity scores in descending order
     sorted_indices = np.argsort(user_similarity_scores)[::-1]
 
-    return(sorted_indices[0:z])
+    # Get the bgg_id of the top z similar games
+    similar_game_bgg_ids = similar_games_with_shared_category.iloc[sorted_indices[:z]]['bgg_id'].tolist()
+    
+    return (similar_game_bgg_ids)
+
