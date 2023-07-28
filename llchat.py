@@ -5,21 +5,14 @@ import ameyfun as amey
 # Load the data
 @st.cache_data
 def data_load():
-    # Your data loading code here
-    # For example:
-    rating_df = pd.read_csv('data/final_ratings_v3.csv')
-    #games_df = pd.read_csv('data/games_data.csv')
-    #users_df = pd.read_csv('data/users_data.csv')
-    #games_info = pd.read_csv('data/games_info.csv')
-    #cosine_df = pd.read_csv('data/cosine_data.csv')
     final_df = pd.read_csv('data/final_data.csv')
-    return rating_df, games_df, users_df, games_info, cosine_df, final_df
+    return final_df
 
-rating_df, games_df, users_df, games_info, cosine_df, final_df = data_load()
+final_df = data_load()
 
 # Function to check if game exists
 def get_game_ids(game_name):
-    game_ids = final_df.loc[final_df['game_name'] == game_name, 'game_id'].values
+    game_ids = final_df.loc[final_df['Username'] == game_name, 'game_name'].values
     return game_ids
 
 # Chatbot function
@@ -30,26 +23,21 @@ def chatbot():
     chat_history = []
 
     # Chat loop
-    loopy = 0
     while True:
-        loopy += 1
-        key_a = f'blabla{loopy}'
-        key_b = f'boob{loopy}'
-        user_favorite_game = st.text_input("Please enter the name of the game that you like:", key=key_a)
-
-        if user_favorite_game.strip():  # Check if user input is not empty or only whitespace
+        user_favorite_game = st.text_input("Please enter the name of the game that you like:")
+        if user_favorite_game.strip():
             game_ids = get_game_ids(user_favorite_game)
 
             if len(game_ids) == 0:
                 # Game name not found in the data
-                robot_response = f"Hello, {user_favorite_game}! I couldn't find any game associated with the name you provided. Please enter another game name."
+                robot_response = f"Hello, {user_favorite_game}! I couldn't find any game associated with the name. Please provide another game."
+            elif len(game_ids) == 1:
+                # Only one game found
+                game_id = game_ids[0]
+                robot_response = f"Hello, {user_favorite_game}! How can I assist you with game recommendations?"
             else:
-                # Game name found
-                recommended_games = amey.game_of_my_life(user_favorite_game, final_df)
-                robot_response = f"Hello, {user_favorite_game}! Based on your favorite game, here are some game recommendations for you:\n"
-                for game_id in recommended_games:
-                    game_name = final_df.loc[final_df['game_id'] == game_id, 'game_name'].values[0]
-                    robot_response += f"- {game_name}\n"
+                # Multiple games found
+                robot_response = "Multiple games found. Please provide more specific details to narrow down the search."
 
             # Add user input to chat history
             chat_history.append(("User", user_favorite_game))
