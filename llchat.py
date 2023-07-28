@@ -9,10 +9,9 @@ def data_load():
     users_df    =    pd.read_csv('data/usernames_v2.csv')
     games_info  =    pd.read_csv('data/bgref.csv')
     cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
-    final_df   =    pd.read_csv('data/final_data.csv')
-    return rating_df, games_df, users_df, games_info, cosine_df, final_df
+    return rating_df, games_df, users_df, games_info, cosine_df
 
-rating_df, games_df, users_df, games_info, cosine_df, final_df = data_load()
+rating_df, games_df, users_df, games_info, cosine_df = data_load()
 
 # Function to check if user exists
 def get_user_ids(user_name):
