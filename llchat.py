@@ -8,10 +8,10 @@ def data_load():
     # Your data loading code here
     # For example:
     rating_df = pd.read_csv('data/final_ratings_v3.csv')
-    games_df = pd.read_csv('data/games_data.csv')
-    users_df = pd.read_csv('data/users_data.csv')
-    games_info = pd.read_csv('data/games_info.csv')
-    cosine_df = pd.read_csv('data/cosine_data.csv')
+    #games_df = pd.read_csv('data/games_data.csv')
+    #users_df = pd.read_csv('data/users_data.csv')
+    #games_info = pd.read_csv('data/games_info.csv')
+    #cosine_df = pd.read_csv('data/cosine_data.csv')
     final_df = pd.read_csv('data/final_data.csv')
     return rating_df, games_df, users_df, games_info, cosine_df, final_df
 
