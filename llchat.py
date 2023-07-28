@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from ameyfun import game_of_my_life
+import User_Ursula as ursula
 
 # Load the data
 @st.cache_data
@@ -9,7 +10,11 @@ def data_load():
     return final_df
 
 final_df = data_load()
-
+amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
+    st.write(amey_games)#.sort_values['bgg_id'])
+    st.write(f'before lookup: {len(amey_games)}')    
+   
+    amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
 # Emoji characters for robot and user
 robot_emoji = "🤖"
 user_emoji = "👤"
