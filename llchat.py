@@ -10,16 +10,7 @@ def data_load():
     return final_df
 
 final_df = data_load()
-amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
-    st.write(amey_games)#.sort_values['bgg_id'])
-    st.write(f'before lookup: {len(amey_games)}')    
-   
-    amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
-    st.write(f'after lookup: {len(amey_games)}')
-    st.write(amey_games)#.sort_values['bgg_id'])
-    ncol = len(amey_games)
-    with st.container():
-        st.header(f'Games similar to  {amey_feature["name"]}'
+
 # Emoji characters for robot and user
 robot_emoji = "🤖"
 user_emoji = "👤"
@@ -38,13 +29,16 @@ def chatbot():
     send_button = st.button("Send")
 
     if user_input.strip() and send_button:  # Check if user input is not empty or only whitespace and the button is clicked
-        game_recommendations = User_Ursula(user_input, final_df)
+        # Use the game_of_my_life function to get game recommendations
+        game_recommendations = game_of_my_life(user_input, final_df)
 
         if not game_recommendations:
             robot_response = f"{robot_emoji} Sorry, I couldn't find any game recommendations for '{user_input}'. Please try again with a different game name."
         else:
             robot_response = f"{robot_emoji} Sure! Based on '{user_input}', I recommend the following games:\n"
-            for i, game_name in enumerate(game_recommendations, 1):
+            for i, game_id in enumerate(game_recommendations, 1):
+                # Use the get_feature function to get the game name from the game_id
+                game_name = ursula.get_feature(result_file=game_id, feature_file=games_info)
                 robot_response += f"{i}. {game_name}\n"
 
         # Add user input to chat history
