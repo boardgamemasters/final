@@ -3,7 +3,7 @@ import pandas as pd
 from ameyfun import game_of_my_life
 
 # Load the data
-@st.cache
+@st.cache_data
 def data_load():
     final_df = pd.read_csv('data/final_data.csv')
     return final_df
