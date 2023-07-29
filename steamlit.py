@@ -255,6 +255,12 @@ elif rec_select == 'Chatbot Recommender':
                 message(response, is_user = True, key=f"a2{count}")
                 if response.isnumeric():
                     alt = response
+                    if alt <1:
+                        alt =1
+                    elif alt >5:
+                        alt = 5
+                    else:
+                        alt = alt
                     selecthor = 3
                     message(f'''Your favorite boardgame is {sel_game}.
                     And you would like to get {alt} recommendations for similar games.
@@ -274,7 +280,7 @@ elif rec_select == 'Chatbot Recommender':
                 message(response, is_user = True, key=f"a3{count}")  
                 if (pd.Series(['y', 'Y', 'yes', 'Yes'])).isin([response]).any():
                     message('I can recommend you the following games:', key=f"b5{count}")
-                    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=sel_game,data = amey_df, z=alt)})
+                    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=sel_game,data = amey_df, z=int(alt))})
                     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
                     res_co = 0
                     for i in  range(len(amey_games)):
