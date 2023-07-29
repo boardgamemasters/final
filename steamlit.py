@@ -284,7 +284,7 @@ elif rec_select == 'Chatbot Recommender':
                     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
                     res_co = 0
                     for i in  range(len(amey_games)):
-                        message(f'{amey_games.iloc[res_co]["name_x"]}', key=f"{count}_{res_co}")
+                        message(f'{(amey_games.iloc[res_co])["name_x"]}', key=f"{count}_{res_co}")
                         res_co +=1
                 
                 elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
