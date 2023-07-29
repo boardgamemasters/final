@@ -2,3 +2,5 @@ pandas
 scikit-learn
 numpy
 google-cloud-bigquery
+streamlit-chat==0.1.0
+requests

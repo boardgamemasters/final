@@ -8,9 +8,13 @@ from PIL import Image
 import requests
 from urllib.request import urlopen
 from io import BytesIO
+from streamlit_chat import message
+
+
+
+## Custim Functions
 import User_Ursula as ursula
 import ameyfun as af
-
 import funcrsys as pred
 
 st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
@@ -50,7 +54,7 @@ if custom == True:
             'Similar Games based of Description'
             , 'Similar Taste'
             , 'Amey likes you a lot'
-            , 'All at once'
+            , 'Chatbot Recommender'
          ), key='rec_select')
 else:
     # st.write('Basic Bitch!')
@@ -199,126 +203,103 @@ elif rec_select == 'Amey likes you a lot':
 
 
 
-elif rec_select == 'All at once':
+elif rec_select == 'Chatbot Recommender':
+    games = amey_df['name_x']
     st.sidebar.text('Coming Soon')
+    def on_input_change():
+        user_input = st.session_state.user_input
+        st.session_state.responses.append(user_input)
 
-#     st.write('Lets do all together!')
+    def on_btn_click():
+        del st.session_state['questions']
+        del st.session_state['responses']
+        selecthor = 0
 
-#     def movie_like():
-#         title = st.sidebar.selectbox('Movie like', titles_df['title'], key = 'movie_like')
-#         amount = st.sidebar.slider('Number of Recommendations', min_value=1, max_value=20, value=5, step=1, key='mln', help='Here you can specify the number of recommended Movies')
+    st.session_state.setdefault('questions', [])
 
-#         mov_id = titles_df.loc[titles_df['title']== title,'movieId'].values[0]
+    st.title("Survey QA Bot")
+    questions_list = [
+        # 0
+        '''I would like to recommend you some Boardgames.
+        What is your favorite one?'''    
+        # 1
+        , '''I dont know this Game.
+        Please enter another one'''
+        # 2
+        , '''How many recommendations do you want to get?
+        'Please enter a Number between 1 and 5'''
+    ]
 
-#         data = {'title': mov_id,
-#                 'amount': amount,
-#                 'name':title}
-#         return(data)
-#     sim_feature =  movie_like()
-#     sim_movies = pred.similar_movies(wf = rating_df, alt = sim_feature['amount'], movie_id = sim_feature['title'])
+    if 'responses' not in st.session_state.keys():
+        st.session_state.questions.extend(questions_list)
+        st.session_state.responses = []
 
-#     # mov_col = len(sim_movies)
-#     # m_cols = st.columns(mov_col)
-#     # with st.container():
-#     #     st.header(f'Users that liked {sim_feature["name"]}, also liked these {sim_feature["amount"]} movies')
-#     #     for i, x in enumerate(m_cols):
-#     #         st.header(sim_movies.iloc[i]['title'])
-#     #         st.image(sim_movies.iloc[i]['img'])
-#     ncol = len(sim_movies)
-#     with st.container():
-#         st.header(f'Users that liked {sim_feature["name"]}, also liked these {sim_feature["amount"]} movies')
-#         for i in range(0, ncol, 3):
-#             col1, col2, col3 = st.columns(3)
-#             with col1:
-#                 st.image(sim_movies.iloc[i]['img'])
-#                 st.text(sim_movies.iloc[i]['title'])
-#             with col2:
-#                 if i + 1 < ncol:
-#                     st.image(sim_movies.iloc[i+1]['img'])
-#                     st.text(sim_movies.iloc[i+1]['title'])                    
-#             with col3:                 
-#                 if i + 2 < ncol:
-#                     st.image(sim_movies.iloc[i+2]['img'])
-#                     st.text(sim_movies.iloc[i+2]['title'])
+    chat_placeholder = st.empty()
+    st.button("Clear message", on_click=on_btn_click)
 
-#     def user_like():
-#         user = st.sidebar.selectbox('Who are you', users_df['name'], key = 'user_like')
-#         amount = st.sidebar.slider('Number of Recommendations', min_value=1, max_value=20, value=5, step=1, key='uln', help='Here you can specify the number of recommended Movies')
+    message(st.session_state.questions[0]) 
 
-#         user_id = users_df.loc[users_df['name']== user,'userId'].values[0]
-
-#         data = {'user_id': user_id,
-#                 'amount': amount,
-#                 'name' : user}
-#         return(data)
-#     user_feature =  user_like()
-#     user_movies = pred.similar_taste(wf = rating_df, alt = user_feature['amount'], u_id = user_feature['user_id'])
-
-#     # user_col = len(user_movies)
-#     # u_cols = st.columns(user_col)
-#     # with st.container():
-#     #     st.header(f'Special Treats for you {user_feature["name"]}')
-#     #     for i, x in enumerate(u_cols):
-#     #         st.header(user_movies.iloc[i]['title'])
-#     #         st.image(user_movies.iloc[i]['img'])
-#     ncol = len(user_movies)
-#     with st.container():
-#         st.header(f'Special Treats for you {user_feature["name"]}')
-#         for i in range(0, ncol, 3):
-#             col1, col2, col3 = st.columns(3)
-#             with col1:
-#                 st.image(user_movies.iloc[i]['img'])
-#                 st.text(user_movies.iloc[i]['title'])
-#             with col2:
-#                 if i + 1 < ncol:
-#                     st.image(user_movies.iloc[i+1]['img'])
-#                     st.text(user_movies.iloc[i+1]['title'])                    
-#             with col3:                 
-#                 if i + 2 < ncol:
-#                     st.image(user_movies.iloc[i+2]['img'])
-#                     st.text(user_movies.iloc[i+2]['title'])
-
-#     def pop_mov():
-#         amount = st.sidebar.slider('Number of Recommendations', min_value=1, max_value=20, value=5, step=1, key='pln', help='Here you can specify the number of recommended Movies')
-#         period = st.sidebar.radio(
-#             "What Timespan do u want to include to calculate the right movies for you?",
-#             ('all', 'weeks', 'months', 'years', 'days'), key='period')
-#         if period != 'all':
-#             start_time = st.sidebar.slider(f'Last {period}', min_value=2, max_value=40, value=5, key='stime', help=f'Here you can define what time period in {period} will be used to make recommendations')
-#         else:
-#             start_time = '1'
+    with st.container():
+        selecthor = 0
+        count =0
+        # while 1==1:
+        for response in (st.session_state.responses):
+            count +=1
+            if selecthor == 0:
+                message(response, is_user = True, key=f"a1{count}")
+                if games.isin([response]).any():
+                    sel_game = response
+                    selecthor = 1
+                    message(st.session_state.questions[2], key=f"b2{count}")  
+                    continue
+                else:
+                    message(st.session_state.questions[1], key=f"b1{count}")
+            if selecthor == 1:
+                # message(st.session_state.questions[2], key=f"b2{count}")
+                message(response, is_user = True, key=f"a2{count}")
+                if response.isnumeric():
+                    alt = response
+                    selecthor = 3
+                    message(f'''Your favorite boardgame is {sel_game}.
+                    And you would like to get {alt} recommendations for similar games.
+                    Is that correct?
+                    (y) , (n)''', key=f"b4{count}")
+                    continue
+                else:
+                    message('Please enter a numeric value', key=f"b3{count}")
+            if selecthor== 2:
+                # message(f'''Your favorite boardgame is {sel_game}.
+                # And you would like to get {alt} recommendations for similar games.
+                # Is that correct?
+                # (y) , (n)''', key=f"b4{count}")
+                selecthor = 3
+                continue
+            if selecthor== 3:
+                message(response, is_user = True, key=f"a3{count}")  
+                if (pd.Series(['y', 'Y', 'yes', 'Yes'])).isin([response]).any():
+                    message('I can recommend you the following games:', key=f"b5{count}")
+                elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
+                    message('Lets try again', key=f"b6{count}")
+                    selecthor = 0
+                    continue
+                else:
+                    message(f'''{response} is not a valid input. Please try again
+                    What is your favorite Boardgame?''', key=f"b7{count}")
+                    selecthor = 0
+                    continue
+                    
+                        
+                    
+        
+        # for response, question in zip(st.session_state.responses, st.session_state.questions[1:]):
+        #     message(response, )
+        #     message(response)
+        #     message(question)
 
 
-#         data = {'period': period,
-#                 'time_mod':start_time,
-#                 'amount': amount}
-#         return(data)
-#     pop_feature =  pop_mov()
-#     pop_movies_custom = pred.pop_movies(wf = rating_df, alt = pop_feature['amount'], period = pop_feature['period'], time_mod = pop_feature['time_mod'])
+    with st.container():
+        st.text_input("User Response:", on_change=on_input_change, key="user_input")
 
-#     # pop_col = len(pop_movies_custom)
-#     # p_cols = st.columns(pop_col)
-#     # with st.container():
-#     #     st.header(f'These movies are Lit')
-#     #     for i, x in enumerate(p_cols):
-#     #         st.header(pop_movies_custom.iloc[i]['title'])
-#     #         st.image(pop_movies_custom.iloc[i]['img'])
-#     ncol = len(pop_movies_custom)
-#     with st.container():
-#         st.header(f'These movies are Lit')
-#         for i in range(0, ncol, 3):
-#             col1, col2, col3 = st.columns(3)
-#             with col1:
-#                 st.image(pop_movies_custom.iloc[i]['img'])
-#                 st.text(pop_movies_custom.iloc[i]['title'])
-#             with col2:
-#                 if i + 1 < ncol:
-#                     st.image(pop_movies_custom.iloc[i+1]['img'])
-#                     st.text(pop_movies_custom.iloc[i+1]['title'])                    
-#             with col3:                 
-#                 if i + 2 < ncol:
-#                     st.image(pop_movies_custom.iloc[i+2]['img'])
-#                     st.text(pop_movies_custom.iloc[i+2]['title'])
 
 else:
     st.write('')
