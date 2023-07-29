@@ -284,6 +284,11 @@ elif rec_select == 'Chatbot Recommender':
                     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
                     res_co = 0
                     for i in  range(len(amey_games)):
+                        message(
+                            f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/>'
+                            , key=f"img_{count}_{res_co}"
+                            , allow_html=True
+                        )
                         message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
                         res_co +=1
                 
