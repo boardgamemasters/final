@@ -174,12 +174,8 @@ elif rec_select == 'Amey likes you a lot':
     amey_feature =  amey_like()
     # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
     amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
-    st.write(amey_games)#.sort_values['bgg_id'])
-    st.write(f'before lookup: {len(amey_games)}')    
-   
     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
-    st.write(f'after lookup: {len(amey_games)}')
-    st.write(amey_games)#.sort_values['bgg_id'])
+
     ncol = len(amey_games)
     with st.container():
         st.header(f'Games similar to  {amey_feature["name"]}')
@@ -278,6 +274,13 @@ elif rec_select == 'Chatbot Recommender':
                 message(response, is_user = True, key=f"a3{count}")  
                 if (pd.Series(['y', 'Y', 'yes', 'Yes'])).isin([response]).any():
                     message('I can recommend you the following games:', key=f"b5{count}")
+                    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=sel_game,data = amey_df, z=alt)})
+                    amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
+                    res_co = 0
+                    for i in  range(len(amey_games)):
+                        message(f'{amey_games.iloc[res_co]["name_x"]}', key=f"{count}_{res_co}")
+                        res_co +=1
+                
                 elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
                     message('Lets try again', key=f"b6{count}")
                     selecthor = 0
