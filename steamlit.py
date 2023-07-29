@@ -289,7 +289,7 @@ elif rec_select == 'Chatbot Recommender':
                             , key=f"img_{count}_{res_co}"
                             , allow_html=True
                         )
-                        message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
+                        # message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
                         res_co +=1
                 
                 elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
