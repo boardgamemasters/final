@@ -58,7 +58,7 @@ if user_login == False:
     if (
         submit 
         and (users_df['Username'].isin(list(User))).sum() !=0
-        and password 
+        # and password != ''
         ):
         # If the form is submitted and the email and password are correct,
         # clear the form/container and display a success message
@@ -69,7 +69,7 @@ if user_login == False:
         submit 
         and (users_df['Username'].isin(list(User))).sum() ==0
           ):
-        st.error(f"User: {User} not failed")
+        st.error(f"User: {User} not failed {(users_df['Username'].isin(list(User))).sum()}")
     else:
         pass
 
