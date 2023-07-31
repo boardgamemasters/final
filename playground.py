@@ -10,7 +10,7 @@ from urllib.request import urlopen
 from io import BytesIO
 from streamlit_chat import message
 
-user_login = False
+# user_login = False
 
 ## Custim Functions
 import User_Ursula as ursula
