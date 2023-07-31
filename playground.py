@@ -14,6 +14,8 @@ from streamlit_chat import message
 from streamlit_carousel import carousel
 from streamlit_modal import Modal
 import streamlit.components.v1 as components
+from streamlit_image_coordinates import streamlit_image_coordinates
+
 
 
 
@@ -118,11 +120,13 @@ if rec_select == 'Similar Games based of Description':
             for i in range(0, ncol, 3):
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    # st.image(sim_games.iloc[i]['image'])
+
+                    st.image(sim_games.iloc[i]['image'])
+                    value = streamlit_image_coordinates(sim_games.iloc[i]['image'])
                     st.text(sim_games.iloc[i]['name'])
                     # st.button(st.image(sim_games.iloc[i]['image']))
-                    st.write(f"<a href='#' id={sim_games.iloc[i]['bgg_id']}>{sim_games.iloc[i]['image']}</a>", unsafe_allow_html=True)
-                    if st.button(sim_games.iloc[i]['bgg_id']):
+                    # st.write(f"<a href='#' id={sim_games.iloc[i]['bgg_id']}>{sim_games.iloc[i]['image']}</a>", unsafe_allow_html=True)
+                    if value:
                         st.write('HELLO')
 
                 with col2:
