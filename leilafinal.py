@@ -309,7 +309,6 @@ elif rec_select == 'Chatbot Recommender':
 else:
     st.write('')     
         
-                
 elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
                     message('Lets try again', key=f"b6{count}")
                     selecthor = 0
