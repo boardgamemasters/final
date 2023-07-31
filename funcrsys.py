@@ -132,9 +132,10 @@ def resize_img(url, w=400, h=400):
     return imageres
 
 def make_square(im, min_size=600, fill_color=(0, 0, 0, 0)):
-    im = Image.open(im)
-    x, y = im.size
-    size = max(min_size, x, y)
-    new_im = Image.new('RGBA', (size, size), fill_color)
-    new_im.paste(im, (int((size - x) / 2), int((size - y))))
+    urllib.request.urlretrieve(im, "bgimage")
+    with Image.open("bgimage") as im:
+        x, y = im.size
+        size = max(min_size, x, y)
+        new_im = Image.new('RGBA', (size, size), fill_color)
+        new_im.paste(im, (int((size - x) / 2), int((size - y))))
     return new_im
