@@ -306,9 +306,8 @@ elif rec_select == 'Chatbot Recommender':
     # Place the chat output (chatbot messages) in the third column, row 3
     with col3:
         chat_placeholder = st.empty()
-else:
+ else:
     st.write('')     
-        
 elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
                     message('Lets try again', key=f"b6{count}")
                     selecthor = 0
