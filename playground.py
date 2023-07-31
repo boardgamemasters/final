@@ -118,12 +118,12 @@ if rec_select == 'Similar Games based of Description':
             for i in range(0, ncol, 3):
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    st.image(sim_games.iloc[i]['image'])
+                    # st.image(sim_games.iloc[i]['image'])
                     st.text(sim_games.iloc[i]['name'])
                     # st.button(st.image(sim_games.iloc[i]['image']))
                     st.write(f"<a href='#' id={sim_games.iloc[i]['bgg_id']}>{st.image(sim_games.iloc[i]['image'])}</a>", unsafe_allow_html=True)
                     if st.button(sim_games.iloc[i]['bgg_id']):
-                        modal.open()
+                        st.write('HELLO')
 
                 with col2:
                     if i + 1 < ncol:
