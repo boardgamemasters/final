@@ -121,12 +121,12 @@ if rec_select == 'Similar Games based of Description':
                 col1, col2, col3 = st.columns(3)
                 with col1:
 
-                    st.image(sim_games.iloc[i]['image'])
-                    value = streamlit_image_coordinates(sim_games.iloc[i]['image'])
+                    # st.image(sim_games.iloc[i]['image'])
+                    value[sim_games.iloc[i]['bgg_id']] = streamlit_image_coordinates(sim_games.iloc[i]['image'])
                     st.text(sim_games.iloc[i]['name'])
                     # st.button(st.image(sim_games.iloc[i]['image']))
                     # st.write(f"<a href='#' id={sim_games.iloc[i]['bgg_id']}>{sim_games.iloc[i]['image']}</a>", unsafe_allow_html=True)
-                    if value:
+                    if value[sim_games.iloc[i]['bgg_id']]:
                         st.write('HELLO')
 
                 with col2:
