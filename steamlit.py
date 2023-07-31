@@ -249,7 +249,7 @@ elif rec_select == 'Chatbot Recommender':
                        sel_game = games.loc[games.str.fullmatch(response, case = False)][0]
                     else:
                      sel_game = games.loc[games.str.fullmatch(response, case = False)]
-                    st.write(sel_game)
+                    st.write(sel_game['name_x'])
                     selecthor = 1
                     message(st.session_state.questions[2], key=f"b2{count}")  
                     continue
