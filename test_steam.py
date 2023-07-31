@@ -165,10 +165,7 @@ elif rec_select == 'Similar Taste':
 
 elif rec_select == 'Amey likes you a lot':  
     def amey_like():
-    print("User input:", st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key='amey_like'))
-    print("Unique values in 'name_x' column:", amey_df['name_x'].unique())
-    # Rest of the code...
-
+        gname = st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key = 'amey_like')
         amount = st.sidebar.slider('Number of Recommendations', min_value=4, max_value=16, value=8, step=4, key='aln', help='Here you can specify the number of recommended Boardgames')
 
         data = {'amount': amount,
@@ -249,9 +246,10 @@ elif rec_select == 'Chatbot Recommender':
                 message(response, is_user = True, key=f"a1{count}")
                 if games.str.fullmatch(response, case = False).any():
                     if ((games.str.fullmatch(response, case = False)).sum())!=1:
-                       sel_game = games.loc[games.str.fullmatch(response, case = False)][0].item()
+                       sel_game = games[games.str.fullmatch(response, case = False)][0].item()     
                     else:
-                     sel_game = games.loc[games.str.fullmatch(response, case = False)].item()
+                     sel_game = games[games.str.fullmatch(response, case = False)].item()     
+                    # st.write(sel_game)
                     selecthor = 1
                     message(st.session_state.questions[2], key=f"b2{count}")  
                     continue
