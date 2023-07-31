@@ -67,7 +67,7 @@ if user_login == False:
         st.success("Login successful")
     elif (
         submit 
-        and users_df['Username'].isin(list(User)).all() ==False
+        and users_df['Username'].isin(list(User)).any() ==False
           ):
         st.error("Login failed")
     else:
