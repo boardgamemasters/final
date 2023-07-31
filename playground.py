@@ -13,6 +13,7 @@ from streamlit_chat import message
 # user_login = False
 if 'user_login' not in st.session_state:
     st.session_state['user_login'] = False
+    st.session_state['user_name'] = ''
 
 ## Custim Functions
 import User_Ursula as ursula
@@ -66,6 +67,7 @@ if st.session_state['user_login'] == False:
         # clear the form/container and display a success message
         placeholder.empty()
         st.session_state['user_login'] = True
+        st.session_state['user_name'] = User
         st.success("Login successful")
     elif (
         submit 
@@ -80,6 +82,7 @@ if st.session_state['user_login'] == True:
     if byebye:
         placeholder.empty()
         st.session_state['user_login'] = False
+        st.session_state['user_name'] = ''
         st.success("Logout successful")
 
 
