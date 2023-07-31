@@ -11,6 +11,8 @@ from io import BytesIO
 from streamlit_chat import message
 
 # user_login = False
+if 'user_login' not in st.session_state:
+    st.session_state['user_login'] = False
 
 ## Custim Functions
 import User_Ursula as ursula
@@ -49,7 +51,7 @@ custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom
 
 
 placeholder = st.sidebar.empty()
-if user_login == False:
+if st.session_state['user_login'] == False:
     with placeholder.form("login"):
         st.markdown("#### Enter your credentials")
         User = st.text_input("Username")
@@ -63,7 +65,7 @@ if user_login == False:
         # If the form is submitted and the email and password are correct,
         # clear the form/container and display a success message
         placeholder.empty()
-        login = True
+        st.session_state['user_login'] = True
         st.success("Login successful")
     elif (
         submit 
@@ -73,11 +75,11 @@ if user_login == False:
     else:
         pass
 
-if user_login == True:
+if st.session_state['user_login'] == True:
     byebye = st.sidebar.button("Logout")
     if byebye:
         placeholder.empty()
-        login = False
+        st.session_state['user_login'] = False
         st.success("Logout successful")
 
 
