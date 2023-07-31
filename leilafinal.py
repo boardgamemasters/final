@@ -308,7 +308,7 @@ with col3:
     chat_placeholder = st.empty()      
         
                 
-                elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
+            elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
                     message('Lets try again', key=f"b6{count}")
                     selecthor = 0
                     continue
