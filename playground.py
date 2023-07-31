@@ -131,11 +131,13 @@ if rec_select == 'Similar Games based of Description':
 
                 with col2:
                     if i + 1 < ncol:
+                        a =1
                         # st.image(sim_games.iloc[i+1]['image'])
                         # st.text(sim_games.iloc[i+1]['name'])    
                         # st.button(st.image(sim_games.iloc[i+1]['image']))
                 with col3:                 
                     if i + 2 < ncol:
+                        a=1
                         # st.image(sim_games.iloc[i+2]['image'])
                         # st.text(sim_games.iloc[i+2]['name'])
                         # st.button(st.image(sim_games.iloc[i+2]['image']))
