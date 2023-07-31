@@ -371,27 +371,27 @@ if st.session_state['user_login']==True:
             col1, col2, col3, col4, col5 = st.columns(5)
             with col1:
                 # st.image(user_games.iloc[i]['image'])
-                st.image(pred.resize_img(user_games.iloc[i]['image'], w=400, h=400))
+                st.image(pred.make_square(user_games.iloc[i]['image']))#, w=400, h=400))
                 st.text(user_games.iloc[i]['name'])
             with col2:
                 if i + 1 < ncol:
                     # st.image(user_games.iloc[i+1]['image'])
-                    st.image(pred.resize_img(user_games.iloc[i+1]['image'], w=400, h=400))
+                    st.image(pred.make_square(user_games.iloc[i+1]['image']))#, w=400, h=400))
                     st.text(user_games.iloc[i+1]['name'])                    
             with col3:                 
                 if i + 2 < ncol:
                     # st.image(user_games.iloc[i+2]['image'])
-                    st.image(pred.resize_img(user_games.iloc[i+2]['image'], w=400, h=400))
+                    st.image(pred.make_square(user_games.iloc[i+2]['image']))#, w=400, h=400))
                     st.text(user_games.iloc[i+2]['name'])
             with col4:                 
                 if i + 3 < ncol:
                     # st.image(user_games.iloc[i+3]['image'])
-                    st.image(pred.resize_img(user_games.iloc[i+3]['image'], w=400, h=400))
+                    st.image(pred.make_square(user_games.iloc[i+3]['image']))#, w=400, h=400))
                     st.text(user_games.iloc[i+3]['name'])
             with col5:                 
                 if i + 4 < ncol:
                     # st.image(user_games.iloc[i+4]['image'])
-                    st.image(pred.resize_img(user_games.iloc[i+4]['image'], w=400, h=400))
+                    st.image(pred.make_square(user_games.iloc[i+4]['image']))#, w=400, h=400))
                     st.text(user_games.iloc[i+4]['name'])
 else:
     st.write('') 
