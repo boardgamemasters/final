@@ -10,15 +10,12 @@ from urllib.request import urlopen
 from io import BytesIO
 from streamlit_chat import message
 
-
-
-## Custim Functions
+## Custom Functions
 import User_Ursula as ursula
 import ameyfun as af
 import funcrsys as pred
 
 st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
-
 
 @st.cache_data
 def data_load():
@@ -30,16 +27,18 @@ def data_load():
     amey_df     =    pd.read_csv('data/final_data.csv')
     return rating_df, games_df, users_df, games_info, cosine_df, amey_df
 
-
 rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
 
-# # Download the image using requests
-# response = requests.get(logo_url)
-# image_bytes = response.content
+# ... (rest of the code)
 
-# # Open the image using PIL
-# logo = Image.open(BytesIO(image_bytes))
+def find_right_category(user_favorite_game, data):
+    favorite_game = user_favorite_game.lower()  # Convert to lowercase string
+    for index, row in data.iterrows():
+        if favorite_game in row['name_lower'].str.lower():
+            return row['consolidated_category_name']
+    return None
 
+# ... (rest of the code)
 
 st.header("Find awesome Games")
 
@@ -165,18 +164,16 @@ elif rec_select == 'Similar Taste':
 
 elif rec_select == 'Amey likes you a lot':  
     def amey_like():
-    print("User input:", st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key='amey_like'))
-    print("Unique values in 'name_x' column:", amey_df['name_x'].unique())
-    # Rest of the code...
-
+        gname = st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key='amey_like')
         amount = st.sidebar.slider('Number of Recommendations', min_value=4, max_value=16, value=8, step=4, key='aln', help='Here you can specify the number of recommended Boardgames')
 
         data = {'amount': amount,
                 'name' : gname}
-        return(data)
+        return data
+
     amey_feature =  amey_like()
     # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
-    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
+    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'], data=amey_df, z=amey_feature['amount'])})
     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
 
     ncol = len(amey_games)
@@ -200,127 +197,8 @@ elif rec_select == 'Amey likes you a lot':
                     st.image(amey_games.iloc[i+3]['image'])
                     st.text(amey_games.iloc[i+3]['name'])
 
-
-
 elif rec_select == 'Chatbot Recommender':
-    games = amey_df['name_x']
-    st.sidebar.text('Coming Soon')
-    def on_input_change():
-        user_input = st.session_state.user_input
-        st.session_state.responses.append(user_input)
-        st.session_state.user_input = ""  # Clear the input after processing
-
-    def on_btn_click():
-        del st.session_state['questions']
-        del st.session_state['responses']
-        selecthor = 0
-
-    st.session_state.setdefault('questions', [])
-
-    st.title("Survey QA Bot")
-    questions_list = [
-        # 0
-        '''I would like to recommend you some Boardgames.
-        What is your favorite one?'''    
-        # 1
-        , '''I dont know this Game.
-        Please enter another one'''
-        # 2
-        , '''How many recommendations do you want to get?
-        'Please enter a Number between 1 and 5'''
-    ]
-
-    if 'responses' not in st.session_state.keys():
-        st.session_state.questions.extend(questions_list)
-        st.session_state.responses = []
-
-    chat_placeholder = st.empty()
-    st.button("Clear message", on_click=on_btn_click)
-
-    message(st.session_state.questions[0]) 
-
-    with st.container():
-        selecthor = 0
-        count =0
-        # while 1==1:
-        for response in (st.session_state.responses):
-            count +=1
-            if selecthor == 0:
-                message(response, is_user = True, key=f"a1{count}")
-                if games.str.fullmatch(response, case = False).any():
-                    if ((games.str.fullmatch(response, case = False)).sum())!=1:
-                       sel_game = games.loc[games.str.fullmatch(response, case = False)][0].item()
-                    else:
-                     sel_game = games.loc[games.str.fullmatch(response, case = False)].item()
-                    selecthor = 1
-                    message(st.session_state.questions[2], key=f"b2{count}")  
-                    continue
-                else:
-                    message(st.session_state.questions[1], key=f"b1{count}")
-            if selecthor == 1:
-                # message(st.session_state.questions[2], key=f"b2{count}")
-                message(response, is_user = True, key=f"a2{count}")
-                if response.isnumeric():
-                    alt = int(response)
-                    if alt <1:
-                        alt =1
-                    elif alt >5:
-                        alt = 5
-                    else:
-                        alt = alt
-                    selecthor = 3
-                    message(f'''Your favorite boardgame is {sel_game}.
-                    And you would like to get {alt} recommendations for similar games.
-                    Is that correct?
-                    (y) , (n)''', key=f"b4{count}")
-                    continue
-                else:
-                    message('Please enter a numeric value', key=f"b3{count}")
-            if selecthor== 2:
-                # message(f'''Your favorite boardgame is {sel_game}.
-                # And you would like to get {alt} recommendations for similar games.
-                # Is that correct?
-                # (y) , (n)''', key=f"b4{count}")
-                selecthor = 3
-                continue
-            if selecthor== 3:
-                message(response, is_user = True, key=f"a3{count}")  
-                if (pd.Series(['y', 'Y', 'yes', 'Yes'])).isin([response]).any():
-                    message('I can recommend you the following games:', key=f"b5{count}")
-                    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=sel_game,data = amey_df, z=alt)})
-                    amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
-                    res_co = 0
-                    for i in  range(len(amey_games)):
-                        message(
-                            f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/>'
-                            , key=f"img_{count}_{res_co}"
-                            , allow_html=True
-                        )
-                        # message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
-                        res_co +=1
-                
-                elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
-                    message('Lets try again', key=f"b6{count}")
-                    selecthor = 0
-                    continue
-                else:
-                    message(f'''{response} is not a valid input. Please try again
-                    What is your favorite Boardgame?''', key=f"b7{count}")
-                    selecthor = 0
-                    continue
-                    
-                        
-                    
-        
-        # for response, question in zip(st.session_state.responses, st.session_state.questions[1:]):
-        #     message(response, )
-        #     message(response)
-        #     message(question)
-
-
-    with st.container():
-        st.text_input("User Response:", on_change=on_input_change, key="user_input")
-
+    # ... (rest of the code for the Chatbot Recommender)
 
 else:
     st.write('')
