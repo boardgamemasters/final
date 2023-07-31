@@ -297,15 +297,17 @@ elif rec_select == 'Chatbot Recommender':
                         # message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
                         res_co +=1
         
-col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
 
-# Place the chat input box in the first column
-with col1:
-    st.text_input("User Response:", on_change=on_input_change, key="user_input")
+    # Place the chat input box in the first column
+    with col1:
+        st.text_input("User Response:", on_change=on_input_change, key="user_input")
 
-# Place the chat output (chatbot messages) in the third column, row 3
-with col3:
-    chat_placeholder = st.empty()      
+    # Place the chat output (chatbot messages) in the third column, row 3
+    with col3:
+        chat_placeholder = st.empty()
+else:
+    st.write('')     
         
                 
 elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
