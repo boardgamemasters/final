@@ -10,17 +10,18 @@ from urllib.request import urlopen
 from io import BytesIO
 from streamlit_chat import message
 
+
 # user_login = False
 if 'user_login' not in st.session_state:
     st.session_state['user_login'] = False
     st.session_state['user_name'] = ''
 
-## Custim Functions
+## Custom Functions
 import User_Ursula as ursula
 import ameyfun as af
 import funcrsys as pred
 
-st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
+st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_icon=logo)
 
 
 @st.cache_data
