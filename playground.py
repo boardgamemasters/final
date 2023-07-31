@@ -8,15 +8,7 @@ from PIL import Image
 import requests
 from urllib.request import urlopen
 from io import BytesIO
-
-##streamlit addons
 from streamlit_chat import message
-from streamlit_carousel import carousel
-from streamlit_modal import Modal
-import streamlit.components.v1 as components
-from streamlit_image_coordinates import streamlit_image_coordinates
-
-
 
 
 
@@ -64,7 +56,6 @@ if custom == True:
             , 'Amey likes you a lot'
             , 'Chatbot Recommender'
          ), key='rec_select')
-    # open_modal = st.sidebar.button("Open")
 else:
     # st.write('Basic Bitch!')
     rec_select = ''
@@ -117,53 +108,19 @@ if rec_select == 'Similar Games based of Description':
         ncol = len(sim_games)
         with st.container():
             st.header(f'Here are 5 Games, that are similar to the {len(sim_feature)} games you selected')
-            dynamic_variables = {}
-            dynamic_modal = {}
-            dyn_bgg_name = {}
-            dyn_bgg_video = {}
-            dyn_bgg_img ={}
-
-
             for i in range(0, ncol, 3):
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    bgg_id = sim_games.iloc[i]['bgg_id']
-                    dyn_bgg_name[bgg_id] = sim_games.iloc[i]['name']
-                    dyn_bgg_img[bgg_id] = sim_games.iloc[i]['image']
-                    dyn_bgg_video[bgg_id] = sim_games.iloc[i]['video']
-                    dynamic_modal[bgg_id] = Modal(dyn_bgg_name[bgg_id], key=f'bggID_{bgg_id}')
-                    
-                    dynamic_variables[bgg_id] = streamlit_image_coordinates(dyn_bgg_img[bgg_id], width=250, key = f"key_{bgg_id}")
+                    st.image(sim_games.iloc[i]['image'])
                     st.text(sim_games.iloc[i]['name'])
-
-                    
-
                 with col2:
                     if i + 1 < ncol:
-                        dynamic_variable_name = sim_games.iloc[i+1]['bgg_id']
-                        # dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(
-                        #     sim_games.iloc[i+1]['image'], width=250, key = f"key_{sim_games.iloc[i+1]['bgg_id']}"
-                        #                                                                        )
-                        # st.text(sim_games.iloc[i+1]['name'])
-                        # if dynamic_variables[dynamic_variable_name]:
-                        #     st.write('HELLO')
+                        st.image(sim_games.iloc[i+1]['image'])
+                        st.text(sim_games.iloc[i+1]['name'])    
                 with col3:                 
                     if i + 2 < ncol:
-                        dynamic_variable_name = sim_games.iloc[i+2]['bgg_id']
-                        # dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(
-                        #     sim_games.iloc[i+2]['image'], width=250, key = f"key_{sim_games.iloc[i+2]['bgg_id']}"
-                        #                                                                        )
-                        # st.text(sim_games.iloc[i+2]['name'])
-                        # if dynamic_variables[dynamic_variable_name]:
-                        #     st.write('HELLO')
-
-        if dynamic_variables[bgg_id]:
-            dynamic_modal[bgg_id].open()
-        if dynamic_modal[bgg_id].is_open():
-            with dynamic_modal[bgg_id].container():
-                st.write("Text goes here")
-                st.video(dyn_bgg_video[bgg_id]) 
-
+                        st.image(sim_games.iloc[i+2]['image'])
+                        st.text(sim_games.iloc[i+2]['name'])
     else:
         st.header(f'Please select Games on the left side!')
 
@@ -360,6 +317,3 @@ elif rec_select == 'Chatbot Recommender':
 
 else:
     st.write('')
-
-
-### Popup Test
