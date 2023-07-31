@@ -365,7 +365,7 @@ if st.session_state['user_login']==True:
     user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
     ncol = len(user_games)
     with st.container():
-        st.header(f'Special Treats for you {user_feature["name"]}')
+        st.header(f'Special Treats for you {st.session_state['user_name']}')
         for i in range(0, ncol, 5):
             col1, col2, col3, col4, col5 = st.columns(5)
             with col1:
