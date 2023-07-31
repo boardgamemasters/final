@@ -117,16 +117,18 @@ if rec_select == 'Similar Games based of Description':
         ncol = len(sim_games)
         with st.container():
             st.header(f'Here are 5 Games, that are similar to the {len(sim_feature)} games you selected')
+            dynamic_variables = {}
             for i in range(0, ncol, 3):
                 col1, col2, col3 = st.columns(3)
                 with col1:
 
+                    dynamic_variable_name = sim_games.iloc[i]['bgg_id']
                     # st.image(sim_games.iloc[i]['image'])
-                    value[sim_games.iloc[i]['bgg_id']] = streamlit_image_coordinates(sim_games.iloc[i]['image'])
+                    dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(sim_games.iloc[i]['image'])
                     st.text(sim_games.iloc[i]['name'])
                     # st.button(st.image(sim_games.iloc[i]['image']))
                     # st.write(f"<a href='#' id={sim_games.iloc[i]['bgg_id']}>{sim_games.iloc[i]['image']}</a>", unsafe_allow_html=True)
-                    if value[sim_games.iloc[i]['bgg_id']]:
+                    if dynamic_variables[dynamic_variable_name]:
                         st.write('HELLO')
 
                 with col2:
