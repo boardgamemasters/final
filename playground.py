@@ -10,7 +10,7 @@ from urllib.request import urlopen
 from io import BytesIO
 from streamlit_chat import message
 
-
+user_login = False
 
 ## Custim Functions
 import User_Ursula as ursula
@@ -47,6 +47,41 @@ st.sidebar.header('What do you wanna do?')
 
 custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
 
+
+placeholder = st.sidebar.empty()
+if user_login == False:
+    with placeholder.form("login"):
+        st.markdown("#### Enter your credentials")
+        User = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submit = st.form_submit_button("Login")
+    if (
+        submit 
+        and users_df['Username'].isin(User).any() ==True
+        and password 
+        ):
+        # If the form is submitted and the email and password are correct,
+        # clear the form/container and display a success message
+        placeholder.empty()
+        login = True
+        st.success("Login successful")
+    elif (
+        submit 
+        and users_df['Username'].isin(User).all() ==False
+          ):
+        st.error("Login failed")
+    else:
+        pass
+
+if user_login == True:
+    byebye = st.form_submit_button("Logout")
+    if byebye:
+        placeholder.empty()
+        login = False
+        st.success("Logout successful")
+
+
+
 if custom == True:
     rec_select = st.sidebar.radio(
         "What kind of recommendation do you like",
@@ -56,6 +91,7 @@ if custom == True:
             , 'Amey likes you a lot'
             , 'Chatbot Recommender'
          ), key='rec_select')
+
 else:
     # st.write('Basic Bitch!')
     rec_select = ''
