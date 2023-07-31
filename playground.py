@@ -133,7 +133,7 @@ if rec_select == 'Similar Games based of Description':
                     dyn_bgg_video[bgg_id] = sim_games.iloc[i]['video']
                     dynamic_modal[bgg_id] = Modal(dyn_bgg_name[bgg_id], key=f'bggID_{bgg_id}')
                     
-                    dynamic_variables[bgg_id] = streamlit_image_coordinates(dyn_bgg_name[bgg_id], width=250, key = f"key_{bgg_id}")
+                    dynamic_variables[bgg_id] = streamlit_image_coordinates(dyn_bgg_img[bgg_id], width=250, key = f"key_{bgg_id}")
                     st.text(sim_games.iloc[i]['name'])
                     if dynamic_variables[bgg_id]:
                         dynamic_modal[bgg_id].open()
