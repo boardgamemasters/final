@@ -327,7 +327,7 @@ else:
 
 
 ### Popup Test
-modal = Modal("Demo Modal")
+modal = Modal("Demo Modal", key='Yeeeah')
 if open_modal:
     modal.open()
 
