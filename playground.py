@@ -118,19 +118,23 @@ if rec_select == 'Similar Games based of Description':
             for i in range(0, ncol, 3):
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    # st.image(sim_games.iloc[i]['image'])
+                    st.image(sim_games.iloc[i]['image'])
                     st.text(sim_games.iloc[i]['name'])
-                    st.button(st.image(sim_games.iloc[i]['image']))
+                    # st.button(st.image(sim_games.iloc[i]['image']))
+                    st.write(f"<a href='#' id={st.image(sim_games.iloc[i]['bgg_id'])}>{st.image(sim_games.iloc[i]['image'])}</a>", unsafe_allow_html=True)
+                    if st.button(st.image(sim_games.iloc[i]['bgg_id'])):
+                        modal.open()
+
                 with col2:
                     if i + 1 < ncol:
                         st.image(sim_games.iloc[i+1]['image'])
                         st.text(sim_games.iloc[i+1]['name'])    
-                        st.button(st.image(sim_games.iloc[i+1]['image']))
+                        # st.button(st.image(sim_games.iloc[i+1]['image']))
                 with col3:                 
                     if i + 2 < ncol:
-                        # st.image(sim_games.iloc[i+2]['image'])
+                        st.image(sim_games.iloc[i+2]['image'])
                         st.text(sim_games.iloc[i+2]['name'])
-                        st.button(st.image(sim_games.iloc[i+2]['image']))
+                        # st.button(st.image(sim_games.iloc[i+2]['image']))
     else:
         st.header(f'Please select Games on the left side!')
 
