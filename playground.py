@@ -242,7 +242,7 @@ elif rec_select == 'Amey likes you a lot':
 
 
 elif rec_select == 'Chatbot Recommender':
-    chat_col = st.columns()
+    chat_col = st.columns(.3)
     games = amey_df['name_x']
     # st.sidebar.text('Coming Soon')
     def on_input_change():
