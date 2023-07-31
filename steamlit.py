@@ -246,9 +246,9 @@ elif rec_select == 'Chatbot Recommender':
                 message(response, is_user = True, key=f"a1{count}")
                 if games.str.fullmatch(response, case = False).any():
                     if ((games.str.fullmatch(response, case = False)).sum())!=1:
-                       sel_game = str(games.loc[games.str.fullmatch(response, case = False),'name_x'][0])
+                       sel_game = str(games.loc[games.str.fullmatch(response, case = False)][0])
                     else:
-                     sel_game = str(games.loc[games.str.fullmatch(response, case = False),'name_x'])
+                     sel_game = str(games.loc[games.str.fullmatch(response, case = False)])
                      st.table(games.loc[games.str.fullmatch(response, case = False)])
                     selecthor = 1
                     message(st.session_state.questions[2], key=f"b2{count}")  
