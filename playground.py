@@ -74,7 +74,7 @@ if user_login == False:
         pass
 
 if user_login == True:
-    byebye = st.form_submit_button("Logout")
+    byebye = st.sidebar.button("Logout")
     if byebye:
         placeholder.empty()
         login = False
