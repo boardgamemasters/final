@@ -242,8 +242,9 @@ elif rec_select == 'Amey likes you a lot':
 
 
 elif rec_select == 'Chatbot Recommender':
+    chat_col = st.columns([.5])
     games = amey_df['name_x']
-    st.sidebar.text('Coming Soon')
+    # st.sidebar.text('Coming Soon')
     def on_input_change():
         user_input = st.session_state.user_input
         st.session_state.responses.append(user_input)
@@ -274,75 +275,75 @@ elif rec_select == 'Chatbot Recommender':
 
     chat_placeholder = st.empty()
     st.button("Clear message", on_click=on_btn_click)
+    with chat_col:
+        message(st.session_state.questions[0]) 
 
-    message(st.session_state.questions[0]) 
-
-    with st.container():
-        selecthor = 0
-        count =0
-        # while 1==1:
-        for response in (st.session_state.responses):
-            count +=1
-            if selecthor == 0:
-                message(response, is_user = True, key=f"a1{count}")
-                if games.isin([response]).any():
-                    sel_game = response
-                    selecthor = 1
-                    message(st.session_state.questions[2], key=f"b2{count}")  
-                    continue
-                else:
-                    message(st.session_state.questions[1], key=f"b1{count}")
-            if selecthor == 1:
-                # message(st.session_state.questions[2], key=f"b2{count}")
-                message(response, is_user = True, key=f"a2{count}")
-                if response.isnumeric():
-                    alt = int(response)
-                    if alt <1:
-                        alt =1
-                    elif alt >5:
-                        alt = 5
+        with st.container():
+            selecthor = 0
+            count =0
+            # while 1==1:
+            for response in (st.session_state.responses):
+                count +=1
+                if selecthor == 0:
+                    message(response, is_user = True, key=f"a1{count}")
+                    if games.isin([response]).any():
+                        sel_game = response
+                        selecthor = 1
+                        message(st.session_state.questions[2], key=f"b2{count}")  
+                        continue
                     else:
-                        alt = alt
+                        message(st.session_state.questions[1], key=f"b1{count}")
+                if selecthor == 1:
+                    # message(st.session_state.questions[2], key=f"b2{count}")
+                    message(response, is_user = True, key=f"a2{count}")
+                    if response.isnumeric():
+                        alt = int(response)
+                        if alt <1:
+                            alt =1
+                        elif alt >5:
+                            alt = 5
+                        else:
+                            alt = alt
+                        selecthor = 3
+                        message(f'''Your favorite boardgame is {sel_game}.
+                        And you would like to get {alt} recommendations for similar games.
+                        Is that correct?
+                        (y) , (n)''', key=f"b4{count}")
+                        continue
+                    else:
+                        message('Please enter a numeric value', key=f"b3{count}")
+                if selecthor== 2:
+                    # message(f'''Your favorite boardgame is {sel_game}.
+                    # And you would like to get {alt} recommendations for similar games.
+                    # Is that correct?
+                    # (y) , (n)''', key=f"b4{count}")
                     selecthor = 3
-                    message(f'''Your favorite boardgame is {sel_game}.
-                    And you would like to get {alt} recommendations for similar games.
-                    Is that correct?
-                    (y) , (n)''', key=f"b4{count}")
                     continue
-                else:
-                    message('Please enter a numeric value', key=f"b3{count}")
-            if selecthor== 2:
-                # message(f'''Your favorite boardgame is {sel_game}.
-                # And you would like to get {alt} recommendations for similar games.
-                # Is that correct?
-                # (y) , (n)''', key=f"b4{count}")
-                selecthor = 3
-                continue
-            if selecthor== 3:
-                message(response, is_user = True, key=f"a3{count}")  
-                if (pd.Series(['y', 'Y', 'yes', 'Yes'])).isin([response]).any():
-                    message('I can recommend you the following games:', key=f"b5{count}")
-                    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=sel_game,data = amey_df, z=alt)})
-                    amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
-                    res_co = 0
-                    for i in  range(len(amey_games)):
-                        message(
-                            f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/>'
-                            , key=f"img_{count}_{res_co}"
-                            , allow_html=True
-                        )
-                        # message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
-                        res_co +=1
-                
-                elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
-                    message('Lets try again', key=f"b6{count}")
-                    selecthor = 0
-                    continue
-                else:
-                    message(f'''{response} is not a valid input. Please try again
-                    What is your favorite Boardgame?''', key=f"b7{count}")
-                    selecthor = 0
-                    continue
+                if selecthor== 3:
+                    message(response, is_user = True, key=f"a3{count}")  
+                    if (pd.Series(['y', 'Y', 'yes', 'Yes'])).isin([response]).any():
+                        message('I can recommend you the following games:', key=f"b5{count}")
+                        amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=sel_game,data = amey_df, z=alt)})
+                        amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
+                        res_co = 0
+                        for i in  range(len(amey_games)):
+                            message(
+                                f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/>'
+                                , key=f"img_{count}_{res_co}"
+                                , allow_html=True
+                            )
+                            # message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
+                            res_co +=1
+                    
+                    elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
+                        message('Lets try again', key=f"b6{count}")
+                        selecthor = 0
+                        continue
+                    else:
+                        message(f'''{response} is not a valid input. Please try again
+                        What is your favorite Boardgame?''', key=f"b7{count}")
+                        selecthor = 0
+                        continue
                     
                         
                     
