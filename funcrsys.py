@@ -50,7 +50,7 @@ def similar_description_games(bg_input, bg_cosines_df, bgref_df):
         # Sample 5 unique recommendations
         reclist = random.sample(result, 5)
 
-    games = bgref_df.loc[bgref_df.bgg_id.isin(reclist), ['bgg_id', 'name', 'image']]
+    games = bgref_df.loc[bgref_df.bgg_id.isin(reclist), ['bgg_id', 'name', 'image', 'video']]
     
     return games
 

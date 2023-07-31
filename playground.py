@@ -64,7 +64,7 @@ if custom == True:
             , 'Amey likes you a lot'
             , 'Chatbot Recommender'
          ), key='rec_select')
-    open_modal = st.sidebar.button("Open")
+    # open_modal = st.sidebar.button("Open")
 else:
     # st.write('Basic Bitch!')
     rec_select = ''
@@ -118,31 +118,49 @@ if rec_select == 'Similar Games based of Description':
         with st.container():
             st.header(f'Here are 5 Games, that are similar to the {len(sim_feature)} games you selected')
             dynamic_variables = {}
+            dynamic_modal = {}
+            dyn_bgg_name = {}
+            dyn_bgg_video = {}
+            dyn_bgg_img ={}
+
+
             for i in range(0, ncol, 3):
                 col1, col2, col3 = st.columns(3)
                 with col1:
-
-                    dynamic_variable_name = sim_games.iloc[i]['bgg_id']
-                    # st.image(sim_games.iloc[i]['image'])
+                    bgg_id = sim_games.iloc[i]['bgg_id']
+                    dyn_bgg_name[bgg_id] = sim_games.iloc[i]['name']
+                    dyn_bgg_img[bgg_id] = sim_games.iloc[i]['image']
+                    dyn_bgg_video[bgg_id] = sim_games.iloc[i]['video']
+                    dynamic_modal[bgg_id] = Modal(dyn_bgg_name[bgg_id], key=f'bggID{bgg_id}')
+                    
                     dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(sim_games.iloc[i]['image'], width=250, key = f"key_{sim_games.iloc[i]['bgg_id']}")
                     st.text(sim_games.iloc[i]['name'])
-                    # st.button(st.image(sim_games.iloc[i]['image']))
-                    # st.write(f"<a href='#' id={sim_games.iloc[i]['bgg_id']}>{sim_games.iloc[i]['image']}</a>", unsafe_allow_html=True)
                     if dynamic_variables[dynamic_variable_name]:
-                        st.write('HELLO')
+                        dynamic_modal[bgg_id].open()
+                    if dynamic_modal[bgg_id].is_open():
+                        with dynamic_modal[bgg_id].container():
+                            st.write("Text goes here")
+                            st.video(dyn_bgg_video[bgg_id]) 
+                    
 
                 with col2:
                     if i + 1 < ncol:
-                        a =1
-                        # st.image(sim_games.iloc[i+1]['image'])
-                        # st.text(sim_games.iloc[i+1]['name'])    
-                        # st.button(st.image(sim_games.iloc[i+1]['image']))
+                        dynamic_variable_name = sim_games.iloc[i+1]['bgg_id']
+                        dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(
+                            sim_games.iloc[i+1]['image'], width=250, key = f"key_{sim_games.iloc[i+1]['bgg_id']}"
+                                                                                               )
+                        st.text(sim_games.iloc[i+1]['name'])
+                        if dynamic_variables[dynamic_variable_name]:
+                            st.write('HELLO')
                 with col3:                 
                     if i + 2 < ncol:
-                        a=1
-                        # st.image(sim_games.iloc[i+2]['image'])
-                        # st.text(sim_games.iloc[i+2]['name'])
-                        # st.button(st.image(sim_games.iloc[i+2]['image']))
+                        dynamic_variable_name = sim_games.iloc[i+2]['bgg_id']
+                        dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(
+                            sim_games.iloc[i+2]['image'], width=250, key = f"key_{sim_games.iloc[i+2]['bgg_id']}"
+                                                                                               )
+                        st.text(sim_games.iloc[i+2]['name'])
+                        if dynamic_variables[dynamic_variable_name]:
+                            st.write('HELLO')
     else:
         st.header(f'Please select Games on the left side!')
 
@@ -342,23 +360,3 @@ else:
 
 
 ### Popup Test
-modal = Modal("Demo Modal", key='Yeeeah')
-if open_modal:
-    modal.open()
-
-if modal.is_open():
-    with modal.container():
-        st.write("Text goes here")
-
-        html_string = '''
-        <h1>HTML string in RED</h1>
-
-        <script language="javascript">
-          document.querySelector("h1").style.color = "red";
-        </script>
-        '''
-        components.html(html_string)
-
-        st.write("Some fancy text")
-        value = st.checkbox("Check me")
-        st.write(f"Checkbox checked: {value}")
