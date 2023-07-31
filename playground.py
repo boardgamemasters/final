@@ -146,21 +146,21 @@ if rec_select == 'Similar Games based of Description':
                 with col2:
                     if i + 1 < ncol:
                         dynamic_variable_name = sim_games.iloc[i+1]['bgg_id']
-                        dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(
-                            sim_games.iloc[i+1]['image'], width=250, key = f"key_{sim_games.iloc[i+1]['bgg_id']}"
-                                                                                               )
-                        st.text(sim_games.iloc[i+1]['name'])
-                        if dynamic_variables[dynamic_variable_name]:
-                            st.write('HELLO')
+                        # dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(
+                        #     sim_games.iloc[i+1]['image'], width=250, key = f"key_{sim_games.iloc[i+1]['bgg_id']}"
+                        #                                                                        )
+                        # st.text(sim_games.iloc[i+1]['name'])
+                        # if dynamic_variables[dynamic_variable_name]:
+                        #     st.write('HELLO')
                 with col3:                 
                     if i + 2 < ncol:
                         dynamic_variable_name = sim_games.iloc[i+2]['bgg_id']
-                        dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(
-                            sim_games.iloc[i+2]['image'], width=250, key = f"key_{sim_games.iloc[i+2]['bgg_id']}"
-                                                                                               )
-                        st.text(sim_games.iloc[i+2]['name'])
-                        if dynamic_variables[dynamic_variable_name]:
-                            st.write('HELLO')
+                        # dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(
+                        #     sim_games.iloc[i+2]['image'], width=250, key = f"key_{sim_games.iloc[i+2]['bgg_id']}"
+                        #                                                                        )
+                        # st.text(sim_games.iloc[i+2]['name'])
+                        # if dynamic_variables[dynamic_variable_name]:
+                        #     st.write('HELLO')
     else:
         st.header(f'Please select Games on the left side!')
 
