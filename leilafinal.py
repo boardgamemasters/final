@@ -169,9 +169,12 @@ elif rec_select == 'Amey likes you a lot':
                     st.image(amey_games.iloc[i+3]['image'])
                     st.text(amey_games.iloc[i+3]['name'])
 
+# ... (previous code)
+
 elif rec_select == 'Chatbot Recommender':
     games = amey_df['name_x']
     st.sidebar.text('Coming Soon')
+
     def on_input_change():
         user_input = st.session_state.user_input
         st.session_state.responses.append(user_input)
@@ -261,12 +264,10 @@ elif rec_select == 'Chatbot Recommender':
 
     col1, col2, col3 = st.columns(3)
 
-    # Place the chat input box in the first column
+    # Place the chat input box in the first column, row 3
     with col1:
         st.text_input("User Response:", on_change=on_input_change, key="user_input")
 
     # Place the chat output (chatbot messages) in the third column, row 3
     with col3:
         chat_placeholder = st.empty()
-else:
-    st.write('')
