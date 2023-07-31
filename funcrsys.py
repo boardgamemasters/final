@@ -131,7 +131,7 @@ def resize_img(url, w=400, h=400):
     
     return imageres
 
-def make_square(im, min_size=400, fill_color=(0, 0, 0, 0)):
+def make_square(im, min_size=200, fill_color=(0, 0, 0, 0)):
     urllib.request.urlretrieve(im, "bgimage")
     with Image.open("bgimage") as im:
         x, y = im.size
