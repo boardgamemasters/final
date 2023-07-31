@@ -135,12 +135,7 @@ if rec_select == 'Similar Games based of Description':
                     
                     dynamic_variables[bgg_id] = streamlit_image_coordinates(dyn_bgg_img[bgg_id], width=250, key = f"key_{bgg_id}")
                     st.text(sim_games.iloc[i]['name'])
-                    if dynamic_variables[bgg_id]:
-                        dynamic_modal[bgg_id].open()
-                    if dynamic_modal[bgg_id].is_open():
-                        with dynamic_modal[bgg_id].container():
-                            st.write("Text goes here")
-                            st.video(dyn_bgg_video[bgg_id]) 
+
                     
 
                 with col2:
@@ -161,6 +156,14 @@ if rec_select == 'Similar Games based of Description':
                         # st.text(sim_games.iloc[i+2]['name'])
                         # if dynamic_variables[dynamic_variable_name]:
                         #     st.write('HELLO')
+
+        if dynamic_variables[bgg_id]:
+            dynamic_modal[bgg_id].open()
+        if dynamic_modal[bgg_id].is_open():
+            with dynamic_modal[bgg_id].container():
+                st.write("Text goes here")
+                st.video(dyn_bgg_video[bgg_id]) 
+
     else:
         st.header(f'Please select Games on the left side!')
 
