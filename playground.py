@@ -242,7 +242,7 @@ elif rec_select == 'Amey likes you a lot':
 
 
 elif rec_select == 'Chatbot Recommender':
-    chat_col = st.columns(1)
+    
     games = amey_df['name_x']
     # st.sidebar.text('Coming Soon')
     def on_input_change():
@@ -276,6 +276,7 @@ elif rec_select == 'Chatbot Recommender':
     chat_placeholder = st.empty()
     st.button("Clear message", on_click=on_btn_click)
     with st.container():
+        chat_col = st.columns(1)
         with chat_col:
             message(st.session_state.questions[0]) 
 
