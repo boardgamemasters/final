@@ -122,7 +122,7 @@ if rec_select == 'Similar Games based of Description':
                     st.text(sim_games.iloc[i]['name'])
                     # st.button(st.image(sim_games.iloc[i]['image']))
                     st.write(f"<a href='#' id={st.image(sim_games.iloc[i]['bgg_id'])}>{sim_games.iloc[i]['image']}</a>", unsafe_allow_html=True)
-                    if st.button(st.image(sim_games.iloc[i]['bgg_id'])):
+                    if st.button(sim_games.iloc[i]['bgg_id']):
                         modal.open()
 
                 with col2:
