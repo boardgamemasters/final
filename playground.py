@@ -121,7 +121,7 @@ if rec_select == 'Similar Games based of Description':
                     # st.image(sim_games.iloc[i]['image'])
                     st.text(sim_games.iloc[i]['name'])
                     # st.button(st.image(sim_games.iloc[i]['image']))
-                    st.write(f"<a href='#' id={sim_games.iloc[i]['bgg_id']}>{st.image(sim_games.iloc[i]['image'])}</a>", unsafe_allow_html=True)
+                    st.write(f"<a href='#' id={sim_games.iloc[i]['bgg_id']}>{sim_games.iloc[i]['image']}</a>", unsafe_allow_html=True)
                     if st.button(sim_games.iloc[i]['bgg_id']):
                         st.write('HELLO')
 
