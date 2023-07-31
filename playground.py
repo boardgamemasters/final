@@ -57,7 +57,7 @@ if user_login == False:
         submit = st.form_submit_button("Login")
     if (
         submit 
-        and User.isin(users_df['Username']) ==True
+        and list(User).isin(users_df['Username']).any ==True
         and password 
         ):
         # If the form is submitted and the email and password are correct,
