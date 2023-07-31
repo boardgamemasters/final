@@ -10,12 +10,15 @@ from urllib.request import urlopen
 from io import BytesIO
 from streamlit_chat import message
 
-## Custom Functions
+
+
+## Custim Functions
 import User_Ursula as ursula
 import ameyfun as af
 import funcrsys as pred
 
 st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
+
 
 @st.cache_data
 def data_load():
@@ -27,18 +30,16 @@ def data_load():
     amey_df     =    pd.read_csv('data/final_data.csv')
     return rating_df, games_df, users_df, games_info, cosine_df, amey_df
 
+
 rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
 
-# ... (rest of the code)
+# # Download the image using requests
+# response = requests.get(logo_url)
+# image_bytes = response.content
 
-def find_right_category(user_favorite_game, data):
-    favorite_game = user_favorite_game.lower()  # Convert to lowercase string
-    for index, row in data.iterrows():
-        if favorite_game in row['name_lower'].str.lower():
-            return row['consolidated_category_name']
-    return None
+# # Open the image using PIL
+# logo = Image.open(BytesIO(image_bytes))
 
-# ... (rest of the code)
 
 st.header("Find awesome Games")
 
@@ -164,20 +165,15 @@ elif rec_select == 'Similar Taste':
 
 elif rec_select == 'Amey likes you a lot':  
     def amey_like():
-<<<<<<< HEAD
         gname = st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key = 'amey_like')
-=======
-        gname = st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key='amey_like')
->>>>>>> 31e4b2b49309198063d57ede2ba0085fa6107244
         amount = st.sidebar.slider('Number of Recommendations', min_value=4, max_value=16, value=8, step=4, key='aln', help='Here you can specify the number of recommended Boardgames')
 
         data = {'amount': amount,
                 'name' : gname}
-        return data
-
+        return(data)
     amey_feature =  amey_like()
     # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
-    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'], data=amey_df, z=amey_feature['amount'])})
+    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
 
     ncol = len(amey_games)
@@ -201,8 +197,9 @@ elif rec_select == 'Amey likes you a lot':
                     st.image(amey_games.iloc[i+3]['image'])
                     st.text(amey_games.iloc[i+3]['name'])
 
+
+
 elif rec_select == 'Chatbot Recommender':
-<<<<<<< HEAD
     games = amey_df['name_x']
     st.sidebar.text('Coming Soon')
     def on_input_change():
@@ -322,9 +319,6 @@ elif rec_select == 'Chatbot Recommender':
     with st.container():
         st.text_input("User Response:", on_change=on_input_change, key="user_input")
 
-=======
-    # ... (rest of the code for the Chatbot Recommender)
->>>>>>> 31e4b2b49309198063d57ede2ba0085fa6107244
 
 else:
     st.write('')
