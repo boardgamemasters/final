@@ -69,7 +69,7 @@ if user_login == False:
         submit 
         and users_df['Username'].isin(list(User)).any() ==False
           ):
-        st.error(f"User: {User} not failed")
+        st.error(f"User: {User} not failed  {users_df['Username'].isin(list(User)).any()}")
     else:
         pass
 
