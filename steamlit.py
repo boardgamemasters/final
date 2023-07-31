@@ -205,6 +205,7 @@ elif rec_select == 'Chatbot Recommender':
     def on_input_change():
         user_input = st.session_state.user_input
         st.session_state.responses.append(user_input)
+        st.session_state.user_input = ""  # Clear the input after processing
 
     def on_btn_click():
         del st.session_state['questions']
@@ -243,8 +244,11 @@ elif rec_select == 'Chatbot Recommender':
             count +=1
             if selecthor == 0:
                 message(response, is_user = True, key=f"a1{count}")
-                if games.isin([response]).any():
-                    sel_game = response
+                if games.str.fullmatch(response, case = False).any():
+                    if ((games.str.fullmatch(response, case = False)).sum())!=1:
+                       sel_game = games.loc[games.str.fullmatch(response, case = False)][0]
+                    else:
+                     sel_game = games.loc[games.str.fullmatch(response, case = False)]
                     selecthor = 1
                     message(st.session_state.questions[2], key=f"b2{count}")  
                     continue
