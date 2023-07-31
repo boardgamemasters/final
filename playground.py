@@ -275,10 +275,11 @@ elif rec_select == 'Chatbot Recommender':
 
     chat_placeholder = st.empty()
     st.button("Clear message", on_click=on_btn_click)
-    with chat_col:
-        message(st.session_state.questions[0]) 
+    with st.container():
+        with chat_col:
+            message(st.session_state.questions[0]) 
 
-        with st.container():
+        # with st.container():
             selecthor = 0
             count =0
             # while 1==1:
