@@ -297,7 +297,7 @@ elif rec_select == 'Chatbot Recommender':
                         # message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
                         res_co +=1
         
-  col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns(3)
 
 # Place the chat input box in the first column
 with col1:
