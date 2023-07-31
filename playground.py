@@ -387,7 +387,7 @@ if st.session_state['user_login']==True:
                 if i + 3 < ncol:
                     # st.image(user_games.iloc[i+3]['image'])
                     st.image(pred.make_square(user_games.iloc[i+3]['image']))#, w=400, h=400))
-                    st.header(user_games.iloc[i+3]['name'])
+                    st.text(user_games.iloc[i+3]['name'])
             with col5:                 
                 if i + 4 < ncol:
                     # st.image(user_games.iloc[i+4]['image'])
