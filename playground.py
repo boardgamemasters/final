@@ -124,7 +124,7 @@ if rec_select == 'Similar Games based of Description':
 
                     dynamic_variable_name = sim_games.iloc[i]['bgg_id']
                     # st.image(sim_games.iloc[i]['image'])
-                    dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(sim_games.iloc[i]['image'], width=250, key = f'key_{sim_games.iloc[i]['bgg_id']}')
+                    dynamic_variables[dynamic_variable_name] = streamlit_image_coordinates(sim_games.iloc[i]['image'], width=250, key = f"key_{sim_games.iloc[i]['bgg_id']}")
                     st.text(sim_games.iloc[i]['name'])
                     # st.button(st.image(sim_games.iloc[i]['image']))
                     # st.write(f"<a href='#' id={sim_games.iloc[i]['bgg_id']}>{sim_games.iloc[i]['image']}</a>", unsafe_allow_html=True)
