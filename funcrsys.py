@@ -110,12 +110,12 @@ def best_general(bg, max_gm=10, year=2000, price=28, minplay=2, minage=10):
     #     result_df['best_min_age'] = best_min_age
     
     # Filter and sample the best items based on both minimum number of players and minimum age, along with other conditions 11
-    best_min_page = list(bg.loc[(bg.year >= year) & 
+    best_min_page = bg.loc[(bg.year >= year) & 
                         (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
                         (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
                         (bg.min_players <= minplay) & 
                         (bg.min_age <= minage), 
-                        ['bgg_id']].sample(max_gm))
+                        ['bgg_id']].sample(max_gm)
     
     return best_min_page
     
