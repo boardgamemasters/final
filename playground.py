@@ -262,17 +262,32 @@ if st.session_state['DemoDay'] == False:
 
         st.header("""May the Force....
                 I meant... May the Games be with You""")
-        questions_list = [
-            # 0
-            '''I would like to recommend you some Boardgames.
-            What is your favorite one?'''    
-            # 1
-            , '''I dont know this Game.
-            Please enter another one'''
-            # 2
-            , '''How many recommendations do you want to get?
-            'Please enter a Number between 1 and 5'''
-        ]
+        if st.session_state['user_login'] == True:
+            questions_list = [
+                # 0
+                f'''Hey {st.session_state['user_name']}. 
+                I would like to recommend you some Boardgames.
+                What Games should my Recommendations be similar to?'''    
+                # 1
+                , f'''Sorry {st.session_state['user_name']}.
+                I dont know this Game.
+                Please enter another one'''
+                # 2
+                , '''How many recommendations do you want to get?
+                'Please enter a Number between 1 and 5'''
+            ]
+        else:
+            questions_list = [
+                # 0
+                '''I would like to recommend you some Boardgames.
+                What is your favorite one?'''    
+                # 1
+                , '''I dont know this Game.
+                Please enter another one'''
+                # 2
+                , '''How many recommendations do you want to get?
+                'Please enter a Number between 1 and 5'''
+            ]
 
         if 'responses' not in st.session_state.keys():
             st.session_state.questions.extend(questions_list)
@@ -292,9 +307,9 @@ if st.session_state['DemoDay'] == False:
                     message(response, is_user = True, key=f"a1{count}")
                     if games.str.fullmatch(response, case = False).any():
                         if ((games.str.fullmatch(response, case = False)).sum())!=1:
-                        sel_game = games[games.str.fullmatch(response, case = False)][0].item()     
+                            sel_game = games[games.str.fullmatch(response, case = False)][0].item()     
                         else:
-                        sel_game = games[games.str.fullmatch(response, case = False)].item()     
+                            sel_game = games[games.str.fullmatch(response, case = False)].item()     
                         selecthor = 1
                         message(st.session_state.questions[2], key=f"b2{count}")  
                         continue
@@ -369,9 +384,10 @@ if st.session_state['DemoDay'] == False:
 else:
     st.title(f'Welcome to Demoday')
 
+
+st.sidebar.divider()
 def set_demoday():
     st.session_state['DemoDay'] = ~st.session_state['DemoDay']        # Not TRue but -1
-
 sel_DemoDay_placeholder = st.sidebar.empty()
 with sel_DemoDay_placeholder:
     st.checkbox(label="DemoDay", 
