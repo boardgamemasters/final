@@ -242,7 +242,6 @@ with sel_chatbot_placeholder:
                             on_change=set_chatbot
                             )
 
-st.header(st.session_state['set_chat'])    
 
 if st.session_state['set_chat']:
     games = amey_df['name_x']
@@ -258,7 +257,7 @@ if st.session_state['set_chat']:
 
     st.session_state.setdefault('questions', [])
 
-    st.title("""May the Force....
+    st.header("""May the Force....
              I meant... May the Games be with You""")
     questions_list = [
         # 0
