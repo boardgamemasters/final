@@ -16,66 +16,53 @@ import User_Ursula as ursula
 import ameyfun as af
 import funcrsys as pred
 
-# Login Handler & other session varibles
+# Login Handler & other session variables
 if 'user_login' not in st.session_state:
     st.session_state['user_login'] = False
     st.session_state['user_name'] = ''
 
-st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_icon=logo)
-
-
-@st.cache_data
-def data_load():
-    rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
-    games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
-    users_df    =    pd.read_csv('data/usernames_v2.csv')
-    games_info  =    pd.read_csv('data/bgref.csv')
-    cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
-    amey_df     =    pd.read_csv('data/final_data.csv')
-    return rating_df, games_df, users_df, games_info, cosine_df, amey_df
-
-
-rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
+st.set_page_config(page_title='Boardgame Recommender', layout='wide')  #, page_icon=logo)
 
 # Add CSS for styling the chat window
 st.markdown(
     """
     <style>
-    .chat-container {
-        background-image: url('https://www.macobserver.com/wp-content/uploads/2019/05/workfeatured-data.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        min-height: 300px; /* Adjust this value as per your requirement */
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 10px;
+    html {
+        height: 100%;
     }
-    .chat-window {
-        padding: 10px;
-        border: 1px solid #d8d8d8;
-        border-radius: 10px;
-        background-color: rgba(255, 255, 255, 0.9); /* Set the background color and opacity */
-        margin-bottom: 10px;
+    body {
+        height: 100%;
+        background: radial-gradient(ellipse at bottom, #5091DD 0%, #030617 100%);
     }
-    .chat-message {
-        margin-bottom: 10px;
-        padding: 8px;
-        border-radius: 5px;
-        background-color: #d8d8d8;
+    #grid {
+        width: 100%;
+        height: 1px;
+        box-shadow: 0px 0px #030617, 0px 3px #030617, 0px 6px #030617, 0px 9px #030617, ...;
     }
-    .user-message {
-        background-color: #0071bc;
-        color: white;
-        text-align: right;
-    }
-    .bot-message {
-        background-color: #f9f9f9;
-        color: black;
+    #grid:after {
+        content: "";
+        position: absolute;
+        width: 1px;
+        height: 100%;
+        box-shadow: 0px 0px #030617, 3px 0px #030617, 6px 0px #030617, 9px 0px #030617, ...;
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
+@st.cache_data
+def data_load():
+    rating_df = pd.read_csv('data/final_ratings_v3.csv')
+    games_df = pd.read_csv('data/game_learn_df_v3.csv')
+    users_df = pd.read_csv('data/usernames_v2.csv')
+    games_info = pd.read_csv('data/bgref.csv')
+    cosine_df = pd.read_csv('data/bg_cosines_final.csv')
+    amey_df = pd.read_csv('data/final_data.csv')
+    return rating_df, games_df, users_df, games_info, cosine_df, amey_df
+
+
+rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
 
 
 st.header("Find awesome Games")
