@@ -171,8 +171,9 @@ def fav_bguser(user_id, bg_num, reviews_df, bg_df):
     bg_image = []
 
     # Extract the 'bgg_id'
-    bg = list(reviews_df.loc[reviews_df.Username == user_id].sort_values(
-                'Rating', ascending=False).head(bg_num)['bgg_id'].values)
+    bg = (list(reviews_df.loc[reviews_df.Username == user_id].sort_values(
+                'Rating', ascending=False)['bgg_id'].values)).drop_duplicates().head(bg_num)
+    
 
     # Iterate over the 'bgg_id' values of the top board games
     for b in bg:
