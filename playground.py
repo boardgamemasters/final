@@ -228,8 +228,7 @@ if st.session_state['set_chat'] == False:
         else:
             st.header(f'Please select Games on the left side!')
     st.sidebar.divider()
-else:
-    st.write('')
+
 
 def set_chatbot():
     st.session_state['set_chat'] = ~st.session_state['set_chat']
@@ -242,7 +241,8 @@ with sel_chatbot_placeholder:
                             value= st.session_state['set_chat'],
                             on_change=set_chatbot
                             )
-    
+
+st.header(st.session_state['set_chat'])    
 
 if st.session_state['set_chat'] == True:
     games = amey_df['name_x']
@@ -345,8 +345,7 @@ if st.session_state['set_chat'] == True:
                     continue
     with st.container():
         st.text_input("User Response:", on_change=on_input_change, key="user_input")
-else:
-    aasdasfdgsdf =1
+
 
 if st.session_state['set_chat'] == False:
     if st.session_state['user_login']==True:
