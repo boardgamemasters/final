@@ -38,7 +38,7 @@ def data_load():
 ####### Users Favorites
 @st.cache_data
 def user_fav():
-    fav_games = pred.fav_bguser(user_id= st.session_state['user_name'], bg_num = 10, reviews_df = rating_df, bg_df=games_df)
+    fav_games = pred.fav_bguser(user_id= st.session_state['user_name'], bg_num = 10, reviews_df = rating_df, bg_df=games_info)
     ncol = len(fav_games)
     with st.container():
         st.header(f'''Hey {st.session_state["user_name"]}. Your 10 Top Rated games are: ''')
