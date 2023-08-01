@@ -176,7 +176,7 @@ with u_rec_placeholder:
                             track_color="#29B5E8"
                             )
 
-
+st.sidebar.divider()
 sim_desc_placeholder = st.sidebar.empty()
 with sim_desc_placeholder:
     sim_desc = tog.st_toggle_switch(label=f"Look for Games with similar Description", 
@@ -187,7 +187,6 @@ with sim_desc_placeholder:
                             active_color="#11567f", 
                             track_color="#29B5E8"
                             )
-    st.divider()
     sad_sel = tog.st_toggle_switch(label=f"Be SAAAAD", 
                             key="sad_sel", 
                             default_value=True, 
