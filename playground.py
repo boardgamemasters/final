@@ -10,6 +10,7 @@ from urllib.request import urlopen
 from io import BytesIO
 from streamlit_chat import message
 import  streamlit_toggle as tog
+import time
 
 
 ## Custom Functions
@@ -390,9 +391,10 @@ def set_demoday():
     st.session_state['DemoDay'] = ~st.session_state['DemoDay']        # Not TRue but -1
 sel_DemoDay_placeholder = st.sidebar.empty()
 with sel_DemoDay_placeholder:
+    time.sleep(2)
     st.checkbox(label="DemoDay", 
                             key="DemoDay", 
                             help = 'Lets Start DemoDay',
-                            # value= st.session_state['DemoDay'],
+                            value= st.session_state['DemoDay'],
                             on_change=set_demoday
                             )
