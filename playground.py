@@ -126,6 +126,7 @@ if st.session_state['user_login'] == True:
         st.session_state['user_login'] = False
         st.session_state['user_name'] = ''
         st.success("Logout successful")
+        special_treat.clear()
 
 
 
