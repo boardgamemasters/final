@@ -193,8 +193,9 @@ elif rec_select == 'Similar Taste':
 
 elif rec_select == 'Amey likes you a lot':  
     def amey_like():
-        gname = st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key = 'amey_like')
-        amount = st.sidebar.slider('Number of Recommendations', min_value=4, max_value=16, value=8, step=4, key='aln', help='Here you can specify the number of recommended Boardgames')
+    print("User input:", st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key='amey_like'))
+    print("Unique values in 'name_x' column:", amey_df['name_x'].unique())
+    # Rest of the code...
 
         amount = st.sidebar.slider('Number of Recommendations', min_value=4, max_value=16, value=8, step=4, key='aln', help='Here you can specify the number of recommended Boardgames')
 
