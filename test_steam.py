@@ -37,12 +37,45 @@ def data_load():
 
 rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
 
-# # Download the image using requests
-# response = requests.get(logo_url)
-# image_bytes = response.content
-
-# # Open the image using PIL
-# logo = Image.open(BytesIO(image_bytes))
+# Add CSS for styling the chat window
+st.markdown(
+    """
+    <style>
+    .chat-container {
+        background-image: url('https://www.macobserver.com/wp-content/uploads/2019/05/workfeatured-data.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        min-height: 300px; /* Adjust this value as per your requirement */
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    .chat-window {
+        padding: 10px;
+        border: 1px solid #d8d8d8;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.9); /* Set the background color and opacity */
+        margin-bottom: 10px;
+    }
+    .chat-message {
+        margin-bottom: 10px;
+        padding: 8px;
+        border-radius: 5px;
+        background-color: #d8d8d8;
+    }
+    .user-message {
+        background-color: #0071bc;
+        color: white;
+        text-align: right;
+    }
+    .bot-message {
+        background-color: #f9f9f9;
+        color: black;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 st.header("Find awesome Games")
