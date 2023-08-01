@@ -203,7 +203,7 @@ if st.session_state['DemoDay'] == False:
         
         if gen_rec == True:
             def year_rec():
-                g_year = st.sidebar.slider('Year Published', min_value=amey_df['year'].min(), max_value=amey_df['year'].max(), value=2012, step=1, key='g_year', help='Here you can specify the year that the Boardgames shoud be published in')
+                g_year = st.sidebar.slider('Year Published', 1960, max_value=amey_df['year'].max(), value=2012, step=1, key='g_year', help='Here you can specify the year that the Boardgames shoud be published in')
                 return(g_year)
             
             def price_rec():
@@ -260,7 +260,7 @@ if st.session_state['DemoDay'] == False:
                     multi_prime = 1
                 prime_selecthor = year_prime * price_prime * player_prime * age_prime * multi_prime
             
-            
+
 
 
 
