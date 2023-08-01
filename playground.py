@@ -23,7 +23,8 @@ if 'user_login' not in st.session_state:
     st.session_state['user_name'] = ''
 
 if 'chat_bot_only' not in st.session_state:
-    st.session_state['chat_bot_only'] = False
+    st.session_state['chat_bot_only'] = ''
+    set_chat = False
 
 st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_icon=logo)
 
@@ -159,7 +160,7 @@ if st.session_state['user_login'] == True:
 
 # custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
 
-if st.session_state['chat_bot_only'] == False:
+if set_chat == False:
     u_fav_placeholder = st.sidebar.empty()
     u_rec_placeholder = st.sidebar.empty()
     with u_fav_placeholder:
@@ -233,14 +234,14 @@ def chat_select_change():
 
 sel_chatbot_placeholder = st.sidebar.empty()
 with sel_chatbot_placeholder:
-    st.session_state['chat_bot_only'] = st.checkbox(label="Chatbot Recommender", 
+    set_chat = st.checkbox(label="Chatbot Recommender", 
                             key="rec_chat", 
                             help = 'Use our awesome Chatbox to get Boardgame-Recommendations.',
                             on_change= chat_select_change
                             )
     
 
-if st.session_state['chat_bot_only'] == True:
+if set_chat == True:
     games = amey_df['name_x']
     def on_input_change():
         user_input = st.session_state.user_input
@@ -344,7 +345,7 @@ if st.session_state['chat_bot_only'] == True:
 else:
     aasdasfdgsdf =1
 
-if st.session_state['chat_bot_only'] == False:
+if set_chat == False:
     if st.session_state['user_login']==True:
         # user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 10, user = st.session_state['user_name'], game_frame=games_df)
         # user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
