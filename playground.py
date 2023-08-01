@@ -187,6 +187,7 @@ with sim_desc_placeholder:
                             active_color="#11567f", 
                             track_color="#29B5E8"
                             )
+    st.divider()
     sad_sel = tog.st_toggle_switch(label=f"Be SAAAAD", 
                             key="sad_sel", 
                             default_value=True, 
