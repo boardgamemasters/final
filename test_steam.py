@@ -10,19 +10,12 @@ from urllib.request import urlopen
 from io import BytesIO
 from streamlit_chat import message
 
-
 ## Custom Functions
 import User_Ursula as ursula
 import ameyfun as af
 import funcrsys as pred
 
-# Login Handler & other session varibles
-if 'user_login' not in st.session_state:
-    st.session_state['user_login'] = False
-    st.session_state['user_name'] = ''
-
-st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_icon=logo)
-
+st.set_page_config(page_title='Boardgame Recommender')
 
 @st.cache_data
 def data_load():
@@ -34,59 +27,53 @@ def data_load():
     amey_df     =    pd.read_csv('data/final_data.csv')
     return rating_df, games_df, users_df, games_info, cosine_df, amey_df
 
-
 rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
 
-# # Download the image using requests
-# response = requests.get(logo_url)
-# image_bytes = response.content
-
-# # Open the image using PIL
-# logo = Image.open(BytesIO(image_bytes))
-
+# Add CSS for styling the chat window
+st.markdown(
+    """
+    <style>
+    .chat-container {
+        background-image: url('https://www.macobserver.com/wp-content/uploads/2019/05/workfeatured-data.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        min-height: 300px; /* Adjust this value as per your requirement */
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    .chat-window {
+        padding: 10px;
+        border: 1px solid #d8d8d8;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.9); /* Set the background color and opacity */
+        margin-bottom: 10px;
+    }
+    .chat-message {
+        margin-bottom: 10px;
+        padding: 8px;
+        border-radius: 5px;
+        background-color: #d8d8d8;
+    }
+    .user-message {
+        background-color: #0071bc;
+        color: white;
+        text-align: right;
+    }
+    .bot-message {
+        background-color: #f9f9f9;
+        color: black;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 st.header("Find awesome Games")
 
 st.sidebar.header('What do you wanna do?')
 
 custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
-
-
-placeholder = st.sidebar.empty()
-if st.session_state['user_login'] == False:
-    with placeholder.form("login"):
-        st.markdown("#### Enter your credentials")
-        User = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        submit = st.form_submit_button("Login")
-    if (
-        submit 
-        and users_df['Username'].str.fullmatch(User).any() == True
-        # and password != ''
-        ):
-        # If the form is submitted and the email and password are correct,
-        # clear the form/container and display a success message
-        placeholder.empty()
-        st.session_state['user_login'] = True
-        st.session_state['user_name'] = User
-        st.success("Login successful")
-    elif (
-        submit 
-        and users_df['Username'].str.fullmatch(User).any() == False
-          ):
-        st.error(f"User: {User} not failed {(users_df['Username'].isin(list(User))).sum()}")
-    else:
-        pass
-
-if st.session_state['user_login'] == True:
-    byebye = st.sidebar.button("Logout")
-    if byebye:
-        placeholder.empty()
-        st.session_state['user_login'] = False
-        st.session_state['user_name'] = ''
-        st.success("Logout successful")
-
-
 
 if custom == True:
     rec_select = st.sidebar.radio(
@@ -97,7 +84,6 @@ if custom == True:
             , 'Amey likes you a lot'
             , 'Chatbot Recommender'
          ), key='rec_select')
-
 else:
     # st.write('Basic Bitch!')
     rec_select = ''
@@ -112,21 +98,21 @@ else:
     #         st.image(pop_movies.iloc[i]['img'])
 
     
-    # ncol = 3#len(pop_movies)
-    # with st.container():
-    #     for i in range(0, ncol, 3):
-    #         col1, col2, col3 = st.columns(3)
-    #         with col1:
-    #             # st.image(pop_movies.iloc[i]['img'])
-    #             st.text('Spiel 1')    # (pop_movies.iloc[i]['title'])
-    #         with col2:
-    #             if i + 1 < ncol:
-    #                 # st.image(pop_movies.iloc[i+1]['img'])
-    #                 st.text('Spiel 2')    # (pop_movies.iloc[i+1]['title'])                    
-    #         with col3:                 
-    #             if i + 2 < ncol:
-    #                 # st.image(pop_movies.iloc[i+2]['img'])
-    #                 st.text('Spiel 3')    # (pop_movies.iloc[i+2]['title'])
+    ncol = 3#len(pop_movies)
+    with st.container():
+        for i in range(0, ncol, 3):
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                # st.image(pop_movies.iloc[i]['img'])
+                st.text('Spiel 1')    # (pop_movies.iloc[i]['title'])
+            with col2:
+                if i + 1 < ncol:
+                    # st.image(pop_movies.iloc[i+1]['img'])
+                    st.text('Spiel 2')    # (pop_movies.iloc[i+1]['title'])                    
+            with col3:                 
+                if i + 2 < ncol:
+                    # st.image(pop_movies.iloc[i+2]['img'])
+                    st.text('Spiel 3')    # (pop_movies.iloc[i+2]['title'])
                     
 
     
@@ -207,7 +193,10 @@ elif rec_select == 'Similar Taste':
 
 elif rec_select == 'Amey likes you a lot':  
     def amey_like():
-        gname = st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key = 'amey_like')
+    print("User input:", st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key='amey_like'))
+    print("Unique values in 'name_x' column:", amey_df['name_x'].unique())
+    # Rest of the code...
+
         amount = st.sidebar.slider('Number of Recommendations', min_value=4, max_value=16, value=8, step=4, key='aln', help='Here you can specify the number of recommended Boardgames')
 
         data = {'amount': amount,
@@ -244,7 +233,6 @@ elif rec_select == 'Amey likes you a lot':
 elif rec_select == 'Chatbot Recommender':
     games = amey_df['name_x']
     st.sidebar.text('Coming Soon')
-
     def on_input_change():
         user_input = st.session_state.user_input
         st.session_state.responses.append(user_input)
@@ -256,143 +244,111 @@ elif rec_select == 'Chatbot Recommender':
         selecthor = 0
 
     st.session_state.setdefault('questions', [])
-    st.session_state.setdefault('responses', [])
-    selecthor = 0
 
     st.title("Boardgame Recommender Chatbot")
-
-    # Add CSS for styling the chat window
-    st.markdown(
-        """
-        <style>
-        .chat-window {
-            padding: 10px;
-            border: 1px solid #d8d8d8;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-            margin-bottom: 10px;
-        }
-        .chat-message {
-            margin-bottom: 10px;
-            padding: 8px;
-            border-radius: 5px;
-            background-color: #d8d8d8;
-        }
-        .user-message {
-            background-color: #0071bc;
-            color: white;
-            text-align: right;
-        }
-        .bot-message {
-            background-color: #f9f9f9;
-            color: black;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.markdown('<div class="chat-window">', unsafe_allow_html=True)
-
-    # Greeting message
-    st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
-    st.write("Hi there! I'm your Boardgame Recommender Chatbot.")
-    st.write("I can recommend you some awesome board games based on your preferences.")
-    st.write("Let's get started!")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("Hi there! I'm your Boardgame Recommender Chatbot.")
+    st.markdown("I can recommend you some awesome board games based on your preferences.")
+    st.markdown("Let's get started!")
 
     questions_list = [
-        '''What is your favorite board game?'''
-        # Add other questions here...
+        # 0
+        '''I would like to recommend you some Boardgames.
+        What is your favorite one?'''    
+        # 1
+        , '''I dont know this Game.
+        Please enter another one'''
+        # 2
+        , '''How many recommendations do you want to get?
+        'Please enter a Number between 1 and 5'''
     ]
 
-    for response in (st.session_state.responses):
-        if selecthor == 0:
-            st.markdown('<div class="user-message chat-message">', unsafe_allow_html=True)
-            st.write(response)
-            st.markdown('</div>', unsafe_allow_html=True)
+    if 'responses' not in st.session_state.keys():
+        st.session_state.questions.extend(questions_list)
+        st.session_state.responses = []
 
-            if games.str.fullmatch(response, case=False).any():
-                if ((games.str.fullmatch(response, case=False)).sum()) != 1:
-                    sel_game = games.loc[games.str.fullmatch(response, case=False)][0].item()
+    chat_placeholder = st.empty()
+    st.button("Clear message", on_click=on_btn_click)
+
+    message(st.session_state.questions[0]) 
+
+    with st.container():
+        selecthor = 0
+        count =0
+        # while 1==1:
+        for response in (st.session_state.responses):
+            count +=1
+            if selecthor == 0:
+                message(response, is_user = True, class_name="user-message chat-message", key=f"a1{count}")
+                if games.str.fullmatch(response, case = False).any():
+                    if ((games.str.fullmatch(response, case = False)).sum())!=1:
+                       sel_game = games.loc[games.str.fullmatch(response, case = False)][0].item()
+                    else:
+                     sel_game = games.loc[games.str.fullmatch(response, case = False)].item()
+                    selecthor = 1
+                    message(st.session_state.questions[2], key=f"b2{count}")  
+                    continue
                 else:
-                    sel_game = games.loc[games.str.fullmatch(response, case=False)].item()
-                selecthor = 1
-                st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
-                st.write("How many recommendations do you want to get? Please enter a number between 1 and 5.")
-                st.markdown('</div>', unsafe_allow_html=True)
-                continue
-            else:
-                st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
-                st.write("I don't know this game. Please enter another one.")
-                st.markdown('</div>', unsafe_allow_html=True)
-                selecthor = 0
-                continue
-
-        if selecthor == 1:
-            st.markdown('<div class="user-message chat-message">', unsafe_allow_html=True)
-            st.write(response)
-            st.markdown('</div>', unsafe_allow_html=True)
-
-            if response.isnumeric():
-                alt = int(response)
-                if alt < 1:
-                    alt = 1
-                elif alt > 5:
-                    alt = 5
+                    message(st.session_state.questions[1], key=f"b1{count}")
+            if selecthor == 1:
+                # message(st.session_state.questions[2], key=f"b2{count}")
+                message(response, is_user = True, class_name="user-message chat-message", key=f"a2{count}")
+                if response.isnumeric():
+                    alt = int(response)
+                    if alt <1:
+                        alt =1
+                    elif alt >5:
+                        alt = 5
+                    else:
+                        alt = alt
+                    selecthor = 3
+                    message(f'''Your favorite boardgame is {sel_game}.
+                    And you would like to get {alt} recommendations for similar games.
+                    Is that correct?
+                    (y) , (n)''', class_name="bot-message chat-message", key=f"b4{count}")
+                    continue
                 else:
-                    alt = alt
+                    message('Please enter a numeric value', class_name="bot-message chat-message", key=f"b3{count}")
+            if selecthor== 2:
+                # message(f'''Your favorite boardgame is {sel_game}.
+                # And you would like to get {alt} recommendations for similar games.
+                # Is that correct?
+                # (y) , (n)''', key=f"b4{count}")
                 selecthor = 3
-                st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
-                st.write(f"Your favorite board game is {sel_game}. And you would like to get {alt} recommendations for similar games. Is that correct? (y) , (n)")
-                st.markdown('</div>', unsafe_allow_html=True)
                 continue
-            else:
-                st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
-                st.write("Please enter a numeric value.")
-                st.markdown('</div>', unsafe_allow_html=True)
-                selecthor = 1
-                continue
+            if selecthor== 3:
+                message(response, is_user = True, class_name="user-message chat-message", key=f"a3{count}")  
+                if (pd.Series(['y', 'Y', 'yes', 'Yes'])).isin([response]).any():
+                    message('I can recommend you the following games:', class_name="bot-message chat-message", key=f"b5{count}")
+                    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=sel_game,data = amey_df, z=alt)})
+                    amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
+                    res_co = 0
+                    for i in  range(len(amey_games)):
+                        message(
+                            f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/>'
+                            , class_name="bot-message chat-message", key=f"img_{count}_{res_co}"
+                            , allow_html=True
+                        )
+                        # message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
+                        res_co +=1
+                
+                elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
+                    message('Lets try again', class_name="bot-message chat-message", key=f"b6{count}")
+                    selecthor = 0
+                    continue
+                else:
+                    message(f'''{response} is not a valid input. Please try again
+                    What is your favorite Boardgame?''', class_name="bot-message chat-message", key=f"b7{count}")
+                    selecthor = 0
+                    continue
+                    
+                        
+                    
+        
+        # for response, question in zip(st.session_state.responses, st.session_state.questions[1:]):
+        #     message(response, )
+        #     message(response)
+        #     message(question)
 
-        if selecthor == 3:
-            st.markdown('<div class="user-message chat-message">', unsafe_allow_html=True)
-            st.write(response)
-            st.markdown('</div>', unsafe_allow_html=True)
 
-            if pd.Series(['y', 'Y', 'yes', 'Yes']).isin([response]).any():
-                st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
-                st.write('I can recommend you the following games:')
-                st.markdown('</div>', unsafe_allow_html=True)
-
-                amey_games = pd.DataFrame({'bgg_id': af.game_of_my_life(user_favorite_game=sel_game, data=amey_df, z=alt)})
-                amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
-
-                res_co = 0
-                for i in range(len(amey_games)):
-                    st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
-                    st.image(amey_games.iloc[res_co]['image'], use_column_width=True)
-                    st.write(amey_games.iloc[res_co]['name'])
-                    st.markdown('</div>', unsafe_allow_html=True)
-                    res_co += 1
-
-                st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
-                st.write("Thank you for using our Boardgame Recommender Chatbot. Have a great day!")
-                st.markdown('</div>', unsafe_allow_html=True)
-                selecthor = 4
-                continue
-
-            elif pd.Series(['n', 'N', 'no', 'No']).isin([response]).any():
-                st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
-                st.write("Let's try again.")
-                st.markdown('</div>', unsafe_allow_html=True)
-                selecthor = 0
-                continue
-
-            else:
-                st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
-                st.write(f"{response} is not a valid input. Please try again.")
-                st.markdown('</div>', unsafe_allow_html=True)
-                selecthor = 0
-                continue
-
-    st.markdown('</div>', unsafe_allow_html=True)
+    with st.container():
+        st.text_input("User Response:", on_change=on_input_change, key="user_input")
