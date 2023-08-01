@@ -105,7 +105,7 @@ def special_treat():
                     st.text(user_games.iloc[i+4]['name'])
 #####
 ####### General for Startpage
-@st.cache_data
+@st.cache_data(ttl=45)
 def general_start():
     gen_games = pred.best_general(bg=amey_df)
     gen_games = ursula.get_feature(result_file=gen_games, feature_file=games_info)
