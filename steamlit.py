@@ -11,13 +11,17 @@ from io import BytesIO
 from streamlit_chat import message
 
 
-
-## Custim Functions
+## Custom Functions
 import User_Ursula as ursula
 import ameyfun as af
 import funcrsys as pred
 
-st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
+# Login Handler & other session varibles
+if 'user_login' not in st.session_state:
+    st.session_state['user_login'] = False
+    st.session_state['user_name'] = ''
+
+st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_icon=logo)
 
 
 @st.cache_data
@@ -47,6 +51,43 @@ st.sidebar.header('What do you wanna do?')
 
 custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
 
+
+placeholder = st.sidebar.empty()
+if st.session_state['user_login'] == False:
+    with placeholder.form("login"):
+        st.markdown("#### Enter your credentials")
+        User = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submit = st.form_submit_button("Login")
+    if (
+        submit 
+        and users_df['Username'].str.fullmatch(User).any() == True
+        # and password != ''
+        ):
+        # If the form is submitted and the email and password are correct,
+        # clear the form/container and display a success message
+        placeholder.empty()
+        st.session_state['user_login'] = True
+        st.session_state['user_name'] = User
+        st.success("Login successful")
+    elif (
+        submit 
+        and users_df['Username'].str.fullmatch(User).any() == False
+          ):
+        st.error(f"User: {User} not failed {(users_df['Username'].isin(list(User))).sum()}")
+    else:
+        pass
+
+if st.session_state['user_login'] == True:
+    byebye = st.sidebar.button("Logout")
+    if byebye:
+        placeholder.empty()
+        st.session_state['user_login'] = False
+        st.session_state['user_name'] = ''
+        st.success("Logout successful")
+
+
+
 if custom == True:
     rec_select = st.sidebar.radio(
         "What kind of recommendation do you like",
@@ -56,6 +97,7 @@ if custom == True:
             , 'Amey likes you a lot'
             , 'Chatbot Recommender'
          ), key='rec_select')
+
 else:
     # st.write('Basic Bitch!')
     rec_select = ''
@@ -214,7 +256,8 @@ elif rec_select == 'Chatbot Recommender':
 
     st.session_state.setdefault('questions', [])
 
-    st.title("Survey QA Bot")
+    st.title("""May the Force....
+             I meant... May the Games be with You""")
     questions_list = [
         # 0
         '''I would like to recommend you some Boardgames.
@@ -323,3 +366,39 @@ elif rec_select == 'Chatbot Recommender':
 
 else:
     st.write('')
+
+if st.session_state['user_login']==True:
+
+    user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 10, user = st.session_state['user_name'], game_frame=games_df)
+    user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
+    ncol = len(user_games)
+    with st.container():
+        st.header(f'Special Treats for you {st.session_state["user_name"]}')
+        for i in range(0, ncol, 5):
+            col1, col2, col3, col4, col5 = st.columns(5)
+            with col1:
+                # st.image(user_games.iloc[i]['image'])
+                st.image(pred.make_square(user_games.iloc[i]['image']))#, w=400, h=400))
+                st.text(user_games.iloc[i]['name'])
+            with col2:
+                if i + 1 < ncol:
+                    # st.image(user_games.iloc[i+1]['image'])
+                    st.image(pred.make_square(user_games.iloc[i+1]['image']))#, w=400, h=400))
+                    st.text(user_games.iloc[i+1]['name'])                    
+            with col3:                 
+                if i + 2 < ncol:
+                    # st.image(user_games.iloc[i+2]['image'])
+                    st.image(pred.make_square(user_games.iloc[i+2]['image']))#, w=400, h=400))
+                    st.text(user_games.iloc[i+2]['name'])
+            with col4:                 
+                if i + 3 < ncol:
+                    # st.image(user_games.iloc[i+3]['image'])
+                    st.image(pred.make_square(user_games.iloc[i+3]['image']))#, w=400, h=400))
+                    st.text(user_games.iloc[i+3]['name'])
+            with col5:                 
+                if i + 4 < ncol:
+                    # st.image(user_games.iloc[i+4]['image'])
+                    st.image(pred.make_square(user_games.iloc[i+4]['image']))#, w=400, h=400))
+                    st.text(user_games.iloc[i+4]['name'])
+else:
+    st.write('') 
