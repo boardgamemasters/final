@@ -107,7 +107,7 @@ def special_treat():
 ####### General for Startpage
 @st.cache_data
 def general_start():
-    gen_games = pred.best_general(gb=amey_df)
+    gen_games = pred.best_general(bg=amey_df)
     gen_games = ursula.get_feature(result_file=gen_games, feature_file=games_info)
     ncol = len(gen_games)
     with st.container():
