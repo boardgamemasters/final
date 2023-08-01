@@ -7,13 +7,13 @@ from surprise.model_selection import train_test_split
 # Load the data
 @st.cache_data
 def data_load():
-    rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
-    games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
-    users_df    =    pd.read_csv('data/usernames_v2.csv')
-    games_info  =    pd.read_csv('data/bgref.csv')
-    cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
-    amey_df     =    pd.read_csv('data/final_data.csv')
-    return rating_df, games_df, users_df, games_info, cosine_df, amey_df
+    # Read the necessary CSV files into DataFrames
+    rating_df = pd.read_csv('data/final_ratings_v3.csv')
+    games_df = pd.read_csv('data/game_learn_df_v3.csv')
+    users_df = pd.read_csv('data/usernames_v2.csv')
+    games_info = pd.read_csv('data/bgref.csv')
+    cosine_df = pd.read_csv('data/bg_cosines_final.csv')
+    return rating_df, games_df, users_df, games_info, cosine_df
 
 # Remove unnecessary columns and rename columns for Surprise compatibility
 surprise_data = rating_df [['bgg_id', 'name', 'year', 'avg_rating']]
