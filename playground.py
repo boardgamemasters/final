@@ -111,7 +111,10 @@ st.header("Find awesome Games")
 
 
 ####### SIDEBAR
-st.sidebar.header('What do you wanna do?')
+if rec_chat == False:
+    st.sidebar.header('What do you wanna do?')
+else:
+    st.sidebar.header('Enjoy our amazing Boardgame-Bot')
 
 ## LOGIN HANDLING
 placeholder = st.sidebar.empty()
@@ -151,187 +154,88 @@ if st.session_state['user_login'] == True:
         user_fav.clear()
 ################
 
-custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
+# custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
 
-u_fav_placeholder = st.sidebar.empty()
-u_rec_placeholder = st.sidebar.empty()
-with u_fav_placeholder:
-    if st.session_state['user_login'] == True:
-        u_fav = tog.st_toggle_switch(label=f"Your Favorite Games", 
-                            key="u_f_sel", 
-                            default_value=True, 
-                            label_after = True, 
-                            inactive_color = '#D3D3D3', 
-                            active_color="#11567f", 
-                            track_color="#29B5E8"
-                            )
-with u_rec_placeholder:    
-    if st.session_state['user_login'] == True:    
-        u_rec = tog.st_toggle_switch(label=f"Special Treats for You", 
-                            key="u_r_sel", 
-                            default_value=True, 
-                            label_after = True, 
-                            inactive_color = '#D3D3D3', 
-                            active_color="#11567f", 
-                            track_color="#29B5E8"
-                            )
+if rec_chat == False:
+    u_fav_placeholder = st.sidebar.empty()
+    u_rec_placeholder = st.sidebar.empty()
+    with u_fav_placeholder:
+        if st.session_state['user_login'] == True:
+            u_fav = tog.st_toggle_switch(label=f"Your Favorite Games", 
+                                key="u_f_sel", 
+                                default_value=True, 
+                                label_after = True, 
+                                inactive_color = '#D3D3D3', 
+                                active_color="#11567f", 
+                                track_color="#29B5E8"
+                                )
+    with u_rec_placeholder:    
+        if st.session_state['user_login'] == True:    
+            u_rec = tog.st_toggle_switch(label=f"Special Treats for You", 
+                                key="u_r_sel", 
+                                default_value=True, 
+                                label_after = True, 
+                                inactive_color = '#D3D3D3', 
+                                active_color="#11567f", 
+                                track_color="#29B5E8"
+                                )
 
-st.sidebar.divider()
-sim_desc_placeholder = st.sidebar.empty()
-with sim_desc_placeholder:
-    sim_desc = tog.st_toggle_switch(label=f"""Recommenend similar Games
-                                    Based on Description""", 
-                            key="s_d_sel", 
-                            default_value=True, 
-                            label_after = True, 
-                            inactive_color = '#D3D3D3', 
-                            active_color="#11567f", 
-                            track_color="#29B5E8"
-                            )
-if sim_desc == True:
-    def game_like():
-        title = st.sidebar.multiselect('Games like', games_info.sort_values('name')['name'])
+    st.sidebar.divider()
+    sim_desc_placeholder = st.sidebar.empty()
+    with sim_desc_placeholder:
+        sim_desc = tog.st_toggle_switch(label="Description based Recommender", 
+                                key="sim_desc", 
+                                default_value=True, 
+                                label_after = True, 
+                                inactive_color = '#D3D3D3', 
+                                active_color="#11567f", 
+                                track_color="#29B5E8"
+                                )
+    if sim_desc == True:
+        def game_like():
+            title = st.sidebar.multiselect('Games like', games_info.sort_values('name')['name'])
 
-        game_id = games_info.loc[games_info['name'].isin(title),'bgg_id']
+            game_id = games_info.loc[games_info['name'].isin(title),'bgg_id']
 
-        data = {'bgg_id': game_id
-                }
-        return(data)
-    sim_feature =  list(game_like()['bgg_id'])
-    if (len(sim_feature)>0):
-        sim_games = pred.similar_description_games(bg_input = sim_feature, bg_cosines_df = cosine_df, bgref_df = games_info)
-        ncol = len(sim_games)
-        with st.container():
-            st.header(f'Here are 5 Games, that are similar to the {len(sim_feature)} games you selected')
-            for i in range(0, ncol, 3):
-                col1, col2, col3 = st.columns(3)
-                with col1:
-                    st.image(sim_games.iloc[i]['image'])
-                    st.text(sim_games.iloc[i]['name'])
-                with col2:
-                    if i + 1 < ncol:
-                        st.image(sim_games.iloc[i+1]['image'])
-                        st.text(sim_games.iloc[i+1]['name'])    
-                with col3:                 
-                    if i + 2 < ncol:
-                        st.image(sim_games.iloc[i+2]['image'])
-                        st.text(sim_games.iloc[i+2]['name'])
-    else:
-        st.header(f'Please select Games on the left side!')
-st.sidebar.divider()
-
-
-if custom == True:
-    rec_select = st.sidebar.radio(
-        "What kind of recommendation do you like",
-        (
-            'Similar Games based of Description'
-            , 'Similar Taste'
-            , 'Amey likes you a lot'
-            , 'Chatbot Recommender'
-         ), key='rec_select')
-
+            data = {'bgg_id': game_id
+                    }
+            return(data)
+        sim_feature =  list(game_like()['bgg_id'])
+        if (len(sim_feature)>0):
+            sim_games = pred.similar_description_games(bg_input = sim_feature, bg_cosines_df = cosine_df, bgref_df = games_info)
+            ncol = len(sim_games)
+            with st.container():
+                st.header(f'Here are 5 Games, that are similar to the {len(sim_feature)} games you selected')
+                for i in range(0, ncol, 3):
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.image(sim_games.iloc[i]['image'])
+                        st.text(sim_games.iloc[i]['name'])
+                    with col2:
+                        if i + 1 < ncol:
+                            st.image(sim_games.iloc[i+1]['image'])
+                            st.text(sim_games.iloc[i+1]['name'])    
+                    with col3:                 
+                        if i + 2 < ncol:
+                            st.image(sim_games.iloc[i+2]['image'])
+                            st.text(sim_games.iloc[i+2]['name'])
+        else:
+            st.header(f'Please select Games on the left side!')
+    st.sidebar.divider()
 else:
-    rec_select = ''
+    st.write('')
+sel_chatbot_placeholder = st.sidebar.empty()
+with sel_chatbot_placeholder:
+    rec_chat = tog.st_toggle_switch(label="Chatbot Recommender", 
+                            key="rec_chat", 
+                            default_value=False, 
+                            label_after = True, 
+                            inactive_color = '#D3D3D3', 
+                            active_color="#11567f", 
+                            track_color="#29B5E8"
+                            )
 
-if rec_select == 'Similar Games based of Description':
-    def game_like():
-        title = st.sidebar.multiselect('Games like', games_info.sort_values('name')['name'])
-
-        game_id = games_info.loc[games_info['name'].isin(title),'bgg_id']
-
-        data = {'bgg_id': game_id
-                }
-        return(data)
-    sim_feature =  list(game_like()['bgg_id'])
-
-    if (len(sim_feature)>0):
-        sim_games = pred.similar_description_games(bg_input = sim_feature, bg_cosines_df = cosine_df, bgref_df = games_info)
-        ncol = len(sim_games)
-        with st.container():
-            st.header(f'Here are 5 Games, that are similar to the {len(sim_feature)} games you selected')
-            for i in range(0, ncol, 3):
-                col1, col2, col3 = st.columns(3)
-                with col1:
-                    st.image(sim_games.iloc[i]['image'])
-                    st.text(sim_games.iloc[i]['name'])
-                with col2:
-                    if i + 1 < ncol:
-                        st.image(sim_games.iloc[i+1]['image'])
-                        st.text(sim_games.iloc[i+1]['name'])    
-                with col3:                 
-                    if i + 2 < ncol:
-                        st.image(sim_games.iloc[i+2]['image'])
-                        st.text(sim_games.iloc[i+2]['name'])
-    else:
-        st.header(f'Please select Games on the left side!')
-
-elif rec_select == 'Similar Taste':
-    def user_like():
-        user = st.sidebar.selectbox('Who are you', users_df['Username'], key = 'user_like')
-        amount = st.sidebar.slider('Number of Recommendations', min_value=3, max_value=15, value=9, step=3, key='uln', help='Here you can specify the number of recommended Boardgames')
-
-        data = {'user_id': user,
-                'amount': amount,
-                'name' : user}
-        return(data)
-    user_feature =  user_like()
-    user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = user_feature['amount'], user = user_feature['user_id'],game_frame=games_df)
-    user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
-
-    ncol = len(user_games)
-    with st.container():
-        st.header(f'Special Treats for you {user_feature["name"]}')
-        for i in range(0, ncol, 3):
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.image(user_games.iloc[i]['image'])
-                st.text(user_games.iloc[i]['name'])
-            with col2:
-                if i + 1 < ncol:
-                    st.image(user_games.iloc[i+1]['image'])
-                    st.text(user_games.iloc[i+1]['name'])                    
-            with col3:                 
-                if i + 2 < ncol:
-                    st.image(user_games.iloc[i+2]['image'])
-                    st.text(user_games.iloc[i+2]['name'])
-
-elif rec_select == 'Amey likes you a lot':  
-    def amey_like():
-        gname = st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key = 'amey_like')
-        amount = st.sidebar.slider('Number of Recommendations', min_value=4, max_value=16, value=8, step=4, key='aln', help='Here you can specify the number of recommended Boardgames')
-
-        data = {'amount': amount,
-                'name' : gname}
-        return(data)
-    amey_feature =  amey_like()
-    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
-    amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
-
-    ncol = len(amey_games)
-    with st.container():
-        st.header(f'Games similar to  {amey_feature["name"]}')
-        for i in range(0, ncol, 4):
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.image(amey_games.iloc[i]['image'])
-                st.text(amey_games.iloc[i]['name'])
-            with col2:
-                if i + 1 < ncol:
-                    st.image(amey_games.iloc[i+1]['image'])
-                    st.text(amey_games.iloc[i+1]['name'])                    
-            with col3:                 
-                if i + 2 < ncol:
-                    st.image(amey_games.iloc[i+2]['image'])
-                    st.text(amey_games.iloc[i+2]['name'])
-            with col4:                 
-                if i + 3 < ncol:
-                    st.image(amey_games.iloc[i+3]['image'])
-                    st.text(amey_games.iloc[i+3]['name'])
-
-
-
-elif rec_select == 'Chatbot Recommender':
+if rec_chat == True:
     games = amey_df['name_x']
     st.sidebar.text('Coming Soon')
     def on_input_change():
@@ -431,32 +335,25 @@ elif rec_select == 'Chatbot Recommender':
                     What is your favorite Boardgame?''', key=f"b7{count}")
                     selecthor = 0
                     continue
-                    
-                        
-                    
-
-
-
     with st.container():
         st.text_input("User Response:", on_change=on_input_change, key="user_input")
-
-
 else:
-    st.write('')
+    aasdasfdgsdf =1
 
-if st.session_state['user_login']==True:
-    # user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 10, user = st.session_state['user_name'], game_frame=games_df)
-    # user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
-    # ncol = len(user_games)
-    with st.container():
-        if u_fav == True:
-            with st.expander(f"Your Top10 Games:"):
-                user_fav()
+if rec_chat == False:
+    if st.session_state['user_login']==True:
+        # user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 10, user = st.session_state['user_name'], game_frame=games_df)
+        # user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
+        # ncol = len(user_games)
+        with st.container():
+            if u_fav == True:
+                with st.expander(f"Your Top10 Games:"):
+                    user_fav()
 
-        if u_rec == True:
-            with st.expander(f"10 Games we think you might enjoy:"):
-                special_treat()
+            if u_rec == True:
+                with st.expander(f"10 Games we think you might enjoy:"):
+                    special_treat()
 
-        
-else:
-    st.write('') 
+            
+    else:
+        st.write('') 
