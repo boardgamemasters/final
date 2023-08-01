@@ -227,20 +227,21 @@ if st.session_state['chat_bot_only'] == False:
     st.sidebar.divider()
 else:
     st.write('')
+
+def chat_select_change():
+    st.experimental_rerun()
+
 sel_chatbot_placeholder = st.sidebar.empty()
 with sel_chatbot_placeholder:
-    st.session_state['chat_bot_only'] = tog.st_toggle_switch(label="Chatbot Recommender", 
+    st.session_state['chat_bot_only'] = st.checkbox(label="Chatbot Recommender", 
                             key="rec_chat", 
-                            default_value=False, 
-                            label_after = True, 
-                            inactive_color = '#D3D3D3', 
-                            active_color="#11567f", 
-                            track_color="#29B5E8"
+                            help = 'Use our awesome Chatbox to get Boardgame-Recommendations.',
+                            on_change= chat_select_change
                             )
+    
 
 if st.session_state['chat_bot_only'] == True:
     games = amey_df['name_x']
-    st.sidebar.text('Coming Soon')
     def on_input_change():
         user_input = st.session_state.user_input
         st.session_state.responses.append(user_input)
