@@ -154,7 +154,7 @@ if st.session_state['user_login'] == True:
 custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
 
 if st.session_state['user_login'] == True:
-    u_fav = tog.sidebar.st_toggle_switch(label=f"Your Favorite Games", 
+    u_fav = st.sidebar.tog.st_toggle_switch(label=f"Your Favorite Games", 
                         key="u_f_sel", 
                         default_value=True, 
                         label_after = True, 
@@ -162,7 +162,7 @@ if st.session_state['user_login'] == True:
                         active_color="#11567f", 
                         track_color="#29B5E8"
                         )
-    u_rec = tog.sidebar.st_toggle_switch(label=f"Special Treats for You", 
+    u_rec = st.sidebar.tog.st_toggle_switch(label=f"Special Treats for You", 
                         key="u_r_sel", 
                         default_value=True, 
                         label_after = True, 
