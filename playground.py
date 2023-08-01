@@ -187,14 +187,37 @@ with sim_desc_placeholder:
                             active_color="#11567f", 
                             track_color="#29B5E8"
                             )
-    sad_sel = tog.st_toggle_switch(label=f"Be SAAAAD", 
-                            key="sad_sel", 
-                            default_value=True, 
-                            label_after = True, 
-                            inactive_color = '#D3D3D3', 
-                            active_color="#11567f", 
-                            track_color="#29B5E8"
-                            )
+if sim_desc == True:
+    def game_like():
+        title = st.sidebar.multiselect('Games like', games_info.sort_values('name')['name'])
+
+        game_id = games_info.loc[games_info['name'].isin(title),'bgg_id']
+
+        data = {'bgg_id': game_id
+                }
+        return(data)
+    sim_feature =  list(game_like()['bgg_id'])
+    if (len(sim_feature)>0):
+        sim_games = pred.similar_description_games(bg_input = sim_feature, bg_cosines_df = cosine_df, bgref_df = games_info)
+        ncol = len(sim_games)
+        with st.container():
+            st.header(f'Here are 5 Games, that are similar to the {len(sim_feature)} games you selected')
+            for i in range(0, ncol, 3):
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.image(sim_games.iloc[i]['image'])
+                    st.text(sim_games.iloc[i]['name'])
+                with col2:
+                    if i + 1 < ncol:
+                        st.image(sim_games.iloc[i+1]['image'])
+                        st.text(sim_games.iloc[i+1]['name'])    
+                with col3:                 
+                    if i + 2 < ncol:
+                        st.image(sim_games.iloc[i+2]['image'])
+                        st.text(sim_games.iloc[i+2]['name'])
+    else:
+        st.header(f'Please select Games on the left side!')
+st.sidebar.divider()
 
 
 if custom == True:
