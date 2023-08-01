@@ -398,7 +398,7 @@ def set_demoday():
 sel_DemoDay_placeholder = st.sidebar.empty()
 with sel_DemoDay_placeholder:
     st.checkbox(label="DemoDay", 
-                            key="DemoDay", 
+                            key="DemoDay_select", 
                             help = 'Lets Start DemoDay',
                             value= st.session_state['DemoDay'],
                             on_change=set_demoday
