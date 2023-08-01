@@ -112,21 +112,21 @@ else:
     #         st.image(pop_movies.iloc[i]['img'])
 
     
-    ncol = 3#len(pop_movies)
-    with st.container():
-        for i in range(0, ncol, 3):
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                # st.image(pop_movies.iloc[i]['img'])
-                st.text('Spiel 1')    # (pop_movies.iloc[i]['title'])
-            with col2:
-                if i + 1 < ncol:
-                    # st.image(pop_movies.iloc[i+1]['img'])
-                    st.text('Spiel 2')    # (pop_movies.iloc[i+1]['title'])                    
-            with col3:                 
-                if i + 2 < ncol:
-                    # st.image(pop_movies.iloc[i+2]['img'])
-                    st.text('Spiel 3')    # (pop_movies.iloc[i+2]['title'])
+    # ncol = 3#len(pop_movies)
+    # with st.container():
+    #     for i in range(0, ncol, 3):
+    #         col1, col2, col3 = st.columns(3)
+    #         with col1:
+    #             # st.image(pop_movies.iloc[i]['img'])
+    #             st.text('Spiel 1')    # (pop_movies.iloc[i]['title'])
+    #         with col2:
+    #             if i + 1 < ncol:
+    #                 # st.image(pop_movies.iloc[i+1]['img'])
+    #                 st.text('Spiel 2')    # (pop_movies.iloc[i+1]['title'])                    
+    #         with col3:                 
+    #             if i + 2 < ncol:
+    #                 # st.image(pop_movies.iloc[i+2]['img'])
+    #                 st.text('Spiel 3')    # (pop_movies.iloc[i+2]['title'])
                     
 
     
