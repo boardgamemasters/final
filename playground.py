@@ -142,7 +142,7 @@ if st.session_state['user_login'] == False:
         submit 
         and users_df['Username'].str.fullmatch(User).any() == False
           ):
-        st.error(f"User: {User} not failed {(users_df['Username'].isin(list(User))).sum()}")
+        st.error(f"User: {User} not found")
     else:
         pass
 
