@@ -387,7 +387,7 @@ st.header(f'Demoday: {st.session_state["DemoDay"]}')
 
 st.sidebar.divider()
 def set_demoday():
-    st.session_state['DemoDay'] = ~st.session_state['DemoDay']        # Not TRue but -1
+    st.session_state['DemoDay'] = ~(st.session_state['DemoDay'])        # Not TRue but -1
 sel_DemoDay_placeholder = st.sidebar.empty()
 with sel_DemoDay_placeholder:
     st.checkbox(label="DemoDay", 
