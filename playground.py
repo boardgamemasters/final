@@ -179,7 +179,8 @@ with u_rec_placeholder:
 st.sidebar.divider()
 sim_desc_placeholder = st.sidebar.empty()
 with sim_desc_placeholder:
-    sim_desc = tog.st_toggle_switch(label=f"Look for Games with similar Description", 
+    sim_desc = tog.st_toggle_switch(label=f"""Recommenend similar Games
+                                    Based on Description""", 
                             key="s_d_sel", 
                             default_value=True, 
                             label_after = True, 
