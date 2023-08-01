@@ -11,13 +11,17 @@ from io import BytesIO
 from streamlit_chat import message
 
 
-
-## Custim Functions
+## Custom Functions
 import User_Ursula as ursula
 import ameyfun as af
 import funcrsys as pred
 
-st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
+# Login Handler & other session varibles
+if 'user_login' not in st.session_state:
+    st.session_state['user_login'] = False
+    st.session_state['user_name'] = ''
+
+st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_icon=logo)
 
 
 @st.cache_data
@@ -47,6 +51,43 @@ st.sidebar.header('What do you wanna do?')
 
 custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
 
+
+placeholder = st.sidebar.empty()
+if st.session_state['user_login'] == False:
+    with placeholder.form("login"):
+        st.markdown("#### Enter your credentials")
+        User = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submit = st.form_submit_button("Login")
+    if (
+        submit 
+        and users_df['Username'].str.fullmatch(User).any() == True
+        # and password != ''
+        ):
+        # If the form is submitted and the email and password are correct,
+        # clear the form/container and display a success message
+        placeholder.empty()
+        st.session_state['user_login'] = True
+        st.session_state['user_name'] = User
+        st.success("Login successful")
+    elif (
+        submit 
+        and users_df['Username'].str.fullmatch(User).any() == False
+          ):
+        st.error(f"User: {User} not failed {(users_df['Username'].isin(list(User))).sum()}")
+    else:
+        pass
+
+if st.session_state['user_login'] == True:
+    byebye = st.sidebar.button("Logout")
+    if byebye:
+        placeholder.empty()
+        st.session_state['user_login'] = False
+        st.session_state['user_name'] = ''
+        st.success("Logout successful")
+
+
+
 if custom == True:
     rec_select = st.sidebar.radio(
         "What kind of recommendation do you like",
@@ -56,6 +97,7 @@ if custom == True:
             , 'Amey likes you a lot'
             , 'Chatbot Recommender'
          ), key='rec_select')
+
 else:
     # st.write('Basic Bitch!')
     rec_select = ''
@@ -70,21 +112,21 @@ else:
     #         st.image(pop_movies.iloc[i]['img'])
 
     
-    ncol = 3#len(pop_movies)
-    with st.container():
-        for i in range(0, ncol, 3):
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                # st.image(pop_movies.iloc[i]['img'])
-                st.text('Spiel 1')    # (pop_movies.iloc[i]['title'])
-            with col2:
-                if i + 1 < ncol:
-                    # st.image(pop_movies.iloc[i+1]['img'])
-                    st.text('Spiel 2')    # (pop_movies.iloc[i+1]['title'])                    
-            with col3:                 
-                if i + 2 < ncol:
-                    # st.image(pop_movies.iloc[i+2]['img'])
-                    st.text('Spiel 3')    # (pop_movies.iloc[i+2]['title'])
+    # ncol = 3#len(pop_movies)
+    # with st.container():
+    #     for i in range(0, ncol, 3):
+    #         col1, col2, col3 = st.columns(3)
+    #         with col1:
+    #             # st.image(pop_movies.iloc[i]['img'])
+    #             st.text('Spiel 1')    # (pop_movies.iloc[i]['title'])
+    #         with col2:
+    #             if i + 1 < ncol:
+    #                 # st.image(pop_movies.iloc[i+1]['img'])
+    #                 st.text('Spiel 2')    # (pop_movies.iloc[i+1]['title'])                    
+    #         with col3:                 
+    #             if i + 2 < ncol:
+    #                 # st.image(pop_movies.iloc[i+2]['img'])
+    #                 st.text('Spiel 3')    # (pop_movies.iloc[i+2]['title'])
                     
 
     
@@ -165,10 +207,7 @@ elif rec_select == 'Similar Taste':
 
 elif rec_select == 'Amey likes you a lot':  
     def amey_like():
-    print("User input:", st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key='amey_like'))
-    print("Unique values in 'name_x' column:", amey_df['name_x'].unique())
-    # Rest of the code...
-
+        gname = st.sidebar.selectbox('What Game do you like', amey_df['name_x'], key = 'amey_like')
         amount = st.sidebar.slider('Number of Recommendations', min_value=4, max_value=16, value=8, step=4, key='aln', help='Here you can specify the number of recommended Boardgames')
 
         data = {'amount': amount,
