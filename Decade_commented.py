@@ -4,6 +4,7 @@ import pandas as pd
 from surprise import Dataset, Reader, SVD
 from surprise.model_selection import train_test_split
 
+# Load the data
 @st.cache_data
 def data_load():
     rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
