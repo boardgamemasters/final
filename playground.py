@@ -22,6 +22,9 @@ if 'user_login' not in st.session_state:
     st.session_state['user_login'] = False
     st.session_state['user_name'] = ''
 
+if 'chat_bot_only' not in st.session_state:
+    st.session_state['chat_bot_only'] = False
+
 st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_icon=logo)
 
 
@@ -111,7 +114,7 @@ st.header("Find awesome Games")
 
 
 ####### SIDEBAR
-if rec_chat == False:
+if st.session_state['chat_bot_only'] == False:
     st.sidebar.header('What do you wanna do?')
 else:
     st.sidebar.header('Enjoy our amazing Boardgame-Bot')
@@ -156,7 +159,7 @@ if st.session_state['user_login'] == True:
 
 # custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
 
-if rec_chat == False:
+if st.session_state['chat_bot_only'] == False:
     u_fav_placeholder = st.sidebar.empty()
     u_rec_placeholder = st.sidebar.empty()
     with u_fav_placeholder:
@@ -226,7 +229,7 @@ else:
     st.write('')
 sel_chatbot_placeholder = st.sidebar.empty()
 with sel_chatbot_placeholder:
-    rec_chat = tog.st_toggle_switch(label="Chatbot Recommender", 
+    st.session_state['chat_bot_only'] = tog.st_toggle_switch(label="Chatbot Recommender", 
                             key="rec_chat", 
                             default_value=False, 
                             label_after = True, 
@@ -235,7 +238,7 @@ with sel_chatbot_placeholder:
                             track_color="#29B5E8"
                             )
 
-if rec_chat == True:
+if st.session_state['chat_bot_only'] == True:
     games = amey_df['name_x']
     st.sidebar.text('Coming Soon')
     def on_input_change():
@@ -340,7 +343,7 @@ if rec_chat == True:
 else:
     aasdasfdgsdf =1
 
-if rec_chat == False:
+if st.session_state['chat_bot_only'] == False:
     if st.session_state['user_login']==True:
         # user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 10, user = st.session_state['user_name'], game_frame=games_df)
         # user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
