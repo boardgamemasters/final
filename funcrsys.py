@@ -73,44 +73,56 @@ def similar_description_games(bg_input, bg_cosines_df, bgref_df):
 #            tuple: A tuple containing multiple DataFrames, each representing the best items
 #            that satisfy specific conditions.
 ############################################################################################################
-def best_general(bg, max_gm, year=2012, price=28, minplay=2, minage=10):
+def best_general(bg, max_gm=10, year=2012, price=28, minplay=2, minage=10, select_prime = 2310):
 
-    # Filter and sample the best items for a particular year
-    best_year = bg.loc[(bg.year == year) & 
-                       (bg.num_votes >= bg.num_votes.quantile(q=0.75)) & 
-                       (bg.avg_rating >= bg.avg_rating.quantile(q=0.85)), 
-                       ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+    result_df = pd.DataFrame()
 
-    # Filter and sample the best items based on price and other conditions
-    best_price = bg.loc[(bg.year == year) & 
-                        (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
-                        (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
-                        (bg.europrice <= price), 
-                        ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+    # Filter and sample the best items for a particular year        2
+    if select_prime%2 == 0:
+        best_year = list(bg.loc[(bg.year == year) & 
+                        (bg.num_votes >= bg.num_votes.quantile(q=0.75)) & 
+                        (bg.avg_rating >= bg.avg_rating.quantile(q=0.85)), 
+                        ['bgg_id']].sample(max_gm))
+        result_df['best_year'] = best_year
+
+    # Filter and sample the best items based on price and other conditions      3
+    if select_prime%3 == 0:
+        best_price = bg.loc[(bg.year == year) & 
+                            (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
+                            (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
+                            (bg.europrice <= price), 
+                            ['bgg_id']].sample(max_gm)
+        result_df['best_price'] = best_price
     
-    # Filter and sample the best items based on minimum number of players and other conditions
-    best_min_players = bg.loc[(bg.year == year) & 
-                              (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
-                              (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
-                              (bg.min_players <= minplay), 
-                              ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+    # Filter and sample the best items based on minimum number of players and other conditions      5
+    if select_prime%5 == 0:
+        best_min_players = bg.loc[(bg.year == year) & 
+                                (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
+                                (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
+                                (bg.min_players <= minplay), 
+                                ['bgg_id']].sample(max_gm)
+        result_df['best_min_players'] = best_min_players
     
-    # Filter and sample the best items based on minimum age and other conditions
-    best_min_age = bg.loc[(bg.year == year) & 
-                          (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
-                          (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
-                          (bg.min_age <= minage), 
-                          ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+    # Filter and sample the best items based on minimum age and other conditions        7
+    if select_prime%7 == 0:
+        best_min_age = bg.loc[(bg.year == year) & 
+                            (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
+                            (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
+                            (bg.min_age <= minage), 
+                            ['bgg_id']].sample(max_gm)
+        result_df['best_min_age'] = best_min_age
     
-    # Filter and sample the best items based on both minimum number of players and minimum age, along with other conditions
-    best_min_page = bg.loc[(bg.year == year) & 
-                           (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
-                           (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
-                           (bg.min_players <= minplay) & 
-                           (bg.min_age <= minage), 
-                           ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+    # Filter and sample the best items based on both minimum number of players and minimum age, along with other conditions 11
+    if select_prime%11 == 0:
+        best_min_page = bg.loc[(bg.year == year) & 
+                            (bg.num_votes >= bg.num_votes.quantile(q=0.70)) & 
+                            (bg.avg_rating >= bg.avg_rating.quantile(q=0.70)) & 
+                            (bg.min_players <= minplay) & 
+                            (bg.min_age <= minage), 
+                            ['bgg_id', 'name_x', 'image', 'video']].sample(max_gm)
+        result_df['best_min_page'] = best_min_page
     
-    return best_year, best_price, best_min_players, best_min_age, best_min_page
+    return result_df
     
 ############################################################################################################
 ######################################                             #########################################

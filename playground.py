@@ -9,6 +9,7 @@ import requests
 from urllib.request import urlopen
 from io import BytesIO
 from streamlit_chat import message
+import  streamlit_toggle as tog
 
 
 ## Custom Functions
@@ -108,11 +109,11 @@ rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
 
 st.header("Find awesome Games")
 
+
+####### SIDEBAR
 st.sidebar.header('What do you wanna do?')
 
-custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
-
-
+## LOGIN HANDLING
 placeholder = st.sidebar.empty()
 if st.session_state['user_login'] == False:
     with placeholder.form("login"):
@@ -148,6 +149,29 @@ if st.session_state['user_login'] == True:
         st.success("Logout successful")
         special_treat.clear()
         user_fav.clear()
+################
+
+custom = st.sidebar.checkbox('Personalized Experience', value=False, key='custom', help='Click this to get Custom recommendations')
+
+if st.session_state['user_login'] == True:
+    u_fav = tog.st_toggle_switch(label=f"Your Favorite Games", 
+                        key="u_f_sel", 
+                        default_value=True, 
+                        label_after = True, 
+                        inactive_color = '#D3D3D3', 
+                        active_color="#11567f", 
+                        track_color="#29B5E8"
+                        )
+    u_rec = tog.st_toggle_switch(label=f"Special Treats for You", 
+                        key="u_r_sel", 
+                        default_value=True, 
+                        label_after = True, 
+                        inactive_color = '#D3D3D3', 
+                        active_color="#11567f", 
+                        track_color="#29B5E8"
+                        )
+
+
 
 
 
@@ -375,16 +399,17 @@ else:
     st.write('')
 
 if st.session_state['user_login']==True:
-
-    user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 10, user = st.session_state['user_name'], game_frame=games_df)
-    user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
-    ncol = len(user_games)
+    # user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 10, user = st.session_state['user_name'], game_frame=games_df)
+    # user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
+    # ncol = len(user_games)
     with st.container():
-        with st.expander(f"Your Top10 Games:"):
-            user_fav()
+        if u_fav == True:
+            with st.expander(f"Your Top10 Games:"):
+                user_fav()
 
-        with st.expander(f"10 Games we think you might enjoy:"):
-            special_treat()
+        if u_rec == True:
+            with st.expander(f"10 Games we think you might enjoy:"):
+                special_treat()
 
         
 else:
