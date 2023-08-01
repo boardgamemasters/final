@@ -417,7 +417,7 @@ if st.session_state['DemoDay'] == False:
                         user_fav()
 
                 if u_rec == True:
-                    with st.expander(f"10 Games we think you might enjoy:"):
+                    with st.expander(f"10 Games we think you might enjoy:" expanded=True):
                         special_treat()
 
                 

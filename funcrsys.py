@@ -73,7 +73,7 @@ def similar_description_games(bg_input, bg_cosines_df, bgref_df):
 #            tuple: A tuple containing multiple DataFrames, each representing the best items
 #            that satisfy specific conditions.
 ############################################################################################################
-def best_general(bg, max_gm=10, year=2000, price=28, minplay=2, minage=10):
+def best_general(bg, max_gm=10, year=2000, price=28, minplay=2, minage=15):
 
     # result_df = pd.DataFrame()
 
