@@ -35,6 +35,47 @@ def data_load():
     return rating_df, games_df, users_df, games_info, cosine_df, amey_df
 
 
+
+####### Special Treats
+@st.cache_data
+def special_treat():
+    user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = 10, user = st.session_state['user_name'], game_frame=games_df)
+    user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
+    ncol = len(user_games)
+    with st.container():
+        st.header(f'Special Treats for you {st.session_state["user_name"]}')
+        for i in range(0, ncol, 5):
+            col1, col2, col3, col4, col5 = st.columns(5)
+            with col1:
+                # st.image(user_games.iloc[i]['image'])
+                st.image(pred.make_square(user_games.iloc[i]['image']))#, w=400, h=400))
+                st.text(user_games.iloc[i]['name'])
+            with col2:
+                if i + 1 < ncol:
+                    # st.image(user_games.iloc[i+1]['image'])
+                    st.image(pred.make_square(user_games.iloc[i+1]['image']))#, w=400, h=400))
+                    st.text(user_games.iloc[i+1]['name'])                    
+            with col3:                 
+                if i + 2 < ncol:
+                    # st.image(user_games.iloc[i+2]['image'])
+                    st.image(pred.make_square(user_games.iloc[i+2]['image']))#, w=400, h=400))
+                    st.text(user_games.iloc[i+2]['name'])
+            with col4:                 
+                if i + 3 < ncol:
+                    # st.image(user_games.iloc[i+3]['image'])
+                    st.image(pred.make_square(user_games.iloc[i+3]['image']))#, w=400, h=400))
+                    st.text(user_games.iloc[i+3]['name'])
+            with col5:                 
+                if i + 4 < ncol:
+                    # st.image(user_games.iloc[i+4]['image'])
+                    st.image(pred.make_square(user_games.iloc[i+4]['image']))#, w=400, h=400))
+                    st.text(user_games.iloc[i+4]['name'])
+
+
+
+#####
+
+
 rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
 
 # # Download the image using requests
@@ -373,32 +414,6 @@ if st.session_state['user_login']==True:
     user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
     ncol = len(user_games)
     with st.container():
-        st.header(f'Special Treats for you {st.session_state["user_name"]}')
-        for i in range(0, ncol, 5):
-            col1, col2, col3, col4, col5 = st.columns(5)
-            with col1:
-                # st.image(user_games.iloc[i]['image'])
-                st.image(pred.make_square(user_games.iloc[i]['image']))#, w=400, h=400))
-                st.text(user_games.iloc[i]['name'])
-            with col2:
-                if i + 1 < ncol:
-                    # st.image(user_games.iloc[i+1]['image'])
-                    st.image(pred.make_square(user_games.iloc[i+1]['image']))#, w=400, h=400))
-                    st.text(user_games.iloc[i+1]['name'])                    
-            with col3:                 
-                if i + 2 < ncol:
-                    # st.image(user_games.iloc[i+2]['image'])
-                    st.image(pred.make_square(user_games.iloc[i+2]['image']))#, w=400, h=400))
-                    st.text(user_games.iloc[i+2]['name'])
-            with col4:                 
-                if i + 3 < ncol:
-                    # st.image(user_games.iloc[i+3]['image'])
-                    st.image(pred.make_square(user_games.iloc[i+3]['image']))#, w=400, h=400))
-                    st.text(user_games.iloc[i+3]['name'])
-            with col5:                 
-                if i + 4 < ncol:
-                    # st.image(user_games.iloc[i+4]['image'])
-                    st.image(pred.make_square(user_games.iloc[i+4]['image']))#, w=400, h=400))
-                    st.text(user_games.iloc[i+4]['name'])
+        special_treat()
 else:
     st.write('') 
