@@ -232,14 +232,14 @@ else:
     st.write('')
 
 def set_chatbot():
-    st.session_state['set_chat'] = set_chat
+    st.session_state['set_chat'] = ~st.session_state['set_chat']
 
 sel_chatbot_placeholder = st.sidebar.empty()
 with sel_chatbot_placeholder:
-    set_chat = st.checkbox(label="Chatbot Recommender", 
+    st.checkbox(label="Chatbot Recommender", 
                             key="rec_chat", 
                             help = 'Use our awesome Chatbox to get Boardgame-Recommendations.',
-                            value= False,
+                            value= st.session_state['set_chat'],
                             on_change=set_chatbot
                             )
     
