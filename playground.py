@@ -387,7 +387,6 @@ if st.session_state['DemoDay'] == False:
             st.write('') 
 else:
     st.title(f'Welcome to Demoday')
-st.header(f'Demoday: {st.session_state["DemoDay"]}')
 
 st.sidebar.divider()
 def set_demoday():
