@@ -177,7 +177,24 @@ with u_rec_placeholder:
                             )
 
 
-
+sim_desc_placeholder = st.sidebar.empty()
+with sim_desc_placeholder:
+    sim_desc = tog.st_toggle_switch(label=f"Look for Games with similar Description", 
+                            key="s_d_sel", 
+                            default_value=True, 
+                            label_after = True, 
+                            inactive_color = '#D3D3D3', 
+                            active_color="#11567f", 
+                            track_color="#29B5E8"
+                            )
+    sad_sel = tog.st_toggle_switch(label=f"Be SAAAAD", 
+                            key="sad_sel", 
+                            default_value=True, 
+                            label_after = True, 
+                            inactive_color = '#D3D3D3', 
+                            active_color="#11567f", 
+                            track_color="#29B5E8"
+                            )
 
 
 if custom == True:
