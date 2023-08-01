@@ -140,7 +140,7 @@ def resize_img(url, w=400, h=400):
 # and then pastes the original image onto the center of the square canvas with a specified fill color.
 ############################################################################################################
 
-def make_square(im, min_size=150, fill_color=(0, 0, 0, 0)):
+def make_square(im, min_size=1, fill_color=(0, 0, 0, 0)):
     # Open the downloaded image using Pillow's Image.open() as "im"
     urllib.request.urlretrieve(im, "bgimage")
     with Image.open("bgimage") as im:
