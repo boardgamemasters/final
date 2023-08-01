@@ -152,7 +152,7 @@ if st.session_state['DemoDay'] == False:
     if st.session_state['set_chat'] == False:
         st.sidebar.header('What do you wanna do?')
 
-        with st.expander(f"10 Games of the last decade:"):
+        with st.expander(f"10 Games of the last decade:", expanded=True):
             general_start()
     else:
         st.sidebar.header('Enjoy our amazing Boardgame-Bot')
@@ -413,7 +413,7 @@ if st.session_state['DemoDay'] == False:
             # ncol = len(user_games)
             with st.container():
                 if u_fav == True:
-                    with st.expander(f"Your Top10 Games:"):
+                    with st.expander(f"Your Top10 Games:", expanded=True):
                         user_fav()
 
                 if u_rec == True:
