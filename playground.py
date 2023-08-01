@@ -239,7 +239,7 @@ with sel_chatbot_placeholder:
     st.session_state['set_chat'] = st.checkbox(label="Chatbot Recommender", 
                             key="rec_chat", 
                             help = 'Use our awesome Chatbox to get Boardgame-Recommendations.',
-                            value= False
+                            value= True
                             )
     
 
