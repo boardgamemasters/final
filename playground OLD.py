@@ -11,15 +11,15 @@ from io import BytesIO
 from streamlit_chat import message
 
 
+# user_login = False
+if 'user_login' not in st.session_state:
+    st.session_state['user_login'] = False
+    st.session_state['user_name'] = ''
+
 ## Custom Functions
 import User_Ursula as ursula
 import ameyfun as af
 import funcrsys as pred
-
-# Login Handler & other session varibles
-if 'user_login' not in st.session_state:
-    st.session_state['user_login'] = False
-    st.session_state['user_name'] = ''
 
 st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_icon=logo)
 
@@ -112,21 +112,21 @@ else:
     #         st.image(pop_movies.iloc[i]['img'])
 
     
-    # ncol = 3#len(pop_movies)
-    # with st.container():
-    #     for i in range(0, ncol, 3):
-    #         col1, col2, col3 = st.columns(3)
-    #         with col1:
-    #             # st.image(pop_movies.iloc[i]['img'])
-    #             st.text('Spiel 1')    # (pop_movies.iloc[i]['title'])
-    #         with col2:
-    #             if i + 1 < ncol:
-    #                 # st.image(pop_movies.iloc[i+1]['img'])
-    #                 st.text('Spiel 2')    # (pop_movies.iloc[i+1]['title'])                    
-    #         with col3:                 
-    #             if i + 2 < ncol:
-    #                 # st.image(pop_movies.iloc[i+2]['img'])
-    #                 st.text('Spiel 3')    # (pop_movies.iloc[i+2]['title'])
+    ncol = 3#len(pop_movies)
+    with st.container():
+        for i in range(0, ncol, 3):
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                # st.image(pop_movies.iloc[i]['img'])
+                st.text('Spiel 1')    # (pop_movies.iloc[i]['title'])
+            with col2:
+                if i + 1 < ncol:
+                    # st.image(pop_movies.iloc[i+1]['img'])
+                    st.text('Spiel 2')    # (pop_movies.iloc[i+1]['title'])                    
+            with col3:                 
+                if i + 2 < ncol:
+                    # st.image(pop_movies.iloc[i+2]['img'])
+                    st.text('Spiel 3')    # (pop_movies.iloc[i+2]['title'])
                     
 
     
@@ -179,20 +179,11 @@ elif rec_select == 'Similar Taste':
     # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
     user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = user_feature['amount'], user = user_feature['user_id'],game_frame=games_df)
     user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
-    # user_col = len(user_games)
-    # u_cols = st.columns(user_col)
-    # with st.container():
-    #     st.header(f'Special Treats for you {user_feature["name"]}')
-    #     for i, x in enumerate(u_cols):
-    # #         st.header(user_games.iloc[i]['title'])
-    #         # st.image(user_games.iloc[i]['img'])
-    #         st.header(user_games.iloc[i]['bgg_id'])
-    #         st.text(user_games.iloc[i]['predicted_rating'])
     ncol = len(user_games)
     with st.container():
         st.header(f'Special Treats for you {user_feature["name"]}')
-        for i in range(0, ncol, 3):
-            col1, col2, col3 = st.columns(3)
+        for i in range(0, ncol, 5):
+            col1, col2, col3, col4, col5 = st.columns(5)
             with col1:
                 st.image(user_games.iloc[i]['image'])
                 st.text(user_games.iloc[i]['name'])
@@ -204,6 +195,15 @@ elif rec_select == 'Similar Taste':
                 if i + 2 < ncol:
                     st.image(user_games.iloc[i+2]['image'])
                     st.text(user_games.iloc[i+2]['name'])
+            with col4:                 
+                if i + 3 < ncol:
+                    st.image(user_games.iloc[i+3]['image'])
+                    st.text(user_games.iloc[i+3]['name'])
+            with col5:                 
+                if i + 4 < ncol:
+                    st.image(user_games.iloc[i+4]['image'])
+                    st.text(user_games.iloc[i+4]['name'])
+            
 
 elif rec_select == 'Amey likes you a lot':  
     def amey_like():
@@ -247,7 +247,6 @@ elif rec_select == 'Chatbot Recommender':
     def on_input_change():
         user_input = st.session_state.user_input
         st.session_state.responses.append(user_input)
-        st.session_state.user_input = ""  # Clear the input after processing
 
     def on_btn_click():
         del st.session_state['questions']
@@ -256,8 +255,7 @@ elif rec_select == 'Chatbot Recommender':
 
     st.session_state.setdefault('questions', [])
 
-    st.title("""May the Force....
-             I meant... May the Games be with You""")
+    st.title("Survey QA Bot")
     questions_list = [
         # 0
         '''I would like to recommend you some Boardgames.
@@ -287,12 +285,8 @@ elif rec_select == 'Chatbot Recommender':
             count +=1
             if selecthor == 0:
                 message(response, is_user = True, key=f"a1{count}")
-                if games.str.fullmatch(response, case = False).any():
-                    if ((games.str.fullmatch(response, case = False)).sum())!=1:
-                       sel_game = games[games.str.fullmatch(response, case = False)][0].item()     
-                    else:
-                     sel_game = games[games.str.fullmatch(response, case = False)].item()     
-                    # st.write(sel_game)
+                if games.isin([response]).any():
+                    sel_game = response
                     selecthor = 1
                     message(st.session_state.questions[2], key=f"b2{count}")  
                     continue
@@ -332,9 +326,8 @@ elif rec_select == 'Chatbot Recommender':
                     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
                     res_co = 0
                     for i in  range(len(amey_games)):
-                        # message()
                         message(
-                            f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/><br>{amey_games.iloc[res_co]["name"]}'
+                            f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/>'
                             , key=f"img_{count}_{res_co}"
                             , allow_html=True
                         )
@@ -362,6 +355,13 @@ elif rec_select == 'Chatbot Recommender':
 
     with st.container():
         st.text_input("User Response:", on_change=on_input_change, key="user_input")
+
+
+
+
+
+
+
 
 
 else:
