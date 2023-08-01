@@ -234,7 +234,11 @@ if st.session_state['DemoDay'] == False:
 
 
     def set_chatbot():
-        st.session_state['set_chat'] = ~st.session_state['set_chat']        # Not TRue but -1
+        if st.session_state['set_chat'] == True:
+            st.session_state['set_chat'] = False
+        else:
+            st.session_state['set_chat'] = True
+        # st.session_state['set_chat'] = ~(st.session_state['set_chat'])        # Not TRue but -1
 
     sel_chatbot_placeholder = st.sidebar.empty()
     with sel_chatbot_placeholder:
@@ -387,7 +391,10 @@ st.header(f'Demoday: {st.session_state["DemoDay"]}')
 
 st.sidebar.divider()
 def set_demoday():
-    st.session_state['DemoDay'] = ~(st.session_state['DemoDay'])        # Not TRue but -1
+    if st.session_state['DemoDay'] == True:
+        st.session_state['DemoDay'] = False
+    else:
+        st.session_state['DemoDay'] = True
 sel_DemoDay_placeholder = st.sidebar.empty()
 with sel_DemoDay_placeholder:
     st.checkbox(label="DemoDay", 
