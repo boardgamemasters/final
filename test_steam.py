@@ -195,9 +195,6 @@ elif rec_select == 'Amey likes you a lot':
                     st.text(amey_games.iloc[i+3]['name'])
 
 
-
-
-
 elif rec_select == 'Chatbot Recommender':
     games = amey_df['name_x']
     st.sidebar.text('Coming Soon')
@@ -228,15 +225,31 @@ elif rec_select == 'Chatbot Recommender':
         # Add other questions here...
     ]
 
-    # Add borders around the chat window
+    # Add CSS for styling the chat window
     st.markdown(
         """
         <style>
         .chat-window {
             padding: 10px;
             border: 1px solid #d8d8d8;
-            border-radius: 5px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
             margin-bottom: 10px;
+        }
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            background-color: #d8d8d8;
+        }
+        .user-message {
+            background-color: #0071bc;
+            color: white;
+            text-align: right;
+        }
+        .bot-message {
+            background-color: #f9f9f9;
+            color: black;
         }
         </style>
         """,
@@ -248,20 +261,20 @@ elif rec_select == 'Chatbot Recommender':
     with st.container():
         for response in (st.session_state.responses):
             if selecthor == 0:
-                message(response, is_user=True)
+                message(response, is_user=True, class_name="user-message chat-message")
                 if games.str.fullmatch(response, case=False).any():
                     if ((games.str.fullmatch(response, case=False)).sum()) != 1:
                         sel_game = games.loc[games.str.fullmatch(response, case=False)][0].item()
                     else:
                         sel_game = games.loc[games.str.fullmatch(response, case=False)].item()
                     selecthor = 1
-                    message("How many recommendations do you want to get? Please enter a number between 1 and 5.")
+                    message("How many recommendations do you want to get? Please enter a number between 1 and 5.", class_name="bot-message chat-message")
                     continue
                 else:
-                    message("I don't know this game. Please enter another one.")
+                    message("I don't know this game. Please enter another one.", class_name="bot-message chat-message")
 
             if selecthor == 1:
-                message(response, is_user=True)
+                message(response, is_user=True, class_name="user-message chat-message")
                 if response.isnumeric():
                     alt = int(response)
                     if alt < 1:
@@ -271,43 +284,41 @@ elif rec_select == 'Chatbot Recommender':
                     else:
                         alt = alt
                     selecthor = 3
-                    message(f"Your favorite board game is {sel_game}. And you would like to get {alt} recommendations for similar games. Is that correct? (y) , (n)")
+                    message(f"Your favorite board game is {sel_game}. And you would like to get {alt} recommendations for similar games. Is that correct? (y) , (n)", class_name="bot-message chat-message")
                     continue
                 else:
-                    message("Please enter a numeric value.")
+                    message("Please enter a numeric value.", class_name="bot-message chat-message")
 
             if selecthor == 2:
                 selecthor = 3
                 continue
 
             if selecthor == 3:
-                message(response, is_user=True)
+                message(response, is_user=True, class_name="user-message chat-message")
                 if pd.Series(['y', 'Y', 'yes', 'Yes']).isin([response]).any():
-                    message('I can recommend you the following games:')
+                    message('I can recommend you the following games:', class_name="bot-message chat-message")
                     amey_games = pd.DataFrame({'bgg_id': af.game_of_my_life(user_favorite_game=sel_game, data=amey_df, z=alt)})
                     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
                     res_co = 0
                     for i in range(len(amey_games)):
                         message(
-                            f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/>'
-                            , allow_html=True
+                            f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/>',
+                            class_name="bot-message chat-message",
+                            allow_html=True
                         )
                         res_co += 1
                 elif pd.Series(['n', 'N', 'no', 'No']).isin([response]).any():
-                    message('Let\'s try again')
+                    message('Let\'s try again', class_name="bot-message chat-message")
                     selecthor = 0
                     continue
                 else:
-                    message(f'{response} is not a valid input. Please try again. What is your favorite board game?')
+                    message(f'{response} is not a valid input. Please try again. What is your favorite board game?', class_name="bot-message chat-message")
                     selecthor = 0
                     continue
 
         st.markdown('<div class="chat-window">', unsafe_allow_html=True)
         st.text_input("User Response:", on_change=on_input_change, key="user_input")
         st.markdown('</div>', unsafe_allow_html=True)
-
-
-
 
 
 
