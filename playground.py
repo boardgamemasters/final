@@ -165,7 +165,8 @@ with u_fav_placeholder:
                             active_color="#11567f", 
                             track_color="#29B5E8"
                             )
-with u_rec_placeholder:        
+with u_rec_placeholder:    
+    if st.session_state['user_login'] == True:    
         u_rec = tog.st_toggle_switch(label=f"Special Treats for You", 
                             key="u_r_sel", 
                             default_value=True, 
