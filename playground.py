@@ -35,7 +35,35 @@ def data_load():
     return rating_df, games_df, users_df, games_info, cosine_df, amey_df
 
 
-
+####### Users Favorites
+@st.cache_data
+def user_fav():
+    fav_games = pred.fav_bguser(user_id= st.session_state['user_name'], bg_num = 10, reviews_df = rating_df, bg_df=games_df)
+    ncol = len(fav_games)
+    with st.container():
+        st.header(f'''Hey {st.session_state["user_name"]}. Your 10 Top Rated games are: ''')
+        for i in range(0, ncol, 5):
+            col1, col2, col3, col4, col5 = st.columns(5)
+            with col1:
+                st.image(pred.make_square(fav_games.iloc[i]['image']))
+                st.text(fav_games.iloc[i]['name'])
+            with col2:
+                if i + 1 < ncol:
+                    st.image(pred.make_square(fav_games.iloc[i+1]['image']))
+                    st.text(fav_games.iloc[i+1]['name'])                    
+            with col3:                 
+                if i + 2 < ncol:
+                    st.image(pred.make_square(fav_games.iloc[i+2]['image']))
+                    st.text(fav_games.iloc[i+2]['name'])
+            with col4:                 
+                if i + 3 < ncol:
+                    st.image(pred.make_square(fav_games.iloc[i+3]['image']))
+                    st.text(fav_games.iloc[i+3]['name'])
+            with col5:                 
+                if i + 4 < ncol:
+                    st.image(pred.make_square(fav_games.iloc[i+4]['image']))
+                    st.text(fav_games.iloc[i+4]['name'])
+#####
 ####### Special Treats
 @st.cache_data
 def special_treat():
@@ -47,32 +75,24 @@ def special_treat():
         for i in range(0, ncol, 5):
             col1, col2, col3, col4, col5 = st.columns(5)
             with col1:
-                # st.image(user_games.iloc[i]['image'])
-                st.image(pred.make_square(user_games.iloc[i]['image']))#, w=400, h=400))
+                st.image(pred.make_square(user_games.iloc[i]['image']))
                 st.text(user_games.iloc[i]['name'])
             with col2:
                 if i + 1 < ncol:
-                    # st.image(user_games.iloc[i+1]['image'])
-                    st.image(pred.make_square(user_games.iloc[i+1]['image']))#, w=400, h=400))
+                    st.image(pred.make_square(user_games.iloc[i+1]['image']))
                     st.text(user_games.iloc[i+1]['name'])                    
             with col3:                 
                 if i + 2 < ncol:
-                    # st.image(user_games.iloc[i+2]['image'])
-                    st.image(pred.make_square(user_games.iloc[i+2]['image']))#, w=400, h=400))
+                    st.image(pred.make_square(user_games.iloc[i+2]['image']))
                     st.text(user_games.iloc[i+2]['name'])
             with col4:                 
                 if i + 3 < ncol:
-                    # st.image(user_games.iloc[i+3]['image'])
-                    st.image(pred.make_square(user_games.iloc[i+3]['image']))#, w=400, h=400))
+                    st.image(pred.make_square(user_games.iloc[i+3]['image']))
                     st.text(user_games.iloc[i+3]['name'])
             with col5:                 
                 if i + 4 < ncol:
-                    # st.image(user_games.iloc[i+4]['image'])
-                    st.image(pred.make_square(user_games.iloc[i+4]['image']))#, w=400, h=400))
+                    st.image(pred.make_square(user_games.iloc[i+4]['image']))
                     st.text(user_games.iloc[i+4]['name'])
-
-
-
 #####
 
 
@@ -127,6 +147,7 @@ if st.session_state['user_login'] == True:
         st.session_state['user_name'] = ''
         st.success("Logout successful")
         special_treat.clear()
+        user_fav.clear()
 
 
 
@@ -141,52 +162,19 @@ if custom == True:
          ), key='rec_select')
 
 else:
-    # st.write('Basic Bitch!')
     rec_select = ''
-    # pop_movies = pred.pop_movies(wf = rating_df)
-    # st.dataframe(pop_movies)
-
-    # ncol = len(pop_movies)
-    # cols = st.columns(ncol)
-    # with st.container():
-    #     for i, x in enumerate(cols):
-    #         st.header(pop_movies.iloc[i]['title'])
-    #         st.image(pop_movies.iloc[i]['img'])
-
-    
-    # ncol = 3#len(pop_movies)
-    # with st.container():
-    #     for i in range(0, ncol, 3):
-    #         col1, col2, col3 = st.columns(3)
-    #         with col1:
-    #             # st.image(pop_movies.iloc[i]['img'])
-    #             st.text('Spiel 1')    # (pop_movies.iloc[i]['title'])
-    #         with col2:
-    #             if i + 1 < ncol:
-    #                 # st.image(pop_movies.iloc[i+1]['img'])
-    #                 st.text('Spiel 2')    # (pop_movies.iloc[i+1]['title'])                    
-    #         with col3:                 
-    #             if i + 2 < ncol:
-    #                 # st.image(pop_movies.iloc[i+2]['img'])
-    #                 st.text('Spiel 3')    # (pop_movies.iloc[i+2]['title'])
-                    
-
-    
 
 if rec_select == 'Similar Games based of Description':
     def game_like():
-        title = st.sidebar.multiselect('Games like', games_info.sort_values('name')['name'])    # titles_df['title'], key = 'movie_like')
-        #amount = st.sidebar.slider('Number of Recommendations', min_value=1, max_value=5, value=3, step=1, key='mln', help='Here you can specify the number of recommended Games')
+        title = st.sidebar.multiselect('Games like', games_info.sort_values('name')['name'])
 
-        game_id = games_info.loc[games_info['name'].isin(title),'bgg_id']#.values[0]
+        game_id = games_info.loc[games_info['name'].isin(title),'bgg_id']
 
-        data = {'bgg_id': game_id#,    #    mov_id,
-                #'amount': amount
+        data = {'bgg_id': game_id
                 }
         return(data)
     sim_feature =  list(game_like()['bgg_id'])
-    # st.write(len(sim_feature))
-    ## similar_description_games(bg_input, bg_cosines_df, bgref_df)
+
     if (len(sim_feature)>0):
         sim_games = pred.similar_description_games(bg_input = sim_feature, bg_cosines_df = cosine_df, bgref_df = games_info)
         ncol = len(sim_games)
@@ -218,18 +206,9 @@ elif rec_select == 'Similar Taste':
                 'name' : user}
         return(data)
     user_feature =  user_like()
-    # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
     user_games = ursula.gib_spiele_digga(rat_df = rating_df, s_alt = user_feature['amount'], user = user_feature['user_id'],game_frame=games_df)
     user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
-    # user_col = len(user_games)
-    # u_cols = st.columns(user_col)
-    # with st.container():
-    #     st.header(f'Special Treats for you {user_feature["name"]}')
-    #     for i, x in enumerate(u_cols):
-    # #         st.header(user_games.iloc[i]['title'])
-    #         # st.image(user_games.iloc[i]['img'])
-    #         st.header(user_games.iloc[i]['bgg_id'])
-    #         st.text(user_games.iloc[i]['predicted_rating'])
+
     ncol = len(user_games)
     with st.container():
         st.header(f'Special Treats for you {user_feature["name"]}')
@@ -256,7 +235,6 @@ elif rec_select == 'Amey likes you a lot':
                 'name' : gname}
         return(data)
     amey_feature =  amey_like()
-    # st.sidebar.text('Login to use this Feature')    # (pop_movies.iloc[i+2]['title'])
     amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=amey_feature['name'],data = amey_df, z=amey_feature['amount'])})
     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
 
@@ -324,7 +302,6 @@ elif rec_select == 'Chatbot Recommender':
     with st.container():
         selecthor = 0
         count =0
-        # while 1==1:
         for response in (st.session_state.responses):
             count +=1
             if selecthor == 0:
@@ -334,14 +311,12 @@ elif rec_select == 'Chatbot Recommender':
                        sel_game = games[games.str.fullmatch(response, case = False)][0].item()     
                     else:
                      sel_game = games[games.str.fullmatch(response, case = False)].item()     
-                    # st.write(sel_game)
                     selecthor = 1
                     message(st.session_state.questions[2], key=f"b2{count}")  
                     continue
                 else:
                     message(st.session_state.questions[1], key=f"b1{count}")
             if selecthor == 1:
-                # message(st.session_state.questions[2], key=f"b2{count}")
                 message(response, is_user = True, key=f"a2{count}")
                 if response.isnumeric():
                     alt = int(response)
@@ -360,10 +335,6 @@ elif rec_select == 'Chatbot Recommender':
                 else:
                     message('Please enter a numeric value', key=f"b3{count}")
             if selecthor== 2:
-                # message(f'''Your favorite boardgame is {sel_game}.
-                # And you would like to get {alt} recommendations for similar games.
-                # Is that correct?
-                # (y) , (n)''', key=f"b4{count}")
                 selecthor = 3
                 continue
             if selecthor== 3:
@@ -374,13 +345,11 @@ elif rec_select == 'Chatbot Recommender':
                     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
                     res_co = 0
                     for i in  range(len(amey_games)):
-                        # message()
                         message(
                             f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/><br>{amey_games.iloc[res_co]["name"]}'
                             , key=f"img_{count}_{res_co}"
                             , allow_html=True
                         )
-                        # message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
                         res_co +=1
                 
                 elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
@@ -395,11 +364,7 @@ elif rec_select == 'Chatbot Recommender':
                     
                         
                     
-        
-        # for response, question in zip(st.session_state.responses, st.session_state.questions[1:]):
-        #     message(response, )
-        #     message(response)
-        #     message(question)
+
 
 
     with st.container():
@@ -415,6 +380,12 @@ if st.session_state['user_login']==True:
     user_games = ursula.get_feature(result_file=user_games, feature_file=games_info)
     ncol = len(user_games)
     with st.container():
-        special_treat()
+        with st.expander(f"Your Top10 Games:"):
+            user_fav()
+
+        with st.expander(f"10 Games we think you might enjoy:"):
+            special_treat()
+
+        
 else:
     st.write('') 
