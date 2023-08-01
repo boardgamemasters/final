@@ -215,7 +215,7 @@ if st.session_state['DemoDay'] == False:
                 return(g_player)
             
             def age_rec():
-                g_age = st.sidebar.slider('What should the minimal recommended age be?', int(round(min_value=amey_df['min_age'].min())), max_value=int(round(amey_df['min_age'].max())), value=10, step=1, key='g_age', help='Here you can specify the mimimal Age that should be required to play')
+                g_age = st.sidebar.slider('What should the minimal recommended age be?', min_value=0, max_value=99, value=10, step=1, key='g_age', help='Here you can specify the mimimal Age that should be required to play')
                 return(g_age)
             
 
