@@ -231,15 +231,13 @@ if set_chat == False:
 else:
     st.write('')
 
-def chat_select_change():
-    st.experimental_rerun()
 
 sel_chatbot_placeholder = st.sidebar.empty()
 with sel_chatbot_placeholder:
     st.session_state['set_chat'] = st.checkbox(label="Chatbot Recommender", 
                             key="rec_chat", 
                             help = 'Use our awesome Chatbox to get Boardgame-Recommendations.',
-                            value= True
+                            value= False
                             )
     
 
