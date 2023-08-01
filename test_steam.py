@@ -10,26 +10,23 @@ from urllib.request import urlopen
 from io import BytesIO
 from streamlit_chat import message
 
-
-
-## Custim Functions
+## Custom Functions
 import User_Ursula as ursula
 import ameyfun as af
 import funcrsys as pred
 
 st.set_page_config(page_title='Boardgame Recommender')#, page_icon=logo)
 
-
 @st.cache_data
 def data_load():
-    rating_df   =    pd.read_csv('data/final_ratings_v3.csv')
-    games_df    =    pd.read_csv('data/game_learn_df_v3.csv')
-    users_df    =    pd.read_csv('data/usernames_v2.csv')
-    games_info  =    pd.read_csv('data/bgref.csv')
-    cosine_df   =    pd.read_csv('data/bg_cosines_final.csv')
-    amey_df     =    pd.read_csv('data/final_data.csv')
+    # Load data from CSV files (update the file paths accordingly)
+    rating_df   = pd.read_csv('data/final_ratings_v3.csv')
+    games_df    = pd.read_csv('data/game_learn_df_v3.csv')
+    users_df    = pd.read_csv('data/usernames_v2.csv')
+    games_info  = pd.read_csv('data/bgref.csv')
+    cosine_df   = pd.read_csv('data/bg_cosines_final.csv')
+    amey_df     = pd.read_csv('data/final_data.csv')
     return rating_df, games_df, users_df, games_info, cosine_df, amey_df
-
 
 rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
 
@@ -199,9 +196,12 @@ elif rec_select == 'Amey likes you a lot':
 
 
 
+
+
 elif rec_select == 'Chatbot Recommender':
     games = amey_df['name_x']
     st.sidebar.text('Coming Soon')
+
     def on_input_change():
         user_input = st.session_state.user_input
         st.session_state.responses.append(user_input)
@@ -213,112 +213,101 @@ elif rec_select == 'Chatbot Recommender':
         selecthor = 0
 
     st.session_state.setdefault('questions', [])
+    st.session_state.setdefault('responses', [])
+    selecthor = 0
 
-    st.title("Survey QA Bot")
+    st.title("Boardgame Recommender Chatbot")
+
+    # Greeting message
+    st.write("Hi there! I'm your Boardgame Recommender Chatbot.")
+    st.write("I can recommend you some awesome board games based on your preferences.")
+    st.write("Let's get started!")
+
     questions_list = [
-        # 0
-        '''I would like to recommend you some Boardgames.
-        What is your favorite one?'''    
-        # 1
-        , '''I dont know this Game.
-        Please enter another one'''
-        # 2
-        , '''How many recommendations do you want to get?
-        'Please enter a Number between 1 and 5'''
+        '''What is your favorite board game?'''
+        # Add other questions here...
     ]
 
-    if 'responses' not in st.session_state.keys():
-        st.session_state.questions.extend(questions_list)
-        st.session_state.responses = []
+    # Add borders around the chat window
+    st.markdown(
+        """
+        <style>
+        .chat-window {
+            padding: 10px;
+            border: 1px solid #d8d8d8;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    chat_placeholder = st.empty()
-    st.button("Clear message", on_click=on_btn_click)
-
-    message(st.session_state.questions[0]) 
+    message(questions_list[0])
 
     with st.container():
-        selecthor = 0
-        count =0
-        # while 1==1:
         for response in (st.session_state.responses):
-            count +=1
             if selecthor == 0:
-                message(response, is_user = True, key=f"a1{count}")
-                if games.str.fullmatch(response, case = False).any():
-                    if ((games.str.fullmatch(response, case = False)).sum())!=1:
-                       sel_game = games[games.str.fullmatch(response, case = False)][0].item()     
+                message(response, is_user=True)
+                if games.str.fullmatch(response, case=False).any():
+                    if ((games.str.fullmatch(response, case=False)).sum()) != 1:
+                        sel_game = games.loc[games.str.fullmatch(response, case=False)][0].item()
                     else:
-                     sel_game = games[games.str.fullmatch(response, case = False)].item()     
-                    # st.write(sel_game)
+                        sel_game = games.loc[games.str.fullmatch(response, case=False)].item()
                     selecthor = 1
-                    message(st.session_state.questions[2], key=f"b2{count}")  
+                    message("How many recommendations do you want to get? Please enter a number between 1 and 5.")
                     continue
                 else:
-                    message(st.session_state.questions[1], key=f"b1{count}")
+                    message("I don't know this game. Please enter another one.")
+
             if selecthor == 1:
-                # message(st.session_state.questions[2], key=f"b2{count}")
-                message(response, is_user = True, key=f"a2{count}")
+                message(response, is_user=True)
                 if response.isnumeric():
                     alt = int(response)
-                    if alt <1:
-                        alt =1
-                    elif alt >5:
+                    if alt < 1:
+                        alt = 1
+                    elif alt > 5:
                         alt = 5
                     else:
                         alt = alt
                     selecthor = 3
-                    message(f'''Your favorite boardgame is {sel_game}.
-                    And you would like to get {alt} recommendations for similar games.
-                    Is that correct?
-                    (y) , (n)''', key=f"b4{count}")
+                    message(f"Your favorite board game is {sel_game}. And you would like to get {alt} recommendations for similar games. Is that correct? (y) , (n)")
                     continue
                 else:
-                    message('Please enter a numeric value', key=f"b3{count}")
-            if selecthor== 2:
-                # message(f'''Your favorite boardgame is {sel_game}.
-                # And you would like to get {alt} recommendations for similar games.
-                # Is that correct?
-                # (y) , (n)''', key=f"b4{count}")
+                    message("Please enter a numeric value.")
+
+            if selecthor == 2:
                 selecthor = 3
                 continue
-            if selecthor== 3:
-                message(response, is_user = True, key=f"a3{count}")  
-                if (pd.Series(['y', 'Y', 'yes', 'Yes'])).isin([response]).any():
-                    message('I can recommend you the following games:', key=f"b5{count}")
-                    amey_games = pd.DataFrame({'bgg_id' : af.game_of_my_life(user_favorite_game=sel_game,data = amey_df, z=alt)})
+
+            if selecthor == 3:
+                message(response, is_user=True)
+                if pd.Series(['y', 'Y', 'yes', 'Yes']).isin([response]).any():
+                    message('I can recommend you the following games:')
+                    amey_games = pd.DataFrame({'bgg_id': af.game_of_my_life(user_favorite_game=sel_game, data=amey_df, z=alt)})
                     amey_games = ursula.get_feature(result_file=amey_games, feature_file=games_info)
                     res_co = 0
-                    for i in  range(len(amey_games)):
+                    for i in range(len(amey_games)):
                         message(
                             f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/>'
-                            , key=f"img_{count}_{res_co}"
                             , allow_html=True
                         )
-                        # message(f'{amey_games.iloc[res_co]["name"]}', key=f"{count}_{res_co}")
-                        res_co +=1
-                
-                elif (pd.Series(['n', 'N', 'no', 'No'])).isin([response]).any():
-                    message('Lets try again', key=f"b6{count}")
+                        res_co += 1
+                elif pd.Series(['n', 'N', 'no', 'No']).isin([response]).any():
+                    message('Let\'s try again')
                     selecthor = 0
                     continue
                 else:
-                    message(f'''{response} is not a valid input. Please try again
-                    What is your favorite Boardgame?''', key=f"b7{count}")
+                    message(f'{response} is not a valid input. Please try again. What is your favorite board game?')
                     selecthor = 0
                     continue
-                    
-                        
-                    
-        
-        # for response, question in zip(st.session_state.responses, st.session_state.questions[1:]):
-        #     message(response, )
-        #     message(response)
-        #     message(question)
 
-
-    with st.container():
+        st.markdown('<div class="chat-window">', unsafe_allow_html=True)
         st.text_input("User Response:", on_change=on_input_change, key="user_input")
+        st.markdown('</div>', unsafe_allow_html=True)
 
 
-else:
-    st.write('')
+
+
+
+
