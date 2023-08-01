@@ -117,7 +117,7 @@ st.header("Find awesome Games")
 
 
 ####### SIDEBAR
-if st.session_state['chat_bot_only'] == False:
+if st.session_state['set_chat'] == False:
     st.sidebar.header('What do you wanna do?')
 else:
     st.sidebar.header('Enjoy our amazing Boardgame-Bot')
