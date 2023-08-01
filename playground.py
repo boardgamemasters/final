@@ -207,11 +207,11 @@ if st.session_state['DemoDay'] == False:
                 return(g_year)
             
             def price_rec():
-                g_price = st.sidebar.slider('Max Price in €', min_value=amey_df['europrice_x'].min(), max_value=amey_df['europrice_x'].max(), value=28, step=1, key='g_price', help='Here you can specify the max Price that the Boardgames shoud cost')
+                g_price = st.sidebar.slider('Max Price in €', min_value=int(round(amey_df['europrice_x'].min())), max_value=int(round(amey_df['europrice_x'].max())), value=28, step=1, key='g_price', help='Here you can specify the max Price that the Boardgames shoud cost')
                 return(g_price)
             
             def player_rec():
-                g_player = st.sidebar.slider('How many players should be required (max)', min_value=amey_df['min_players'].min(), max_value=amey_df['min_players'].max(), value=2, step=1, key='g_player', help='Here you can specify the max Value for the minimal Number of Players that are required to play')
+                g_player = st.sidebar.slider('How many players should be required (max)', min_value=1, max_value=amey_df['min_players'].max(), value=2, step=1, key='g_player', help='Here you can specify the max Value for the minimal Number of Players that are required to play')
                 return(g_player)
             
             def age_rec():
