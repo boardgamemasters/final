@@ -291,7 +291,7 @@ elif rec_select == 'Chatbot Recommender':
                     for i in  range(len(amey_games)):
                         # message()
                         message(
-                            f'{amey_games.iloc[res_co]["name"]} <br>  <img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/>'
+                            f'<img width="100%" height="200" src="{amey_games.iloc[res_co]["image"]}"/><br>{amey_games.iloc[res_co]["name"]}'
                             , key=f"img_{count}_{res_co}"
                             , allow_html=True
                         )
