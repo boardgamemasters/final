@@ -393,6 +393,6 @@ with sel_DemoDay_placeholder:
     st.checkbox(label="DemoDay", 
                             key="DemoDay", 
                             help = 'Lets Start DemoDay',
-                            value= st.session_state['DemoDay'],
+                            # value= st.session_state['DemoDay'],
                             on_change=set_demoday
                             )
