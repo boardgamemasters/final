@@ -244,7 +244,7 @@ with sel_chatbot_placeholder:
 
 st.header(st.session_state['set_chat'])    
 
-if st.session_state['set_chat'] == True:
+if st.session_state['set_chat']:
     games = amey_df['name_x']
     def on_input_change():
         user_input = st.session_state.user_input
