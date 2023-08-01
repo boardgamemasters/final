@@ -22,8 +22,8 @@ if 'user_login' not in st.session_state:
     st.session_state['user_login'] = False
     st.session_state['user_name'] = ''
 
-if 'chat_bot_only' not in st.session_state:
-    st.session_state['chat_bot_only'] = ''
+if 'set_chat' not in st.session_state:
+    st.session_state['set_chat'] = ''
     set_chat = False
 
 st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_icon=logo)
@@ -236,8 +236,7 @@ sel_chatbot_placeholder = st.sidebar.empty()
 with sel_chatbot_placeholder:
     set_chat = st.checkbox(label="Chatbot Recommender", 
                             key="rec_chat", 
-                            help = 'Use our awesome Chatbox to get Boardgame-Recommendations.',
-                            on_change= chat_select_change
+                            help = 'Use our awesome Chatbox to get Boardgame-Recommendations.'
                             )
     
 
