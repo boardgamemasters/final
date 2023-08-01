@@ -279,6 +279,8 @@ elif rec_select == 'Chatbot Recommender':
                 st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
                 st.write("I don't know this game. Please enter another one.")
                 st.markdown('</div>', unsafe_allow_html=True)
+                selecthor = 0
+                continue
 
         if selecthor == 1:
             st.markdown('<div class="user-message chat-message">', unsafe_allow_html=True)
@@ -302,10 +304,8 @@ elif rec_select == 'Chatbot Recommender':
                 st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
                 st.write("Please enter a numeric value.")
                 st.markdown('</div>', unsafe_allow_html=True)
-
-        if selecthor == 2:
-            selecthor = 3
-            continue
+                selecthor = 1
+                continue
 
         if selecthor == 3:
             st.markdown('<div class="user-message chat-message">', unsafe_allow_html=True)
@@ -328,12 +328,19 @@ elif rec_select == 'Chatbot Recommender':
                     st.markdown('</div>', unsafe_allow_html=True)
                     res_co += 1
 
+                st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
+                st.write("Thank you for using our Boardgame Recommender Chatbot. Have a great day!")
+                st.markdown('</div>', unsafe_allow_html=True)
+                selecthor = 4
+                continue
+
             elif pd.Series(['n', 'N', 'no', 'No']).isin([response]).any():
                 st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
                 st.write("Let's try again.")
                 st.markdown('</div>', unsafe_allow_html=True)
                 selecthor = 0
                 continue
+
             else:
                 st.markdown('<div class="bot-message chat-message">', unsafe_allow_html=True)
                 st.write(f"{response} is not a valid input. Please try again.")
@@ -342,6 +349,5 @@ elif rec_select == 'Chatbot Recommender':
                 continue
 
     st.markdown('</div>', unsafe_allow_html=True)
-
 
 
