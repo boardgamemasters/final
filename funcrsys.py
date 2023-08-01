@@ -131,11 +131,58 @@ def resize_img(url, w=400, h=400):
     
     return imageres
 
+############################################################################################################
+######################################                             #########################################
+######################################        MAKE_SQUARE          #########################################
+######################################                             #########################################
+############################################################################################################
+# Takes an image URL (or a local image file path), resizes the image to form a square with a minimum size, 
+# and then pastes the original image onto the center of the square canvas with a specified fill color.
+############################################################################################################
+
 def make_square(im, min_size=200, fill_color=(0, 0, 0, 0)):
+    # Open the downloaded image using Pillow's Image.open() as "im"
     urllib.request.urlretrieve(im, "bgimage")
     with Image.open("bgimage") as im:
+        # Get the original width (x) and height (y) of the image
         x, y = im.size
+        # Determine the size of the square canvas (size) based on the original image's dimensions 
+        # and the specified minimum size
         size = max(min_size, x, y)
+        # Create a new square image with a transparent background (RGBA) of the determined size
         new_im = Image.new('RGBA', (size, size), fill_color)
+        # Paste the original image onto the center of the square canvas
         new_im.paste(im, (int((size - x) / 2), int((size - y))))
     return new_im
+
+############################################################################################################
+######################################                             #########################################
+######################################        FAV_BGUSER           #########################################
+######################################                             #########################################
+############################################################################################################
+# Inputs: An user id, the number of games to retrieve, dataframes of reviews and reference
+# Returns a DataFrame containing the favorite board games of the given user
+############################################################################################################
+
+def fav_bguser(user_id, bg_num, reviews_df, bg_df):
+
+    bg_id = []
+    bg_name = []
+    bg_image = []
+
+    # Extract the 'bgg_id'
+    bg = list(reviews_df.loc[reviews_df.Username == user_id].sort_values(
+                'Rating', ascending=False).head(bg_num)['bgg_id'].values)
+
+    # Iterate over the 'bgg_id' values of the top board games
+    for b in bg:
+        # Find the index (position) of the matching row in the 'bg_df' and append values
+        p = int(bg_df.loc[bg_df.bgg_id == b].index[0])
+        bg_id.append(int(bg_df.loc[bg_df.bgg_id == b, 'bgg_id']))
+        bg_name.append(bg_df.loc[bg_df.bgg_id == b, 'name'][p])
+        bg_image.append(bg_df.loc[bg_df.bgg_id == b, 'image'][p])
+
+    # Create a DataFrame 'bgames' from the lists
+    bgames = pd.DataFrame(list(zip(bg_id, bg_name, bg_image)), columns=['bgg_id', 'name', 'image'])
+
+    return bgames
