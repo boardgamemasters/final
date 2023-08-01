@@ -104,7 +104,36 @@ def special_treat():
                     st.image(pred.make_square(user_games.iloc[i+4]['image']))
                     st.text(user_games.iloc[i+4]['name'])
 #####
-
+####### General for Startpage
+@st.cache_data
+def general_start():
+    gen_games = pred.best_general(gb=amey_df)
+    gen_games = ursula.get_feature(result_file=gen_games, feature_file=games_info)
+    ncol = len(gen_games)
+    with st.container():
+        st.header(f'''Here are some Games of the last decade''')
+        for i in range(0, ncol, 5):
+            col1, col2, col3, col4, col5 = st.columns(5)
+            with col1:
+                st.image(pred.make_square(gen_games.iloc[i]['image']))
+                st.text(gen_games.iloc[i]['name'])
+            with col2:
+                if i + 1 < ncol:
+                    st.image(pred.make_square(gen_games.iloc[i+1]['image']))
+                    st.text(gen_games.iloc[i+1]['name'])                    
+            with col3:                 
+                if i + 2 < ncol:
+                    st.image(pred.make_square(gen_games.iloc[i+2]['image']))
+                    st.text(gen_games.iloc[i+2]['name'])
+            with col4:                 
+                if i + 3 < ncol:
+                    st.image(pred.make_square(gen_games.iloc[i+3]['image']))
+                    st.text(gen_games.iloc[i+3]['name'])
+            with col5:                 
+                if i + 4 < ncol:
+                    st.image(pred.make_square(gen_games.iloc[i+4]['image']))
+                    st.text(gen_games.iloc[i+4]['name'])
+#####
 
 rating_df, games_df, users_df, games_info, cosine_df, amey_df = data_load()
 
@@ -122,6 +151,9 @@ if st.session_state['DemoDay'] == False:
     ####### SIDEBAR
     if st.session_state['set_chat'] == False:
         st.sidebar.header('What do you wanna do?')
+
+        with st.expander(f"10 Games of the last decade:"):
+            general_start()
     else:
         st.sidebar.header('Enjoy our amazing Boardgame-Bot')
 
@@ -189,77 +221,7 @@ if st.session_state['DemoDay'] == False:
                                     track_color="#29B5E8"
                                     )
 
-        st.sidebar.divider()
-        general_placeholder = st.sidebar.empty()
-        with general_placeholder:
-            gen_rec = tog.st_toggle_switch(label="General Recommender", 
-                                    key="gen_rec", 
-                                    default_value=False, 
-                                    label_after = True, 
-                                    inactive_color = '#D3D3D3', 
-                                    active_color="#11567f", 
-                                    track_color="#29B5E8"
-                                    )
-        
-        if gen_rec == True:
-            def year_rec():
-                g_year = st.sidebar.slider('Year Published', 1960, max_value=amey_df['year'].max(), value=2012, step=1, key='g_year', help='Here you can specify the year that the Boardgames shoud be published in')
-                return(g_year)
-            
-            def price_rec():
-                g_price = st.sidebar.slider('Max Price in €', min_value=int(round(amey_df['europrice_x'].min())), max_value=1000, value=28, step=1, key='g_price', help='Here you can specify the max Price that the Boardgames shoud cost')
-                return(g_price)
-            
-            def player_rec():
-                g_player = st.sidebar.slider('How many players should be required (max)', min_value=1, max_value=amey_df['min_players'].max(), value=2, step=1, key='g_player', help='Here you can specify the max Value for the minimal Number of Players that are required to play')
-                return(g_player)
-            
-            def age_rec():
-                g_age = st.sidebar.slider('What should the minimal recommended age be?', min_value=0, max_value=99, value=10, step=1, key='g_age', help='Here you can specify the mimimal Age that should be required to play')
-                return(g_age)
-            
-
-
-            year_sel = st.sidebar.checkbox('Year Published', value=False, key='year_sel', help='Click this to get Boardgames of a certain Year')
-            price_sel = st.sidebar.checkbox('Max Price', value=False, key='price_sel', help='Click this to get Boardgames of a certain Year')
-            player_sel = st.sidebar.checkbox('Max Required Players', value=False, key='player_sel', help='Click this to get Boardgames for a maximal amount of Players')
-            age_sel = st.sidebar.checkbox('Min Age Required', value=False, key='age_sel', help='Click this to get Boardgames that require a mimimum Age')
-
-
-            if year_sel==True:
-                year_prime = 2
-                g_year =  year_rec()    
-            else:
-                year_prime = 1
-
-            if price_sel==True:
-                price_prime = 3
-                g_price =  price_rec()    
-            else:
-                price_prime = 1
-            
-            if player_sel==True:
-                player_prime = 5
-                g_player =  player_rec()    
-            else:
-                player_prime = 1
-            
-            if age_sel==True:
-                age_prime = 7
-                g_age =  age_rec()    
-            else:
-                age_prime = 1
-
-            prime_selecthor = year_prime * price_prime * player_prime * age_prime
-
-            if prime_selecthor >= 210:
-                multi_sel = st.sidebar.checkbox('Combine all of the above', value=False, key='multi_sel', help='Click this to get Multi Criteria Recommendations')
-                if multi_sel==True:
-                    multi_prime = 11
-                else:
-                    multi_prime = 1
-                prime_selecthor = year_prime * price_prime * player_prime * age_prime * multi_prime
-            
+       
 
 
 
