@@ -13,6 +13,20 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 #### Sub-Functions
 
+def user_limiter(user_id, rat_df, game_frame):
+    red_df = rat_df.loc[rat_df['Username']== user_id]
+    rat_th = red_df['Rating'].describe()[6]
+    red_id = red_df.loc[red_df['Rating'] >= rat_th]['bgg_id']
+    red_spec = game_frame.loc[game_frame['bgg_id'].isin(red_id),['min_age', 'complexity', 'min_time']]
+    red_age = red_spec['min_age'].min()
+    red_complex=red_spec['complexity'].min()
+    red_mintime = red_spec['min_time'].min()
+    red_game = game_frame.loc[(game_frame['complexity'] >= red_complex) & (game_frame['min_age'] >= red_age) &(game_frame['min_time'] <= red_mintime)]
+    return red_game
+
+
+
+
 def ScaleMeUpScotty(wf):
     wf.set_index('bgg_id',inplace=True)
     scaler = MinMaxScaler()
@@ -162,6 +176,9 @@ def similar_taste(wf, include_games, u_id, alt = 10):
 def gib_spiele_digga(rat_df, game_frame, f_alt = 1000, s_alt = 10, user =' beastvol'):
     # print(rat_df.columns)
     # print(f'Username: {user}')
+
+    game_frame=user_limiter(user_id=user, rat_df=rat_df, game_frame=game_frame)
+
     answer = (
         similar_taste(
             wf = rat_df
