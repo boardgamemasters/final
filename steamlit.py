@@ -40,18 +40,22 @@ carousel_items = [
     dict(
         title="Frederik",
         text="Here is Frederik",
-        interval=None,
-        img="https://drive.google.com/file/d/1bf1wxf1PKU9cCZhFnPBvxiSdLuVbeCxx/view?usp=drive_link",
+        img="https://raw.githubusercontent.com/boardgamemasters/final/main/team/frederik.png",
     ),
     dict(
-        title="Slide 2",
-        text="A wooden bridge in a forest in Autumn",
-        img="https://cf.geekdo-images.com/x3zxjr-Vw5iU4yDPg70Jgw__imagepage/img/-17KkOmxbTu2slJTabGrkO8ZW8s=/fit-in/900x600/filters:no_upscale():strip_icc()/pic3490053.jpg",
+        title="Ariadna",
+        text="Here is Ariadna",
+        img="https://raw.githubusercontent.com/boardgamemasters/final/main/team/ariadna.png",
     ),
     dict(
-        title="Slide 3",
-        text="A distant mountain chain preceded by a sea",
-        img="https://img.freepik.com/free-photo/aerial-beautiful-shot-seashore-with-hills-background-sunset_181624-24143.jpg?w=1380&t=st=1688825798~exp=1688826398~hmac=f623f88d5ece83600dac7e6af29a0230d06619f7305745db387481a4bb5874a0",
+        title="Leila",
+        text="Here is Leila",
+        img="https://raw.githubusercontent.com/boardgamemasters/final/main/team/leila.png",
+    ),
+    dict(
+        title="Amey",
+        text="Here is Amey",
+        img="https://raw.githubusercontent.com/boardgamemasters/final/main/team/amey.png",
     ),
 ]
 
@@ -452,6 +456,10 @@ if st.session_state['DemoDay'] == False:
 else:
     st.title(f'🎈 Welcome to the amazing World of Boardgames 🎈')
     components.iframe("https://docs.google.com/presentation/d/e/2PACX-1vSVj4sm4gYZDSfrKC3BdLvLd0lFVgzfJBlDkkaOHWHvIxcR3cmc1ySEv8YQwIP3zQyUiiKAFk4D9zAI/embed?start=false&loop=false&delayms=60000", height=750)
+    sel_team_placeholder = st.sidebar.empty()
+    with sel_team_placeholder:
+        carousel(items=carousel_items, width=1)
+    
 
 
 st.sidebar.divider()
