@@ -4,6 +4,7 @@ import pandas as pd
 import random
 from PIL import Image
 import urllib.request
+
 ############################################################################################################
 ######################################                             #########################################
 ######################################  SIMILAR_DESCRIPTION_GAMES  #########################################
@@ -11,13 +12,15 @@ import urllib.request
 ############################################################################################################
 # Function to recommend similar games based on a user's input of liking certain games and their descriptions
 # Parameters: 
-#       bg_input (list): A list of board game IDs that the user likes.
-#       df_cosines_distances: DataFrame containing cosine distances for different board games.
-#       df_reference: A DataFrame containing reference information about board games (bgg_id, name, and image).
+#      bg_input (list): A list of board game IDs that the user likes.
+#      df_cosines_distances: DataFrame containing cosine distances for different board games.
+#      df_reference: A DataFrame containing reference information about board games (bgg_id, name, and image).
+#      num = number of games to retrieve. Max 20. Default 10
 # Returns: list: A list containing recommended board game IDs based on user's input.
+
 ############################################################################################################
 
-def similar_description_games(bg_input, bg_cosines_df, bgref_df):
+def similar_description_games(bg_input, bg_cosines_df, bgref_df, num=10):
     cos = bg_cosines_df
     reclist = [] # Creates empty list for recommended games
     result = [] # Creates empty list for recommended games
@@ -28,7 +31,11 @@ def similar_description_games(bg_input, bg_cosines_df, bgref_df):
             frames = [cos.loc[cos.bgg_id==b, ['rec_1']], 
                       cos.loc[cos.bgg_id==b, ['rec_2']].rename(columns={'rec_2': 'rec_1'}),
                       cos.loc[cos.bgg_id==b, ['rec_3']].rename(columns={'rec_3': 'rec_1'}),
-                      cos.loc[cos.bgg_id==b, ['rec_4']].rename(columns={'rec_4': 'rec_1'})]
+                      cos.loc[cos.bgg_id==b, ['rec_4']].rename(columns={'rec_4': 'rec_1'}),
+                      cos.loc[cos.bgg_id==b, ['rec_5']].rename(columns={'rec_5': 'rec_1'}),
+                      cos.loc[cos.bgg_id==b, ['rec_6']].rename(columns={'rec_6': 'rec_1'}), 
+                      cos.loc[cos.bgg_id==b, ['rec_7']].rename(columns={'rec_7': 'rec_1'}),
+                      cos.loc[cos.bgg_id==b, ['rec_8']].rename(columns={'rec_8': 'rec_1'})]
             
             # Concatenate frames and drop duplicates
             result_df = pd.concat(frames, ignore_index=True)
@@ -42,19 +49,18 @@ def similar_description_games(bg_input, bg_cosines_df, bgref_df):
         result = result[~result['rec_1'].isin(bg_input)]
         
         # Sample 5 unique recommendations
-        reclist = result['rec_1'].sample(n=5, replace=False).tolist()
+        reclist = result['rec_1'].sample(n=num, replace=False).tolist()
         
     elif inth == 1:
-        for i in range(1, 10):
+        for i in range(1, 21):
             result.append(cos.loc[cos.bgg_id.isin(bg_input)].values[0][i])
         
-        # Sample 5 unique recommendations
-        reclist = random.sample(result, 5)
+        # Sample x unique recommendations
+        reclist = random.sample(result, num)
 
-    games = bgref_df.loc[bgref_df.bgg_id.isin(reclist), ['bgg_id', 'name', 'image', 'video']]
+    games = bgref_df.loc[bgref_df.bgg_id.isin(reclist), ['bgg_id', 'name', 'image']]
     
     return games
-
 
 ############################################################################################################
 ######################################                             #########################################
