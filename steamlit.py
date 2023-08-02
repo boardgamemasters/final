@@ -151,9 +151,6 @@ if st.session_state['DemoDay'] == False:
     ####### SIDEBAR
     if st.session_state['set_chat'] == False:
         st.sidebar.header('What do you wanna do?')
-
-        with st.expander(f"10 Games of the last decade:", expanded=True):
-            general_start()
     else:
         st.sidebar.header('Enjoy our amazing Boardgame-Bot')
 
@@ -252,20 +249,28 @@ if st.session_state['DemoDay'] == False:
                 sim_games = pred.similar_description_games(bg_input = sim_feature, bg_cosines_df = cosine_df, bgref_df = games_info)
                 ncol = len(sim_games)
                 with st.container():
-                    st.header(f'Here are 5 Games, that are similar to the {len(sim_feature)} games you selected')
-                    for i in range(0, ncol, 3):
-                        col1, col2, col3 = st.columns(3)
+                    st.header(f'Here are 10 Games, that are similar to the {len(sim_feature)} games you selected')
+                    for i in range(0, ncol, 5):
+                        col1, col2, col3, col4, col5 = st.columns(5)
                         with col1:
-                            st.image(sim_games.iloc[i]['image'])
+                            st.image(pred.make_square(sim_games.iloc[i]['image']))
                             st.text(sim_games.iloc[i]['name'])
                         with col2:
                             if i + 1 < ncol:
-                                st.image(sim_games.iloc[i+1]['image'])
+                                st.image(pred.make_square(sim_games.iloc[i+1]['image']))
                                 st.text(sim_games.iloc[i+1]['name'])    
                         with col3:                 
                             if i + 2 < ncol:
-                                st.image(sim_games.iloc[i+2]['image'])
+                                st.image(pred.make_square(sim_games.iloc[i+2]['image']))
                                 st.text(sim_games.iloc[i+2]['name'])
+                        with col4:                 
+                            if i + 3 < ncol:
+                                st.image(pred.make_square(sim_games.iloc[i+3]['image']))
+                                st.text(sim_games.iloc[i+3]['name'])
+                        with col5:                 
+                            if i + 4 < ncol:
+                                st.image(pred.make_square(sim_games.iloc[i+4]['image']))
+                                st.text(sim_games.iloc[i+4]['name'])
             else:
                 st.header(f'Please select Games on the left side!')
         st.sidebar.divider()
@@ -420,9 +425,8 @@ if st.session_state['DemoDay'] == False:
                     with st.expander(f"10 Games we think you might enjoy:", expanded=True):
                         special_treat()
 
-                
-        else:
-            st.write('') 
+        with st.expander(f"10 Games of the last decade:", expanded=True):
+            general_start()
 else:
     st.title(f'Welcome to Demoday')
 
