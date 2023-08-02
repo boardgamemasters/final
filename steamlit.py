@@ -10,6 +10,7 @@ from urllib.request import urlopen
 from io import BytesIO
 from streamlit_chat import message
 import  streamlit_toggle as tog
+from streamlit_carousel import carousel
 
 
 ## Custom Functions
@@ -33,6 +34,26 @@ if 'DemoDay' not in st.session_state:
 
 st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_icon=logo)
 
+
+
+carousel_items = [
+    dict(
+        title="Frederik",
+        text="Here is Frederik",
+        interval=None,
+        img="https://drive.google.com/file/d/1bf1wxf1PKU9cCZhFnPBvxiSdLuVbeCxx/view?usp=drive_link",
+    ),
+    dict(
+        title="Slide 2",
+        text="A wooden bridge in a forest in Autumn",
+        img="https://cf.geekdo-images.com/x3zxjr-Vw5iU4yDPg70Jgw__imagepage/img/-17KkOmxbTu2slJTabGrkO8ZW8s=/fit-in/900x600/filters:no_upscale():strip_icc()/pic3490053.jpg",
+    ),
+    dict(
+        title="Slide 3",
+        text="A distant mountain chain preceded by a sea",
+        img="https://img.freepik.com/free-photo/aerial-beautiful-shot-seashore-with-hills-background-sunset_181624-24143.jpg?w=1380&t=st=1688825798~exp=1688826398~hmac=f623f88d5ece83600dac7e6af29a0230d06619f7305745db387481a4bb5874a0",
+    ),
+]
 
 @st.cache_data
 def data_load():
@@ -105,7 +126,7 @@ def special_treat():
                     st.text(user_games.iloc[i+4]['name'])
 #####
 ####### General for Startpage
-@st.cache_data(ttl=100)
+@st.cache_data(ttl=300)
 def general_start():
     gen_games = pred.best_general(bg=amey_df)
     gen_games = ursula.get_feature(result_file=gen_games, feature_file=games_info)
