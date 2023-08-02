@@ -333,8 +333,7 @@ if st.session_state['DemoDay'] == False:
 
         st.session_state.setdefault('questions', [])
 
-        st.header("""May the Force....
-                I meant... May the Games be with You""")
+        st.header("""May the Force.... I meant... May the Games be with You""")
         if st.session_state['user_login'] == True:
             questions_list = [
                 # 0
