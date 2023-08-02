@@ -273,6 +273,7 @@ if st.session_state['DemoDay'] == False:
                                 st.text(sim_games.iloc[i+4]['name'])
             else:
                 st.header(f'Please select Games on the left side!')
+            st.divider()
         st.sidebar.divider()
 
 
