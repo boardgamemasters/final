@@ -38,23 +38,23 @@ st.set_page_config(page_title='Boardgame Recommender', layout='wide')#, page_ico
 
 carousel_items = [
     dict(
-        title="Frederik",
-        text="Here is Frederik",
+        title="",
+        text="",
         img="https://raw.githubusercontent.com/boardgamemasters/final/main/team/frederik.png",
     ),
     dict(
-        title="Ariadna",
-        text="Here is Ariadna",
+        title="",
+        text="",
         img="https://raw.githubusercontent.com/boardgamemasters/final/main/team/ariadna.png",
     ),
     dict(
-        title="Leila",
-        text="Here is Leila",
+        title="",
+        text="",
         img="https://raw.githubusercontent.com/boardgamemasters/final/main/team/leila.png",
     ),
     dict(
-        title="Amey",
-        text="Here is Amey",
+        title="",
+        text="",
         img="https://raw.githubusercontent.com/boardgamemasters/final/main/team/amey.png",
     ),
 ]
