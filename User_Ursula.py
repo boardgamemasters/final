@@ -20,8 +20,7 @@ def user_limiter(user_id, rat_df, game_frame):
     red_spec = game_frame.loc[game_frame['bgg_id'].isin(red_id),['min_age', 'complexity', 'min_time']]
     red_age = red_spec['min_age'].min()
     red_complex=red_spec['complexity'].min()
-    red_mintime = red_spec['min_time'].min()
-    red_game = game_frame.loc[(game_frame['complexity'] >= red_complex) & (game_frame['min_age'] >= red_age) &(game_frame['min_time'] <= red_mintime)]
+    red_game = game_frame.loc[(game_frame['complexity'] >= red_complex) & (game_frame['min_age'] >= red_age)]
     return red_game
 
 
