@@ -15,7 +15,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 def user_limiter(user_id, rat_df, game_frame):
     red_df = rat_df.loc[rat_df['Username']== user_id]
-    rat_th = red_df['Rating'].describe()[6]
+    rat_th = red_df['Rating'].describe()[5]
     red_id = red_df.loc[red_df['Rating'] >= rat_th]['bgg_id']
     red_spec = game_frame.loc[game_frame['bgg_id'].isin(red_id),['min_age', 'complexity', 'min_time']]
     red_age = red_spec['min_age'].min()
