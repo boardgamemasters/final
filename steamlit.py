@@ -430,7 +430,7 @@ if st.session_state['DemoDay'] == False:
             general_start()
 else:
     st.title(f'🎈 Welcome to the amazing World of Boardgames 🎈')
-    components.iframe("https://docs.google.com/presentation/d/1p-ZPJmNOHJ8Bakc8gCCHZVn8d23785KBGQg9QINcP14/edit?usp=sharing", height=800)
+    components.iframe("https://docs.google.com/presentation/d/e/2PACX-1vSVj4sm4gYZDSfrKC3BdLvLd0lFVgzfJBlDkkaOHWHvIxcR3cmc1ySEv8YQwIP3zQyUiiKAFk4D9zAI/embed?start=false&loop=false&delayms=60000", height=750)
 
 
 st.sidebar.divider()
