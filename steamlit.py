@@ -429,7 +429,9 @@ if st.session_state['DemoDay'] == False:
         with st.expander(f"10 Games of the last decade:", expanded=True):
             general_start()
 else:
-    st.title(f'Welcome to Demoday')
+    st.title(f'🎈 Welcome to the amazing World of Boardgames 🎈')
+    components.iframe("https://docs.google.com/presentation/d/1p-ZPJmNOHJ8Bakc8gCCHZVn8d23785KBGQg9QINcP14/edit?usp=sharing", height=800)
+
 
 st.sidebar.divider()
 def set_demoday():
@@ -439,9 +441,9 @@ def set_demoday():
         st.session_state['DemoDay'] = True
 sel_DemoDay_placeholder = st.sidebar.empty()
 with sel_DemoDay_placeholder:
-    st.checkbox(label="DemoDay", 
+    st.checkbox(label="Project Introduction", 
                             key="DemoDay_select", 
-                            help = 'Lets Start DemoDay',
+                            help = 'Lets introduce our Project',
                             value= st.session_state['DemoDay'],
                             on_change=set_demoday
                             )
