@@ -1,9 +1,115 @@
-############################################################################################################
-#########################################     LIBRARIES      ###############################################
+###################################################### LIBRARIES ###########################################
 import pandas as pd
+import re
+import nltk
 import random
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem.snowball import SnowballStemmer
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.decomposition import PCA
+from sklearn.metrics.pairwise import cosine_similarity
+from tqdm import tqdm  # For displaying progress bars
+from scipy.sparse import csr_matrix
+from sklearn.decomposition import TruncatedSVD
+from sklearn.feature_extraction.text import TfidfVectorizer
 from PIL import Image
 import urllib.request
+
+###################################################### FUNCTIONS ###########################################
+
+######################################  GET_STEM ###########################################################
+# Define the function get_stem with two input parameters: description (text to be stemmed) and stop_words 
+# (list of words to be ignored during stemming)
+############################################################################################################
+
+def get_stem(description, language='english'):
+    stop_words = list(set(stopwords.words(language)))
+    ps = SnowballStemmer(language, ignore_stopwords=True)
+    # Initialize an empty list named 'text' to store the stemmed words
+    text = []
+    # Split the 'description' input into individual words using the split() method
+    for word in description.split():
+        # Check if the current 'word' is not in the 'stop_words' list
+        # If the word is not a stop word, stem it using the SnowballStemmer 
+        # and append it to the 'text' list
+        if word not in stop_words:
+            text.append(ps.stem(word))
+        else:
+            continue
+        # Join the stemmed words in the 'text' list back into a single string 
+        # with words separated by spaces
+    stem_text = ' '.join(text)
+    return stem_text
+
+
+######################################  CALCULATE_COSINE_SIMILARITY ########################################
+# Calculates the cosine similarity matrix for the input DataFrame containing textual data. 
+#It first converts the text data into numerical vectors using CountVectorizer with dimensionality reduction 
+# using PCA to n_components, and then it computes the cosine similarity matrix using cosine_similarity. 
+# The function returns the resulting cosine similarity matrix.
+############################################################################################################
+
+def calculate_cosine_similarity(bgdes, featotal=400, n_components=200):
+    # Step 1: Convert textual data into numerical vectors using CountVectorizer
+    cv = CountVectorizer(max_features=featotal)
+    vectors = cv.fit_transform(bgdes).toarray()
+
+    # Initialize the progress bar with a total of 3 steps
+    progress_bar = tqdm(total=3, desc='Calculating', leave=False)
+
+    # Step 1: CountVectorizer
+    progress_bar.set_description('Step 1: CountVectorizer')
+    progress_bar.update(1)
+
+    # Step 2: Perform PCA (Principal Component Analysis) for dimensionality reduction
+    pca = PCA(n_components=n_components)
+
+    # Step 2: PCA
+    progress_bar.set_description('Step 2: PCA')
+    vectors_pca = pca.fit_transform(vectors)
+    progress_bar.update(1)
+
+    # Step 3: Compute Cosine Similarity
+    # Cosine similarity measures the similarity between vectors in a multi-dimensional space
+    progress_bar.set_description('Step 3: Cosine Similarity')
+    csimlar = cosine_similarity(vectors_pca, dense_output=False)
+    progress_bar.update(1)
+
+    # Close the progress bar as all steps are complete
+    progress_bar.close()
+
+    # Return the cosine similarity matrix
+    return csimlar
+
+
+######################################  TRANSFORM_COSINE_DF ################################################
+# Removes square brackets and trims leading and trailing whitespaces from the '0' column, splits it by comma
+# delimiter into separate columns, converts the entire DataFrame to numeric data types with 'coerce' error 
+# handling, and finally returns the transformed DataFrame.
+############################################################################################################
+
+def transform_cosine_df (df):
+    # Remove square brackets from cos['0']
+    df['0'] = df['0'].str.replace('[\[\]]', '', regex=True)
+    df['0'] = df['0'].str.strip()
+    
+    # Split cos['0'] by comma (',') delimiter into separate columns
+    df[['bgg_id', 'rec_1', 'rec_2', 'rec_3', 'rec_4', 
+        'rec_5', 'rec_6', 'rec_7', 'rec_8', 'rec_9',
+        'rec_10', 'rec_11', 'rec_12', 'rec_13', 'rec_14',
+        'rec_15', 'rec_16', 'rec_17', 'rec_18', 'rec_19',
+        'rec_20']] = df['0'].str.split(',', expand=True)
+    
+    # Drop cos['0'] as it's no longer needed
+    df.drop('0', axis=1, inplace=True)
+    
+    # Converts to numeric.
+    for c in df.columns:
+        df[c]=pd.to_numeric(df[c], errors='coerce')
+    
+    return df
+
 
 ############################################################################################################
 ######################################                             #########################################
