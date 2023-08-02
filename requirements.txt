@@ -8,3 +8,4 @@ streamlit-carousel
 streamlit-modal
 streamlit-image-coordinates
 streamlit-toggle-switch
+nltk
